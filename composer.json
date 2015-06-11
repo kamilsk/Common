@@ -1,0 +1,19 @@
+{
+    "name": "kamilsk/common",
+    "type": "library",
+    "description": "Common codebase.",
+    "homepage": "https://github.com/kamilsk/common",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kamil Samigullin",
+            "email": "kamil@samigullin.info"
+        }
+    ],
+    "require": {
+        "php": ">=5.5"
+    },
+    "autoload": {
+        "psr-4": { "OctoLab\\Common\\": "src/" }
+    }
+}
