@@ -25,7 +25,7 @@
          timeoutForLargeTests="60"
          verbose="false">
     <testsuites>
-        <testsuite name="command">
+        <testsuite name="unit">
             <directory>src/Tests/*</directory>
         </testsuite>
     </testsuites>

@@ -5,6 +5,8 @@ namespace OctoLab\Common\Tests\Helper;
 use OctoLab\Common\Helper\Limiter;
 
 /**
+ * phpunit src/Tests/Helper/LimiterTest.php
+ *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class LimiterTest extends \PHPUnit_Framework_TestCase

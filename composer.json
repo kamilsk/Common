@@ -13,6 +13,9 @@
     "require": {
         "php": ">=5.5"
     },
+    "require-dev": {
+        "doctrine/migrations": "~1.0|1.0.x-dev#67f0268"
+    },
     "autoload": {
         "psr-4": { "OctoLab\\Common\\": "src/" }
     }
