@@ -5,7 +5,7 @@ namespace OctoLab\Common\Doctrine\Util;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-final class Parser
+class Parser
 {
     /**
      * @param string $text

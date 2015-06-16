@@ -5,7 +5,7 @@ namespace OctoLab\Common\Helper;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-final class Limiter
+class Limiter
 {
     /** @var int */
     private $limit;
