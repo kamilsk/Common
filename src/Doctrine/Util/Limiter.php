@@ -1,6 +1,6 @@
 <?php
 
-namespace OctoLab\Common\Helper;
+namespace OctoLab\Common\Doctrine\Util;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
@@ -18,6 +18,8 @@ class Limiter
      * @param int $limit
      * @param int $offset
      * @param int|null $total
+     *
+     * @api
      */
     public function __construct($limit, $offset = 0, $total = null)
     {
@@ -28,6 +30,8 @@ class Limiter
 
     /**
      * @return int
+     *
+     * @api
      */
     public function getLimit()
     {
@@ -36,6 +40,8 @@ class Limiter
 
     /**
      * @return int
+     *
+     * @api
      */
     public function getOffset()
     {
@@ -44,6 +50,8 @@ class Limiter
 
     /**
      * @return bool
+     *
+     * @api
      */
     public function hasPortion()
     {
@@ -52,6 +60,8 @@ class Limiter
 
     /**
      * @return $this
+     *
+     * @api
      */
     public function nextPortion()
     {

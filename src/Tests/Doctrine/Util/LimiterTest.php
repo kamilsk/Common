@@ -2,15 +2,24 @@
 
 namespace OctoLab\Common\Tests\Helper;
 
-use OctoLab\Common\Helper\Limiter;
+use OctoLab\Common\Doctrine\Util\Limiter;
 
 /**
- * phpunit src/Tests/Helper/LimiterTest.php
+ * phpunit src/Tests/Doctrine/Util/LimiterTest.php
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class LimiterTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @test
+     */
+    public function getLimit()
+    {
+        $limiter = new Limiter(100, 20, 80);
+        self::assertEquals(80, $limiter->getLimit());
+    }
+
     /**
      * @test
      */
@@ -32,7 +41,6 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
     public function nextPortion()
     {
         $limiter = new Limiter(100, 20, 80);
-        self::assertEquals(80, $limiter->getLimit());
         $limiter->nextPortion();
         self::assertEquals(0, $limiter->getLimit());
         self::assertEquals(100, $limiter->getOffset());
