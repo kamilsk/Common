@@ -22,7 +22,7 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
         $logger->pushHandler(new StreamHandler($this->getStream()));
         $logger->info('Start logging.');
         self::assertFileExists($this->getStream());
-        exec('rm ' . escapeshellarg($this->getStream()));
+        $this->rm($this->getStream());
         $logger->info('End logging.');
         self::assertFileNotExists($this->getStream());
     }
@@ -43,7 +43,7 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
         $content = file_get_contents($newLocation);
         self::assertContains('Start logging.', $content);
         self::assertContains('Continue logging.', $content);
-        exec('rm ' . escapeshellarg($newLocation));
+        $this->rm($newLocation);
     }
 
     /**
@@ -55,11 +55,11 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
         $logger->pushHandler(new BulletproofStreamHandler($this->getStream()));
         $logger->info('Start logging.');
         self::assertFileExists($this->getStream());
-        exec('rm ' . escapeshellarg($this->getStream()));
+        $this->rm($this->getStream());
         $logger->info('End logging.');
         self::assertFileExists($this->getStream());
         self::assertContains('End logging.', file_get_contents($this->getStream()));
-        exec('rm ' . escapeshellarg($this->getStream()));
+        $this->rm($this->getStream());
     }
 
     /**
@@ -76,5 +76,13 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
     private function getBasePath()
     {
         return dirname(dirname(__DIR__)) . '/data';
+    }
+
+    /**
+     * @param string $file
+     */
+    private function rm($file)
+    {
+        exec('rm ' . escapeshellarg($file));
     }
 }
