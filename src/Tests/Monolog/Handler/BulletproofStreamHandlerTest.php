@@ -30,9 +30,9 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function writeAtMoving()
+    public function writeInMovedFile()
     {
-        $newLocation = sprintf('%s/moved.log', $this->getBasePath());
+        $newLocation = $this->getBasePath() . '/moved.log';
         $logger = new Logger('test');
         $logger->pushHandler(new StreamHandler($this->getStream()));
         $logger->info('Start logging.');
