@@ -25,9 +25,7 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
     public function up(DriverBasedMigration $migration, Schema $schema, $dbms)
     {
         $migration->preUp($schema);
-        self::assertCount(1, $migration->getQueries());
-        self::assertContains($dbms, $migration->getQueries()[0]);
-        self::assertContains('[Up]', $migration->getQueries()[0]);
+        $this->checkQueries($migration, $dbms, '[Up]');
         $migration->up($schema);
         $migration->postUp($schema);
         self::assertEmpty($migration->getQueries());
@@ -44,9 +42,7 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
     public function down(DriverBasedMigration $migration, Schema $schema, $dbms)
     {
         $migration->preDown($schema);
-        self::assertCount(1, $migration->getQueries());
-        self::assertContains($dbms, $migration->getQueries()[0]);
-        self::assertContains('[Down]', $migration->getQueries()[0]);
+        $this->checkQueries($migration, $dbms, '[Down]');
         $migration->down($schema);
         $migration->postDown($schema);
         self::assertEmpty($migration->getQueries());
@@ -75,5 +71,17 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
                 'PostgreSQL',
             ],
         ];
+    }
+
+    /**
+     * @param DriverBasedMigration $migration
+     * @param $dbms
+     * @param $direction
+     */
+    private function checkQueries(DriverBasedMigration $migration, $dbms, $direction)
+    {
+        self::assertCount(1, $migration->getQueries());
+        self::assertContains($dbms, $migration->getQueries()[0]);
+        self::assertContains($direction, $migration->getQueries()[0]);
     }
 }
