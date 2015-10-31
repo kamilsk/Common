@@ -8,5 +8,5 @@ namespace OctoLab\Common\Tests\Doctrine\Migration;
 class PartialMigration extends TestMigration
 {
     /** @var array */
-    private $downgrade = ['ISSUE-8/downgrade.sql'];
+    private $upgrade = ['ISSUE-8/upgrade.sql'];
 }

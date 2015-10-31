@@ -39,9 +39,9 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
     public function partialMigration()
     {
         $migration = $this->getMigrationMock(PartialMigration::class);
-        self::assertEmpty($migration->getUpgradeMigrations());
-        self::assertCount(1, $migration->getDowngradeMigrations());
-        self::assertFileExists($migration->getFullPath($migration->getDowngradeMigrations()[0]));
+        self::assertCount(1, $migration->getUpgradeMigrations());
+        self::assertEmpty($migration->getDowngradeMigrations());
+        self::assertFileExists($migration->getFullPath($migration->getUpgradeMigrations()[0]));
     }
 
     /**

@@ -17,11 +17,11 @@ class Limiter
     /**
      * @param int $limit
      * @param int $offset
-     * @param int|null $total
+     * @param int $total
      *
      * @api
      */
-    public function __construct($limit, $offset = 0, $total = null)
+    public function __construct($limit, $offset = 0, $total = 0)
     {
         $this->limit = $total ? min($limit, $total) : $limit;
         $this->offset = $offset;

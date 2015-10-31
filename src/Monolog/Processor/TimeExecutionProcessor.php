@@ -24,13 +24,7 @@ class TimeExecutionProcessor
      */
     public function __invoke(array $record)
     {
-        $timestamp = microtime(true);
-        $record['extra'] = array_merge(
-            $record['extra'],
-            [
-                'time_execution' => sprintf('%01.3f', $timestamp - $this->started),
-            ]
-        );
+        $record['extra']['time_execution'] = sprintf('%01.3f', microtime(true) - $this->started);
         return $record;
     }
 }

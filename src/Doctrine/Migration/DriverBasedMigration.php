@@ -9,9 +9,10 @@ use Doctrine\DBAL\Schema\Schema;
  * Driver based migrations.
  *
  * Strategy:
- * - migration determines a preparatory method, e.g. preMysqliUp, preIbmDb2Down, etc.
+ * - migration determines a preparatory method (must be protected or public), e.g. preMysqliUp, preIbmDb2Down, etc.
  * - the preparatory method fills the "queries" property
  * - "up" and "down" run these queries
+ *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 abstract class DriverBasedMigration extends AbstractMigration
@@ -21,14 +22,18 @@ abstract class DriverBasedMigration extends AbstractMigration
 
     /**
      * @param Schema $schema
+     *
+     * @api
      */
     final public function preUp(Schema $schema)
     {
-        $this->prepare('Up', $schema);
+        $this->prepare('pre', 'Up', $schema);
     }
 
     /**
      * @param Schema $schema
+     *
+     * @api
      */
     final public function up(Schema $schema)
     {
@@ -37,14 +42,28 @@ abstract class DriverBasedMigration extends AbstractMigration
 
     /**
      * @param Schema $schema
+     *
+     * @api
      */
-    final public function preDown(Schema $schema)
+    final public function postUp(Schema $schema)
     {
-        $this->prepare('Down', $schema);
+        $this->prepare('post', 'Up', $schema);
     }
 
     /**
      * @param Schema $schema
+     *
+     * @api
+     */
+    final public function preDown(Schema $schema)
+    {
+        $this->prepare('pre', 'Down', $schema);
+    }
+
+    /**
+     * @param Schema $schema
+     *
+     * @api
      */
     final public function down(Schema $schema)
     {
@@ -52,19 +71,39 @@ abstract class DriverBasedMigration extends AbstractMigration
     }
 
     /**
-     * @param string $direction
+     * @param Schema $schema
+     *
+     * @api
+     */
+    final public function postDown(Schema $schema)
+    {
+        $this->prepare('post', 'Down', $schema);
+    }
+
+    /**
+     * @param string $prefix
+     * @param string $postfix
      * @param Schema $schema
      */
-    private function prepare($direction, Schema $schema)
+    private function prepare($prefix, $postfix, Schema $schema)
     {
-        // mysqli, drizzle_pdo_mysql, ibm_db2, etc.
-        $driver = $this->connection->getDriver()->getName();
-        $parts = explode(' ', ucwords(str_replace('_', ' ', $driver)));
-        $method = 'pre' . implode('', $parts) . $direction;
+        $method = $this->resolve($prefix, $postfix);
         if (method_exists($this, $method)) {
-            // instead of `$callback = [$this, $method]; $callback($schema);`
             $this->run([$this, $method], $schema);
         }
+    }
+
+    /**
+     * @param string $prefix
+     * @param string $postfix
+     *
+     * @return string
+     */
+    private function resolve($prefix, $postfix)
+    {
+        $driver = $this->connection->getDriver()->getName();
+        $parts = explode(' ', ucwords(str_replace('_', ' ', $driver)));
+        return $prefix . implode('', $parts) . $postfix;
     }
 
     /**

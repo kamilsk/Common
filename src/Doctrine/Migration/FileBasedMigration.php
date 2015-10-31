@@ -102,7 +102,7 @@ abstract class FileBasedMigration extends AbstractMigration
             }
         } else {
             throw new \BadMethodCallException(
-                sprintf('Method %s::%s doesn\'t exists.', get_called_class($this), $method)
+                sprintf('Method %s::%s doesn\'t exists.', get_called_class(), $method)
             );
         }
     }

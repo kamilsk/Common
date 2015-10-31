@@ -1,6 +1,3 @@
-CREATE TABLE temp (
-  id INT NOT NULL AUTO_INCREMENT,
-  title VARCHAR(8) NOT NULL,
-  PRIMARY KEY (id)
+CREATE TABLE test (
+  title VARCHAR(8) NOT NULL
 );
-INSERT INTO temp (title) VALUES ('test');
