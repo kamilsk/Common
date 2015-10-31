@@ -12,6 +12,7 @@ use Doctrine\DBAL\Schema\Schema;
  * - migration determines a preparatory method (must be protected or public), e.g. preMysqliUp, preIbmDb2Down, etc.
  * - the preparatory method fills the "queries" property
  * - "up" and "down" run these queries
+ * IMPORTANT: do not use inheritance chain to avoid bugs associated with need to override "up" and "down" hooks.
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
@@ -19,6 +20,16 @@ abstract class DriverBasedMigration extends AbstractMigration
 {
     /** @var array */
     protected $queries = [];
+
+    /**
+     * @return array
+     *
+     * @api
+     */
+    public function getQueries()
+    {
+        return $this->queries;
+    }
 
     /**
      * @param Schema $schema
@@ -80,6 +91,13 @@ abstract class DriverBasedMigration extends AbstractMigration
         $this->prepare('post', 'Down', $schema);
     }
 
+    protected function routine()
+    {
+        foreach ($this->queries as $sql) {
+            $this->addSql($sql);
+        }
+    }
+
     /**
      * @param string $prefix
      * @param string $postfix
@@ -113,12 +131,5 @@ abstract class DriverBasedMigration extends AbstractMigration
     private function run(callable $callback, Schema $schema)
     {
         $callback($schema);
-    }
-
-    private function routine()
-    {
-        foreach ($this->queries as $sql) {
-            $this->addSql($sql);
-        }
     }
 }
