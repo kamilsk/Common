@@ -2,6 +2,8 @@
 
 namespace OctoLab\Common\Tests\Doctrine\Migration;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\PDOMySql;
 use Doctrine\DBAL\Driver\PDOPgSql;
 use Doctrine\DBAL\Schema\Schema;
@@ -53,24 +55,17 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
      */
     public function migrationProvider()
     {
-        return [
-            [
-                (new \ReflectionClass(Mock\DriverBasedMigration::class))
-                    ->newInstanceWithoutConstructor()
-                    ->mock(new PDOMySql\Driver())
-                ,
-                new Schema(),
-                'MySQL',
-            ],
-            [
-                (new \ReflectionClass(Mock\DriverBasedMigration::class))
-                    ->newInstanceWithoutConstructor()
-                    ->mock(new PDOPgSql\Driver())
-                ,
-                new Schema(),
-                'PostgreSQL',
-            ],
-        ];
+        static $reflection, $property;
+        if (!$reflection) {
+            $reflection = new \ReflectionClass(Mock\DriverBasedMigration::class);
+            $property = $reflection->getProperty('connection');
+            $property->setAccessible(true);
+        }
+        return array_map(function (Driver $driver, $dbms) use ($reflection, $property) {
+            $migration = $reflection->newInstanceWithoutConstructor();
+            $property->setValue($migration, new Connection([], $driver));
+            return [$migration, new Schema(), $dbms];
+        }, [new PDOMySql\Driver(), new PDOPgSql\Driver()], ['MySQL', 'PostgreSQL']);
     }
 
     /**

@@ -52,7 +52,7 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
     public function bulletproofWrite()
     {
         $logger = new Logger('test');
-        $logger->pushHandler(new BulletproofStreamHandler($this->getStream()));
+        $logger->pushHandler(new BulletproofStreamHandler($this->getStream(), Logger::INFO, true, 0644));
         $logger->info('Start logging.');
         self::assertFileExists($this->getStream());
         $this->rm($this->getStream());

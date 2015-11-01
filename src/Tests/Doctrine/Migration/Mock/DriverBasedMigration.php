@@ -12,17 +12,6 @@ use OctoLab\Common\Doctrine\Migration\DriverBasedMigration as AbstractMigration;
 final class DriverBasedMigration extends AbstractMigration
 {
     /**
-     * @param Driver $driver
-     *
-     * @return $this
-     */
-    public function mock(Driver $driver)
-    {
-        $this->connection = new Connection([], $driver);
-        return $this;
-    }
-
-    /**
      * @param string $sql
      * @param array $params
      * @param array $types

@@ -68,7 +68,7 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param FileBasedMigration $migration
-     * @param array $files
+     * @param string[] $files
      */
     private function checkMigrations(FileBasedMigration $migration, array $files)
     {
