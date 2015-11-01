@@ -23,7 +23,7 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
         $migration = $this->getMigrationMock(Mock\FileBasedMigration::class);
         $this->checkMigrations($migration, $migration->getUpgradeMigrations());
         $migration->preUp($schema);
-        $this->checkQueries($migration);
+        self::assertNotEmpty($migration->getQueries());
         $migration->up($schema);
         $migration->postUp($schema);
         self::assertEmpty($migration->getQueries());
@@ -40,7 +40,7 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
         $migration = $this->getMigrationMock(Mock\FileBasedMigration::class);
         $this->checkMigrations($migration, $migration->getDowngradeMigrations());
         $migration->preDown($schema);
-        $this->checkQueries($migration);
+        self::assertNotEmpty($migration->getQueries());
         $migration->down($schema);
         $migration->postDown($schema);
         self::assertEmpty($migration->getQueries());
@@ -75,14 +75,5 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
         foreach ($files as $file) {
             self::assertFileExists($migration->getFullPath($file));
         }
-    }
-
-    /**
-     * @param FileBasedMigration $migration
-     */
-    private function checkQueries(FileBasedMigration $migration)
-    {
-        $queries = $migration->getQueries();
-        self::assertCount(1, $queries);
     }
 }
