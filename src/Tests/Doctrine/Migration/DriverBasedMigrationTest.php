@@ -61,7 +61,7 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
             $property = $reflection->getProperty('connection');
             $property->setAccessible(true);
         }
-        return array_map(function (Driver $driver, $dbms) use ($reflection, $property) {
+        return array_map(function(Driver $driver, $dbms) use ($reflection, $property) {
             $migration = $reflection->newInstanceWithoutConstructor();
             $property->setValue($migration, new Connection([], $driver));
             return [$migration, new Schema(), $dbms];
