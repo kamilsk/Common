@@ -16,8 +16,10 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
      */
     public function getLimit()
     {
-        $limiter = new Limiter(100, 20, 80);
-        self::assertEquals(80, $limiter->getLimit());
+        $limiter = new Limiter(200, 20, 100);
+        self::assertEquals(100, $limiter->getLimit());
+        $limiter = new Limiter(100, 20, 200);
+        self::assertEquals(100, $limiter->getLimit());
     }
 
     /**
@@ -25,7 +27,7 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
      */
     public function hasPortion()
     {
-        $limiter = new Limiter(100, 0, 200);
+        $limiter = new Limiter(100, 20, 200);
         $i = 0;
         do {
             $i++;
@@ -40,7 +42,11 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
      */
     public function nextPortion()
     {
-        $limiter = new Limiter(100, 20, 80);
+        $limiter = new Limiter(100, 20, 200);
+        $limiter->nextPortion();
+        self::assertEquals(80, $limiter->getLimit());
+        self::assertEquals(120, $limiter->getOffset());
+        $limiter = new Limiter(200, 20, 100);
         $limiter->nextPortion();
         self::assertEquals(0, $limiter->getLimit());
         self::assertEquals(100, $limiter->getOffset());

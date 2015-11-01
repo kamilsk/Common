@@ -15,17 +15,22 @@ class Limiter
     private $total;
 
     /**
-     * @param int $limit
-     * @param int $offset
-     * @param int $total
+     * @param int $limit how many records to get (e.g. LIMIT part of SQL queries)
+     * @param int $offset how many records to skip (e.g. OFFSET part of SQL queries)
+     * @param int|null $total how many total records were found (e.g. SELECT COUNT(*) FROM)
+     *
+     * @throws \InvalidArgumentException if the values are negative
      *
      * @api
      */
-    public function __construct($limit, $offset = 0, $total = 0)
+    public function __construct($limit, $offset = 0, $total = null)
     {
         $this->limit = $total ? min($limit, $total) : $limit;
         $this->offset = $offset;
-        $this->total = $offset + $total;
+        $this->total = $total ?: PHP_INT_MAX;
+        if ($this->limit < 0 || $this->offset < 0 || $this->total < 0) {
+            throw new \InvalidArgumentException('Values must be unsigned.');
+        }
     }
 
     /**
@@ -66,10 +71,8 @@ class Limiter
     public function nextPortion()
     {
         if ($this->limit) {
-            $this->offset += $this->limit;
-            if ($this->total) {
-                $this->limit = min($this->limit, $this->total - $this->offset);
-            }
+            $this->offset = min($this->offset + $this->limit, $this->total);
+            $this->limit = min($this->limit, $this->total - $this->offset);
         }
         return $this;
     }
