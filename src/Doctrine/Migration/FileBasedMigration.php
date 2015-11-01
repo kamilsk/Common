@@ -12,59 +12,105 @@ use OctoLab\Common\Doctrine\Util\Parser;
  * Pattern: [/path/to/sql/migrations/][<major version>/][<ticket>/(upgrade|downgrade).sql]
  * - getBasePath()
  * - getMajorVersion()
- * - item of upgrade|downgrade array
+ * - item of migration list
  * Strategy:
  * - major version extends FileBasedMigration
  * - minor version extends major version
- * <strong>IMPORTANT:</strong> upgrade and downgrade must be private.
- * @author Kamil Samigullin <kamil@samigullin.info>
+ * IMPORTANT: carefully use inheritance to avoid bugs associated with need to override "up" and "down" migration list.
  *
- * @method string[] getUpgradeMigrations()
- * @method string[] getDowngradeMigrations()
+ * @author Kamil Samigullin <kamil@samigullin.info>
  */
 abstract class FileBasedMigration extends AbstractMigration
 {
-    /** @var array */
-    private $upgrade = [];
-    /** @var array */
-    private $downgrade = [];
+    /** @var string[] */
+    protected $queries = [];
 
     /**
      * @return string
+     *
+     * @api
      */
     abstract public function getBasePath();
 
     /**
      * @return string
+     *
+     * @api
      */
     abstract public function getMajorVersion();
 
     /**
+     * @return string[]
+     *
+     * @api
+     */
+    abstract public function getUpgradeMigrations();
+
+    /**
+     * @return string[]
+     *
+     * @api
+     */
+    abstract public function getDowngradeMigrations();
+
+    /**
+     * @return string[]
+     *
+     * @api
+     */
+    public function getQueries()
+    {
+        return $this->queries;
+    }
+
+    /**
      * @param Schema $schema
+     *
+     * @api
+     */
+    final public function preUp(Schema $schema)
+    {
+        $this->prepare(array_map([$this, 'getFullPath'], $this->getUpgradeMigrations()));
+    }
+
+    /**
+     * @param Schema $schema
+     *
+     * @api
      */
     final public function up(Schema $schema)
     {
-        $files = array_map([$this, 'getFullPath'], $this->getUpgradeMigrations());
-        $this->routine($files);
+        $this->routine();
     }
 
     /**
      * @param Schema $schema
+     *
+     * @api
      */
-    final public function down(Schema $schema)
+    final public function preDown(Schema $schema)
     {
-        $files = array_map([$this, 'getFullPath'], $this->getDowngradeMigrations());
-        $this->routine($files);
+        $this->prepare(array_map([$this, 'getFullPath'], $this->getDowngradeMigrations()));
     }
 
     /**
-     * @param string $file
+     * @param Schema $schema
+     *
+     * @api
+     */
+    final public function down(Schema $schema)
+    {
+        $this->routine();
+    }
+
+    /**
+     * @param string $migration
      *
      * @return string
      *
      * @api
      */
-    public function getFullPath($file)
+    public function getFullPath($migration)
     {
         $path = $this->getBasePath();
         if ($this->getMajorVersion()) {
@@ -72,66 +118,28 @@ abstract class FileBasedMigration extends AbstractMigration
             $path .= $this->getMajorVersion();
         }
         $path .= '/';
-        $path .= $file;
+        $path .= $migration;
         return $path;
     }
 
-    /**
-     * @param string $method
-     * @param array $arguments
-     *
-     * @return mixed
-     *
-     * @throws \BadMethodCallException
-     *
-     * @api
-     */
-    public function __call($method, array $arguments)
+    protected function routine()
     {
-        if (!strcasecmp($method, 'getUpgradeMigrations')) {
-            try {
-                return $this->resolveHiddenProperty('upgrade');
-            } catch (\ReflectionException $e) {
-                return $this->upgrade;
-            }
-        } elseif (!strcasecmp($method, 'getDowngradeMigrations')) {
-            try {
-                return $this->resolveHiddenProperty('downgrade');
-            } catch (\ReflectionException $e) {
-                return $this->downgrade;
-            }
-        } else {
-            throw new \BadMethodCallException(
-                sprintf('Method %s::%s doesn\'t exists.', get_called_class(), $method)
-            );
+        foreach ($this->queries as $sql) {
+            $this->addSql($sql);
         }
     }
 
     /**
-     * @param array $files
+     * @param string[] $files
      */
-    private function routine(array $files)
+    private function prepare(array $files)
     {
         $parser = new Parser();
         foreach ($files as $file) {
             $queries = $parser->extractSql(file_get_contents($file));
             foreach ($queries as $sql) {
-                $this->addSql($sql);
+                $this->queries[] = $sql;
             }
         }
-    }
-
-    /**
-     * @param string $property
-     *
-     * @return mixed
-     *
-     * @throws \ReflectionException
-     */
-    private function resolveHiddenProperty($property)
-    {
-        $reflection = (new \ReflectionObject($this))->getProperty($property);
-        $reflection->setAccessible(true);
-        return $reflection->getValue($this);
     }
 }

@@ -75,13 +75,14 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param DriverBasedMigration $migration
-     * @param $dbms
-     * @param $direction
+     * @param string $dbms
+     * @param string $direction
      */
     private function checkQueries(DriverBasedMigration $migration, $dbms, $direction)
     {
-        self::assertCount(1, $migration->getQueries());
-        self::assertContains($dbms, $migration->getQueries()[0]);
-        self::assertContains($direction, $migration->getQueries()[0]);
+        $queries = $migration->getQueries();
+        self::assertCount(1, $queries);
+        self::assertContains($dbms, $queries[0]);
+        self::assertContains($direction, $queries[0]);
     }
 }

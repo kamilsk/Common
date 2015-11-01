@@ -1,3 +1,0 @@
-CREATE TABLE test (
-  title VARCHAR(8) NOT NULL
-);

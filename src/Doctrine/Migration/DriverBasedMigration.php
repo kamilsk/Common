@@ -18,11 +18,11 @@ use Doctrine\DBAL\Schema\Schema;
  */
 abstract class DriverBasedMigration extends AbstractMigration
 {
-    /** @var array */
+    /** @var string[] */
     protected $queries = [];
 
     /**
-     * @return array
+     * @return string[]
      *
      * @api
      */

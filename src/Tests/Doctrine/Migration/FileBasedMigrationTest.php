@@ -2,6 +2,7 @@
 
 namespace OctoLab\Common\Tests\Doctrine\Migration;
 
+use Doctrine\DBAL\Schema\Schema;
 use OctoLab\Common\Doctrine\Migration\FileBasedMigration;
 
 /**
@@ -13,35 +14,46 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     * @dataProvider schemaProvider
+     *
+     * @param Schema $schema
      */
-    public function emptyMigration()
+    public function up(Schema $schema)
     {
-        $migration = $this->getMigrationMock(EmptyMigration::class);
-        self::assertEmpty($migration->getUpgradeMigrations());
-        self::assertEmpty($migration->getDowngradeMigrations());
+        $migration = $this->getMigrationMock(Mock\FileBasedMigration::class);
+        $this->checkMigrations($migration, $migration->getUpgradeMigrations());
+        $migration->preUp($schema);
+        $this->checkQueries($migration);
+        $migration->up($schema);
+        $migration->postUp($schema);
+        self::assertEmpty($migration->getQueries());
     }
 
     /**
      * @test
+     * @dataProvider schemaProvider
+     *
+     * @param Schema $schema
      */
-    public function testMigration()
+    public function down(Schema $schema)
     {
-        $migration = $this->getMigrationMock(TestMigration::class);
-        self::assertCount(1, $migration->getUpgradeMigrations());
-        self::assertCount(1, $migration->getDowngradeMigrations());
-        self::assertFileExists($migration->getFullPath($migration->getUpgradeMigrations()[0]));
-        self::assertFileExists($migration->getFullPath($migration->getDowngradeMigrations()[0]));
+        $migration = $this->getMigrationMock(Mock\FileBasedMigration::class);
+        $this->checkMigrations($migration, $migration->getDowngradeMigrations());
+        $migration->preDown($schema);
+        $this->checkQueries($migration);
+        $migration->down($schema);
+        $migration->postDown($schema);
+        self::assertEmpty($migration->getQueries());
     }
 
     /**
-     * @test
+     * @return array[]
      */
-    public function partialMigration()
+    public function schemaProvider()
     {
-        $migration = $this->getMigrationMock(PartialMigration::class);
-        self::assertCount(1, $migration->getUpgradeMigrations());
-        self::assertEmpty($migration->getDowngradeMigrations());
-        self::assertFileExists($migration->getFullPath($migration->getUpgradeMigrations()[0]));
+        return [
+            [new Schema()],
+        ];
     }
 
     /**
@@ -51,8 +63,26 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
      */
     private function getMigrationMock($class)
     {
-        /** @var FileBasedMigration $instance */
-        $instance = (new \ReflectionClass($class))->newInstanceWithoutConstructor();
-        return $instance;
+        return (new \ReflectionClass($class))->newInstanceWithoutConstructor();
+    }
+
+    /**
+     * @param FileBasedMigration $migration
+     * @param array $files
+     */
+    private function checkMigrations(FileBasedMigration $migration, array $files)
+    {
+        foreach ($files as $file) {
+            self::assertFileExists($migration->getFullPath($file));
+        }
+    }
+
+    /**
+     * @param FileBasedMigration $migration
+     */
+    private function checkQueries(FileBasedMigration $migration)
+    {
+        $queries = $migration->getQueries();
+        self::assertCount(1, $queries);
     }
 }
