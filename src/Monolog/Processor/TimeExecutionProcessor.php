@@ -10,6 +10,9 @@ class TimeExecutionProcessor
     /** @var float */
     private $started;
 
+    /**
+     * @api
+     */
     public function __construct()
     {
         $this->started = microtime(true);
