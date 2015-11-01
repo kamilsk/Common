@@ -11,26 +11,13 @@ use Doctrine\DBAL\Types\Type;
 abstract class IntegerMapType extends Type
 {
     /**
-     * @return string
+     * @return string[] where the key is what is stored in the database, and the value is a human readable description
+     * <pre>[int => string]</pre>
      */
-    public function getName()
-    {
-        return 'integer_map_type';
-    }
+    abstract public function getValues();
 
     /**
-     * @return array
-     */
-    public function getValues()
-    {
-        return [];
-    }
-
-    /**
-     * @param array $fieldDeclaration
-     * @param AbstractPlatform $platform
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
@@ -38,10 +25,7 @@ abstract class IntegerMapType extends Type
     }
 
     /**
-     * @param mixed $value
-     * @param AbstractPlatform $platform
-     *
-     * @return mixed
+     * {@inheritdoc}
      *
      * @throws \InvalidArgumentException
      */
