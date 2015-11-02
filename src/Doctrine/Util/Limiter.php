@@ -60,7 +60,7 @@ class Limiter
      */
     public function hasPortion()
     {
-        return $this->total ? $this->offset < $this->total : (bool) $this->limit;
+        return $this->total ? $this->offset < $this->total : (bool)$this->limit;
     }
 
     /**

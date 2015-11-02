@@ -1,7 +1,19 @@
 build:
+  environment:
+    php:
+      - 5.5.25
+      - 5.6.9
+      - hhvm
   tests:
     override:
       - command: phpunit --coverage-clover=code-coverage
         coverage:
           file: code-coverage
           format: php-clover
+checks:
+  php: true
+coding_style:
+  php: PSR2
+filter:
+  excluded_paths:
+    - src/Tests/*
