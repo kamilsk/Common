@@ -51,4 +51,13 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
         self::assertEquals(0, $limiter->getLimit());
         self::assertEquals(100, $limiter->getOffset());
     }
+
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     */
+    public function handleInvalidArgumentException()
+    {
+        new Limiter(100, -100);
+    }
 }

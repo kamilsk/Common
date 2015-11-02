@@ -58,7 +58,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     public function handleOverflowException(Json $json)
     {
         $value = '{"a":{"b":{"c":false}}}';
-        $json->decode($value, 0, 2);
+        $json->decode($value, false, 2);
     }
 
     /**
@@ -83,7 +83,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     public function jsonProvider()
     {
         return [
-            [new Json()],
+            [new Json(false, 0, 512)],
         ];
     }
 }
