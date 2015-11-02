@@ -7,27 +7,6 @@ namespace OctoLab\Common\Util;
  */
 class Json
 {
-    /** @var bool */
-    private $assoc;
-    /** @var int */
-    private $options;
-    /** @var int */
-    private $depth;
-
-    /**
-     * @param bool $assoc
-     * @param int $options
-     * @param int $depth
-     *
-     * @api
-     */
-    public function __construct($assoc = false, $options = 0, $depth = 512)
-    {
-        $this->assoc = $assoc;
-        $this->options = $options;
-        $this->depth = $depth;
-    }
-
     /**
      * @param mixed $value
      * @param int $options

@@ -83,7 +83,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     public function jsonProvider()
     {
         return [
-            [new Json(false, 0, 512)],
+            [new Json()],
         ];
     }
 }
