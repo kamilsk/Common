@@ -15,51 +15,95 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     * @dataProvider loggerProvider
+     *
+     * @param Logger $logger
      */
-    public function write()
+    public function writeToRemovedLogFile(Logger $logger)
     {
-        $logger = new Logger('test');
-        $logger->pushHandler(new StreamHandler($this->getStream()));
+        $stream = $this->getStream();
+        $logger->pushHandler(new StreamHandler($stream));
         $logger->info('Start logging.');
-        self::assertFileExists($this->getStream());
-        $this->rm($this->getStream());
+        self::assertFileExists($stream);
+        $this->rm($stream);
         $logger->info('End logging.');
-        self::assertFileNotExists($this->getStream());
+        self::assertFileNotExists($stream);
     }
 
     /**
      * @test
+     * @dataProvider loggerProvider
+     *
+     * @param Logger $logger
      */
-    public function writeInMovedFile()
+    public function writeToMovedLogFile(Logger $logger)
     {
-        $newLocation = $this->getBasePath() . '/moved.log';
-        $logger = new Logger('test');
-        $logger->pushHandler(new StreamHandler($this->getStream()));
+        $stream = $this->getStream();
+        $newStreamLocation = $this->getNewStreamLocation();
+        $logger->pushHandler(new StreamHandler($stream));
         $logger->info('Start logging.');
-        self::assertFileExists($this->getStream());
-        exec(sprintf('mv %s %s', escapeshellarg($this->getStream()), escapeshellarg($newLocation)));
-        self::assertFileNotExists($this->getStream());
-        $logger->info('Continue logging.');
-        $content = file_get_contents($newLocation);
+        self::assertFileExists($stream);
+        $this->mv($stream, $newStreamLocation);
+        self::assertFileNotExists($stream);
+        $logger->info('End logging.');
+        self::assertFileExists($newStreamLocation);
+        $content = file_get_contents($newStreamLocation);
         self::assertContains('Start logging.', $content);
-        self::assertContains('Continue logging.', $content);
-        $this->rm($newLocation);
+        self::assertContains('End logging.', $content);
+        $this->rm($newStreamLocation);
     }
 
     /**
      * @test
+     * @dataProvider loggerProvider
+     *
+     * @param Logger $logger
      */
-    public function bulletproofWrite()
+    public function bulletproofWriteToRemovedLogFile(Logger $logger)
     {
-        $logger = new Logger('test');
-        $logger->pushHandler(new BulletproofStreamHandler($this->getStream(), Logger::INFO, true, 0644));
+        $stream = $this->getStream();
+        $logger->pushHandler(new BulletproofStreamHandler($stream, Logger::INFO, true, 0644));
         $logger->info('Start logging.');
-        self::assertFileExists($this->getStream());
-        $this->rm($this->getStream());
+        self::assertFileExists($stream);
+        $this->rm($stream);
         $logger->info('End logging.');
-        self::assertFileExists($this->getStream());
-        self::assertContains('End logging.', file_get_contents($this->getStream()));
-        $this->rm($this->getStream());
+        self::assertFileExists($stream);
+        self::assertContains('End logging.', file_get_contents($stream));
+        $this->rm($stream);
+    }
+
+    /**
+     * @test
+     * @dataProvider loggerProvider
+     *
+     * @param Logger $logger
+     */
+    public function bulletproofWriteToMovedLogFile(Logger $logger)
+    {
+        $stream = $this->getStream();
+        $newStreamLocation = $this->getNewStreamLocation();
+        $logger->pushHandler(new BulletproofStreamHandler($stream, Logger::INFO, true, 0644));
+        $logger->info('Start logging.');
+        self::assertFileExists($stream);
+        $this->mv($stream, $newStreamLocation);
+        self::assertFileNotExists($stream);
+        $logger->info('End logging.');
+        self::assertFileExists($stream);
+        self::assertFileExists($newStreamLocation);
+        self::assertContains('Start logging.', file_get_contents($newStreamLocation));
+        self::assertContains('End logging.', file_get_contents($stream));
+        $this->rm($newStreamLocation);
+        $this->rm($stream);
+    }
+
+    /**
+     * @return array[]
+     */
+    public function loggerProvider()
+    {
+        return [
+            [new Logger('test')],
+        ];
     }
 
     /**
@@ -73,9 +117,17 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return string
      */
+    private function getNewStreamLocation()
+    {
+        return $this->getBasePath() . '/moved.log';
+    }
+
+    /**
+     * @return string
+     */
     private function getBasePath()
     {
-        return dirname(dirname(__DIR__)) . '/data';
+        return realpath(__DIR__ . '/Mock/logs');
     }
 
     /**
@@ -83,6 +135,15 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
      */
     private function rm($file)
     {
-        exec('rm ' . escapeshellarg($file));
+        shell_exec(sprintf('rm %s', escapeshellarg($file)));
+    }
+
+    /**
+     * @param string $file
+     * @param string $location
+     */
+    private function mv($file, $location)
+    {
+        shell_exec(sprintf('mv %s %s', escapeshellarg($file), escapeshellarg($location)));
     }
 }
