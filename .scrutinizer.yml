@@ -7,8 +7,10 @@ build:
         coverage:
           file: code-coverage
           format: php-clover
+
 checks:
   php: true
+
 filter:
   excluded_paths:
     - src/Tests/*
