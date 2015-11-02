@@ -10,7 +10,8 @@ build:
 checks:
   php: true
 coding_style:
-  php: PSR2
+  php:
+    - PSR2
 filter:
   excluded_paths:
     - src/Tests/*
