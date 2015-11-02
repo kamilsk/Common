@@ -13,6 +13,16 @@ class JsonTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     */
+    public function construct()
+    {
+        $json = new Json(true, JSON_UNESCAPED_UNICODE, 2);
+        $value = json_encode(['a' => 'b']);
+        self::assertNotEquals(json_decode($value), $json->decode($value));
+    }
+
+    /**
+     * @test
      * @dataProvider jsonProvider
      *
      * @param Json $json
