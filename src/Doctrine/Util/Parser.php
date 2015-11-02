@@ -16,9 +16,12 @@ class Parser
      */
     public function extractSql($text)
     {
-        $text = preg_replace('/\s*--.*$/um', '', $text);
-        $text = preg_replace('/\s*#.*$/um', '', $text);
-        $text = preg_replace('/\/\*(?:[^*]|\n)*\*\//uim', '', $text);
+        // remove comments
+        // inline
+        $text = preg_replace('/\s*(?:--|#).*$/um', '', $text);
+        // multi-line
+        $text = preg_replace('/\/\*[^*]*(\*)?[^*]*\*\//um', '', $text);
+        // flatten and filter
         $text = preg_replace('/\n/', ' ', $text);
         while (preg_match('/\s{2,}/', $text)) {
             $text = preg_replace('/\s{2,}/', ' ', $text);

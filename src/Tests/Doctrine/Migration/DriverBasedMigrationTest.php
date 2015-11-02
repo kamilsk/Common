@@ -18,7 +18,7 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @dataProvider migrationProvider
+     * @dataProvider migrationDataProvider
      *
      * @param DriverBasedMigration $migration
      * @param Schema $schema
@@ -35,7 +35,7 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider migrationProvider
+     * @dataProvider migrationDataProvider
      *
      * @param DriverBasedMigration $migration
      * @param Schema $schema
@@ -53,7 +53,7 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array[]
      */
-    public function migrationProvider()
+    public function migrationDataProvider()
     {
         static $reflection, $property;
         if (!$reflection) {

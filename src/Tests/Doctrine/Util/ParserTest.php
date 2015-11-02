@@ -13,10 +13,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @dataProvider extractSqlDataProvider
+     * @dataProvider sqlDataProvider
      *
      * @param string $text
-     * @param array $expected
+     * @param string[] $expected
      */
     public function extractSql($text, array $expected)
     {
@@ -25,39 +25,43 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
-    public function extractSqlDataProvider()
+    public function sqlDataProvider()
     {
         return [
             [
                 '-- комментарий
-                INSERT INTO `a` (`b`, `c`)
-                VALUES (1, 2);',
-                ['INSERT INTO `a` (`b`, `c`) VALUES (1, 2)']
+                INSERT INTO a (b, c)
+                VALUES (1, 2);
+                # комментарий',
+                ['INSERT INTO a (b, c) VALUES (1, 2)']
             ],
             [
-                '# комментарий
-                UPDATE
-                `a`,
-                (SELECT id FROM `b` WHERE `c`=1) `d`
-                SET
-                    `e`=1 # комментарий
-                WHERE
-                    `f`=2;
+                '/* комментарий */
                 /*
-                комментарий
-                */
+                 * комментарий
+                 */
                 UPDATE
-                `a`,
-                (SELECT id FROM `b` WHERE `c`=1) `d`
+                a,
+                (SELECT b FROM c WHERE d=1) e
                 SET
-                    `e`=1 -- комментарий
+                    f=1 # комментарий
                 WHERE
-                    `f`=2;',
+                    g=2;
+                /*
+                 комментарий
+                 */
+                UPDATE
+                h,
+                (SELECT i FROM j WHERE k=1) l
+                SET
+                    m=1 -- комментарий
+                WHERE
+                    n=2;',
                 [
-                    'UPDATE `a`, (SELECT id FROM `b` WHERE `c`=1) `d` SET `e`=1 WHERE `f`=2',
-                    'UPDATE `a`, (SELECT id FROM `b` WHERE `c`=1) `d` SET `e`=1 WHERE `f`=2',
+                    'UPDATE a, (SELECT b FROM c WHERE d=1) e SET f=1 WHERE g=2',
+                    'UPDATE h, (SELECT i FROM j WHERE k=1) l SET m=1 WHERE n=2',
                 ]
             ],
         ];
