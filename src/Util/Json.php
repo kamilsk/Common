@@ -7,10 +7,31 @@ namespace OctoLab\Common\Util;
  */
 class Json
 {
+    /** @var bool */
+    private $assoc;
+    /** @var int */
+    private $options;
+    /** @var int */
+    private $depth;
+
     /**
-     * @param mixed $value
+     * @param bool $assoc
      * @param int $options
      * @param int $depth
+     *
+     * @api
+     */
+    public function __construct($assoc = false, $options = 0, $depth = 512)
+    {
+        $this->assoc = $assoc;
+        $this->options = $options;
+        $this->depth = $depth;
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $options
+     * @param int|null $depth
      *
      * @return string
      *
@@ -28,8 +49,10 @@ class Json
      *
      * @api
      */
-    public function encode($value, $options = 0, $depth = 512)
+    public function encode($value, $options = null, $depth = null)
     {
+        $options = $options === null ? $this->options : $options;
+        $depth = $depth === null ? $this->depth : $depth;
         $json = json_encode($value, $options, $depth);
         $error = json_last_error();
         if ($error) {
@@ -40,9 +63,9 @@ class Json
 
     /**
      * @param string $json
-     * @param bool $assoc
-     * @param int $depth
-     * @param int $options
+     * @param bool|null $assoc
+     * @param int|null $depth
+     * @param int|null $options
      *
      * @return mixed
      *
@@ -60,8 +83,11 @@ class Json
      *
      * @api
      */
-    public function decode($json, $assoc = false, $depth = 512, $options = 0)
+    public function decode($json, $assoc = null, $depth = null, $options = null)
     {
+        $assoc = $assoc === null ? $this->assoc : $assoc;
+        $options = $options === null ? $this->options : $options;
+        $depth = $depth === null ? $this->depth : $depth;
         $result = json_decode($json, $assoc, $depth, $options);
         $error = json_last_error();
         if ($error) {
