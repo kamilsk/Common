@@ -56,7 +56,7 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException \InvalidArgumentException
      */
-    public function handleInvalidArgumentException()
+    public function throwInvalidArgumentException()
     {
         new Limiter(100, -100);
     }

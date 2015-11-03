@@ -52,7 +52,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      *
      * @param Json $json
      */
-    public function handleInvalidArgumentException(Json $json)
+    public function throwInvalidArgumentException(Json $json)
     {
         $value = "\xB1\x31";
         $json->encode($value);
@@ -65,7 +65,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      *
      * @param Json $json
      */
-    public function handleOverflowException(Json $json)
+    public function throwOverflowException(Json $json)
     {
         $value = '{"a":{"b":{"c":false}}}';
         $json->decode($value, false, 2);
@@ -78,7 +78,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      *
      * @param Json $json
      */
-    public function handleUnexpectedValueException(Json $json)
+    public function throwUnexpectedValueException(Json $json)
     {
         $reflection = new \ReflectionObject($json);
         $method = $reflection->getMethod('getException');
