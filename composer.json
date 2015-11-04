@@ -15,8 +15,8 @@
     "monolog/monolog": "~1.0"
   },
   "suggest": {
-    "doctrine/migrations": "optional for use OctoLab\\Common\\Doctrine\\Migration (~1.0 is recommended)",
-    "monolog/monolog": "optional for use OctoLab\\Common\\Monolog (~1.0 is recommended)"
+    "doctrine/migrations": "for use OctoLab\\Common\\Doctrine\\Migration (~1.0 is recommended)",
+    "monolog/monolog": "for use OctoLab\\Common\\Monolog (~1.0 is recommended)"
   },
   "autoload": {
     "psr-4": { "OctoLab\\Common\\": "src/" }
