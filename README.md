@@ -8,5 +8,17 @@
 [![LabsInsight code quality](https://insight.sensiolabs.com/projects/37088460-5995-43cd-9dcb-920ca502984d/mini.png)](https://insight.sensiolabs.com/projects/37088460-5995-43cd-9dcb-920ca502984d)
 
 [![Total downloads](https://poser.pugx.org/kamilsk/common/downloads.png)](https://packagist.org/packages/kamilsk/common)
+[![Monthly downloads](https://poser.pugx.org/kamilsk/common/d/monthly.png)](https://packagist.org/packages/kamilsk/common)
+[![Daily downloads](https://poser.pugx.org/kamilsk/common/d/daily.png)](https://packagist.org/packages/kamilsk/common)
+
+[![License](https://poser.pugx.org/kamilsk/common/license.png)](https://packagist.org/packages/kamilsk/common)
 [![Latest stable version](https://poser.pugx.org/kamilsk/common/v/stable.png)](https://packagist.org/packages/kamilsk/common)
 [![Total references](https://www.versioneye.com/php/kamilsk:common/reference_badge.svg)](https://www.versioneye.com/php/kamilsk:common/references)
+
+## Documentation
+
+### [Doctrine](docs/Doctrine.md)
+
+### [Monolog](docs/Monolog.md)
+
+### [Util](docs/Util.md)

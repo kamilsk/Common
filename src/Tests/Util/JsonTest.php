@@ -17,8 +17,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     public function construct()
     {
         $json = new Json(true, JSON_UNESCAPED_UNICODE, 2);
-        $value = json_encode(['a' => 'b']);
-        self::assertNotEquals(json_decode($value), $json->decode($value));
+        self::assertNotEquals(json_encode(['a' => 'б']), $json->encode(['a' => 'б']));
     }
 
     /**
@@ -29,8 +28,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      */
     public function encode(Json $json)
     {
-        $value = [];
-        self::assertJsonStringEqualsJsonString(json_encode($value), $json->encode($value));
+        self::assertJsonStringEqualsJsonString(json_encode([]), $json->encode([]));
     }
 
     /**
@@ -41,8 +39,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      */
     public function decode(Json $json)
     {
-        $value = json_encode([]);
-        self::assertEquals(json_decode($value), $json->decode($value));
+        self::assertEquals(json_decode(json_encode([])), $json->decode($json->encode([])));
     }
 
     /**
@@ -54,8 +51,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      */
     public function throwInvalidArgumentException(Json $json)
     {
-        $value = "\xB1\x31";
-        $json->encode($value);
+        $json->encode("\xB1\x31");
     }
 
     /**
@@ -67,8 +63,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      */
     public function throwOverflowException(Json $json)
     {
-        $value = '{"a":{"b":{"c":false}}}';
-        $json->decode($value, false, 2);
+        $json->decode($json->encode(['a' => ['b' => ['c' => false]]]), false, 2);
     }
 
     /**

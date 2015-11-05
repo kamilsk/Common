@@ -17,7 +17,7 @@ class TimeExecutionProcessorTest extends \PHPUnit_Framework_TestCase
     public function invoke()
     {
         $processor = new TimeExecutionProcessor();
-        $record = $processor(['extra' => []]);
+        $record = $processor([]);
         self::assertNotEmpty($record['extra']);
         self::assertArrayHasKey('time_execution', $record['extra']);
         self::assertRegExp('/\d+\.\d{3}/', $record['extra']['time_execution']);
