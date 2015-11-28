@@ -40,5 +40,5 @@ $ git remote add upstream git@github.com:kamilsk/Common.git
 ### Composer (for use in project)
 
 ```bash
-$ composer require kamilsk/cilex-service-providers:~1.0
+$ composer require kamilsk/common:*
 ```
