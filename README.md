@@ -24,3 +24,21 @@
 ### [Monolog](docs/Monolog.md)
 
 ### [Util](docs/Util.md)
+
+## Installation
+
+### Git (for participate in development)
+
+[Fork it before](https://github.com/kamilsk/Common/fork).
+
+```bash
+$ git clone git@github.com:<your github account>/Common.git
+$ cd Common && composer install
+$ git remote add upstream git@github.com:kamilsk/Common.git
+```
+
+### Composer (for use in project)
+
+```bash
+$ composer require kamilsk/cilex-service-providers:~1.0
+```
