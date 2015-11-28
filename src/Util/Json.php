@@ -89,8 +89,7 @@ class Json
         $options = $options === null ? $this->options : $options;
         $depth = $depth === null ? $this->depth : $depth;
         $result = json_decode($json, $assoc, $depth, $options);
-        $error = json_last_error();
-        if ($error) {
+        if (json_last_error()) {
             throw $this->getException();
         }
         return $result;

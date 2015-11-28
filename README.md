@@ -10,7 +10,6 @@
 [![Code coverage](https://scrutinizer-ci.com/g/kamilsk/Common/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/Common/?branch=master)
 [![Scrutinizer code quality](https://scrutinizer-ci.com/g/kamilsk/Common/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/Common/?branch=master)
 [![Code Climate code quality](https://codeclimate.com/github/kamilsk/Common/badges/gpa.svg)](https://codeclimate.com/github/kamilsk/Common)
-[![Code Climate issue count](https://codeclimate.com/github/kamilsk/Common/badges/issue_count.svg)](https://codeclimate.com/github/kamilsk/Common)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/37088460-5995-43cd-9dcb-920ca502984d/big.png)](https://insight.sensiolabs.com/projects/37088460-5995-43cd-9dcb-920ca502984d)
 
