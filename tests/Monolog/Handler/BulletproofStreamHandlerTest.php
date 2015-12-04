@@ -1,6 +1,6 @@
 <?php
 
-namespace OctoLab\Common\Tests\Monolog\Handler;
+namespace Test\OctoLab\Common\Monolog\Handler;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;

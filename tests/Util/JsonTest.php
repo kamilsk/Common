@@ -1,6 +1,6 @@
 <?php
 
-namespace OctoLab\Common\Tests\Util;
+namespace Test\OctoLab\Common\Util;
 
 use OctoLab\Common\Util\Json;
 

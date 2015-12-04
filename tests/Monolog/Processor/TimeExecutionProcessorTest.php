@@ -1,6 +1,6 @@
 <?php
 
-namespace OctoLab\Common\Tests\Monolog\Processor;
+namespace Test\OctoLab\Common\Monolog\Processor;
 
 use OctoLab\Common\Monolog\Processor\TimeExecutionProcessor;
 

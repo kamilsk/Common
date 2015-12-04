@@ -1,6 +1,6 @@
 <?php
 
-namespace OctoLab\Common\Tests\Helper;
+namespace Test\OctoLab\Common\Helper;
 
 use OctoLab\Common\Doctrine\Util\Limiter;
 

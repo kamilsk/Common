@@ -20,5 +20,8 @@
   },
   "autoload": {
     "psr-4": { "OctoLab\\Common\\": "src/" }
+  },
+  "autoload-dev": {
+    "psr-4": { "Test\\OctoLab\\Common\\": "tests/" }
   }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace OctoLab\Common\Tests\Doctrine\Migration;
+namespace Test\OctoLab\Common\Doctrine\Migration;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;

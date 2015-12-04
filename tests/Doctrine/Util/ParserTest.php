@@ -1,6 +1,6 @@
 <?php
 
-namespace OctoLab\Common\Tests\Doctrine\Util;
+namespace Test\OctoLab\Common\Doctrine\Util;
 
 use OctoLab\Common\Doctrine\Util\Parser;
 
