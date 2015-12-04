@@ -50,8 +50,8 @@ $ composer require kamilsk/common:*
 [![Monthly downloads](https://poser.pugx.org/kamilsk/common/d/monthly.png)](https://packagist.org/packages/kamilsk/common)
 [![Daily downloads](https://poser.pugx.org/kamilsk/common/d/daily.png)](https://packagist.org/packages/kamilsk/common)
 
-[![Pull requests](http://issuestats.com/github/kamilsk/Common/badge/pr)](http://issuestats.com/github/kamilsk/Common)
-[![Issues](http://issuestats.com/github/kamilsk/Common/badge/issue)](http://issuestats.com/github/kamilsk/Common)
+[![Pull requests](http://issuestats.com/github/kamilsk/Common/badge/pr?style=flat)](http://issuestats.com/github/kamilsk/Common)
+[![Issues](http://issuestats.com/github/kamilsk/Common/badge/issue?style=flat)](http://issuestats.com/github/kamilsk/Common)
 
 [![Total references](https://www.versioneye.com/php/kamilsk:common/reference_badge.svg)](https://www.versioneye.com/php/kamilsk:common/references)
 
