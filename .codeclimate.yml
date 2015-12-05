@@ -9,4 +9,4 @@ ratings:
   paths:
   - "**.php"
 exclude_paths:
-  - src/Tests/*
+  - tests/*
