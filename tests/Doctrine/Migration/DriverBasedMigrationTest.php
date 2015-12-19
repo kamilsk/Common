@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
 use OctoLab\Common\Doctrine\Migration\DriverBasedMigration;
 
 /**
- * phpunit src/Tests/Doctrine/Migration/DriverBasedMigrationTest.php
+ * phpunit tests/Doctrine/Migration/DriverBasedMigrationTest.php
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */

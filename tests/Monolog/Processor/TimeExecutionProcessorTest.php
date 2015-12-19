@@ -5,7 +5,7 @@ namespace Test\OctoLab\Common\Monolog\Processor;
 use OctoLab\Common\Monolog\Processor\TimeExecutionProcessor;
 
 /**
- * phpunit src/Tests/Monolog/Processor/TimeExecutionProcessorTest.php
+ * phpunit tests/Monolog/Processor/TimeExecutionProcessorTest.php
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */

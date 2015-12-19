@@ -5,7 +5,7 @@ namespace Test\OctoLab\Common\Util;
 use OctoLab\Common\Util\Json;
 
 /**
- * phpunit src/Tests/Util/JsonTest.php
+ * phpunit tests/Util/JsonTest.php
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */

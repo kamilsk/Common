@@ -7,7 +7,7 @@ use Monolog\Logger;
 use OctoLab\Common\Monolog\Handler\BulletproofStreamHandler;
 
 /**
- * phpunit src/Tests/Monolog/Handler/BulletproofStreamHandlerTest.php
+ * phpunit tests/Monolog/Handler/BulletproofStreamHandlerTest.php
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */

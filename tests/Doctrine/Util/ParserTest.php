@@ -5,7 +5,7 @@ namespace Test\OctoLab\Common\Doctrine\Util;
 use OctoLab\Common\Doctrine\Util\Parser;
 
 /**
- * phpunit src/Tests/Doctrine/Util/ParserTest.php
+ * phpunit tests/Doctrine/Util/ParserTest.php
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */

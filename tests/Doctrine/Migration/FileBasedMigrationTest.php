@@ -6,7 +6,7 @@ use Doctrine\DBAL\Schema\Schema;
 use OctoLab\Common\Doctrine\Migration\FileBasedMigration;
 
 /**
- * phpunit src/Tests/Doctrine/Migration/FileBasedMigrationTest.php
+ * phpunit tests/Doctrine/Migration/FileBasedMigrationTest.php
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */

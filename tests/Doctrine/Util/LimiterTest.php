@@ -5,7 +5,7 @@ namespace Test\OctoLab\Common\Helper;
 use OctoLab\Common\Doctrine\Util\Limiter;
 
 /**
- * phpunit src/Tests/Doctrine/Util/LimiterTest.php
+ * phpunit tests/Doctrine/Util/LimiterTest.php
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
