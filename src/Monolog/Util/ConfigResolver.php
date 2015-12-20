@@ -171,7 +171,9 @@ class ConfigResolver
      */
     private function resolveArguments(array $arguments, \ReflectionClass $reflection)
     {
-        if (version_compare(PHP_VERSION, '7.0', '>=')) {
+        if (defined('HHVM_VERSION')
+            || (defined('PHP_VERSION') && version_compare(PHP_VERSION, '7.0', '>='))
+        ) {
             $key = array_keys($arguments)[0];
         } else {
             $key = key($arguments);
