@@ -13,6 +13,7 @@
   "require-dev": {
     "doctrine/migrations": "~1.0",
     "monolog/monolog": "~1.0",
+    "pimple/pimple": "~1.0",
     "secondparty/dipper": "*",
     "symfony/config": "^2.0",
     "symfony/yaml": "^2.0"
@@ -21,6 +22,7 @@
     "doctrine/migrations": "for use OctoLab\\Common\\Doctrine\\Migration (~1.0 is recommended)",
     "incenteev/composer-parameter-handler": "to handle parameters.yml (~2.0 is recommended)",
     "monolog/monolog": "for use OctoLab\\Common\\Monolog (~1.0 is recommended)",
+    "pimple/pimple": "for use OctoLab\\Common\\Monolog\\Util\\ConfigResolver (~1.0 is recommended)",
     "secondparty/dipper": "as alternative of Symfony Yaml parser (stable version is recommended)",
     "symfony/config": "for use OctoLab\\Common\\Config (^2.0 is recommended)",
     "symfony/yaml": "for use OctoLab\\Common\\Config (^2.0 is recommended)"
