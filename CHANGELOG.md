@@ -1,2 +1,2 @@
-CHANGELOG versions 1.x
-======================
+CHANGELOG for 1.x
+=================
