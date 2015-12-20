@@ -143,7 +143,7 @@ class ConfigResolver
     private function getArguments(\ReflectionClass $reflection, array $config)
     {
         $arguments = [];
-        if (isset($config['arguments'])) {
+        if (!empty($config['arguments'])) {
             $arguments = $this->resolveArguments($config['arguments'], $reflection);
         }
         return $arguments;
@@ -171,7 +171,12 @@ class ConfigResolver
      */
     private function resolveArguments(array $arguments, \ReflectionClass $reflection)
     {
-        if (is_int(key($arguments))) {
+        if (version_compare(PHP_VERSION, '7.0', '>=')) {
+            $key = array_keys($arguments)[0];
+        } else {
+            $key = key($arguments);
+        }
+        if (is_int($key)) {
             return $arguments;
         } else {
             $params = [];
