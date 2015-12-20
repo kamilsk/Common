@@ -21,6 +21,9 @@ class ConfigResolver
         if (!empty($config['types'])) {
             $types = Type::getTypesMap();
             foreach ($config['types'] as $name => $class) {
+                if (Type::hasType($name)) {
+                    continue;
+                }
                 Type::addType($name, Type::hasType($class) ? $types[$class] : $class);
             }
         }
