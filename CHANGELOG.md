@@ -1,6 +1,10 @@
 CHANGELOG for 1.x
 =================
 
+* 1.1 (2016-01-xx)
+
+  * [git diff](https://github.com/kamilsk/Common/compare/1.0.2...master)
+
 * 1.0 (2015-12-20)
 
   * First stable release
