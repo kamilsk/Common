@@ -17,7 +17,7 @@ abstract class IntegerMapType extends Type
     abstract public function getValues();
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
@@ -25,7 +25,7 @@ abstract class IntegerMapType extends Type
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      *
      * @throws \InvalidArgumentException
      */

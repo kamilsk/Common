@@ -5,7 +5,7 @@ namespace OctoLab\Common\Config;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class SimpleConfig
+class SimpleConfig implements \ArrayAccess, \Iterator
 {
     /** @var array */
     protected $config;
@@ -56,6 +56,101 @@ class SimpleConfig
     }
 
     /**
+     * @inheritDoc
+     *
+     * @api
+     */
+    public function offsetExists($offset)
+    {
+        return $this->resolvePath($offset);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @api
+     */
+    public function offsetGet($offset)
+    {
+        return $this->resolvePath($offset, true);
+    }
+
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     *
+     * @throws \BadMethodCallException
+     *
+     * @api
+     */
+    public function offsetSet($offset, $value)
+    {
+        throw new \BadMethodCallException('Configuration is read-only.');
+    }
+
+    /**
+     * @param mixed $offset
+     *
+     * @throws \BadMethodCallException
+     *
+     * @api
+     */
+    public function offsetUnset($offset)
+    {
+        throw new \BadMethodCallException('Configuration is read-only.');
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @api
+     */
+    public function current()
+    {
+        return current($this->config);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @api
+     */
+    public function next()
+    {
+        next($this->config);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @api
+     */
+    public function key()
+    {
+        return key($this->config);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @api
+     */
+    public function valid()
+    {
+        return empty($this->config) || key($this->config) !== null;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @api
+     */
+    public function rewind()
+    {
+        reset($this->config);
+    }
+
+    /**
      * @param array $base
      *
      * @return array
@@ -101,5 +196,31 @@ class SimpleConfig
                 $param = preg_replace($pattern, $replacement, (string) $param);
             }
         });
+    }
+
+    /**
+     * @param string $path
+     * @param bool $return
+     *
+     * @return bool|null|mixed
+     */
+    private function resolvePath($path, $return = false)
+    {
+        if (mb_strpos($path, ':')) {
+            $chain = explode(':', $path);
+            $scope = $this->config;
+            foreach ($chain as $i => $key) {
+                if (!is_array($scope) || !array_key_exists($key, $scope)) {
+                    return $return ? null : false;
+                }
+                $scope = $scope[$key];
+            }
+            return $return ? $scope : true;
+        }
+        $exists = array_key_exists($path, $this->config);
+        if ($return) {
+            return $exists ? $this->config[$path] : null;
+        }
+        return $exists;
     }
 }
