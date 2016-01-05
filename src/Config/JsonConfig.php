@@ -5,17 +5,17 @@ namespace OctoLab\Common\Config;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class YamlConfig extends SimpleConfig
+class JsonConfig extends SimpleConfig
 {
-    /** @var Loader\YamlFileLoader */
+    /** @var Loader\JsonFileLoader */
     private $fileLoader;
 
     /**
-     * @param Loader\YamlFileLoader $fileLoader
+     * @param Loader\JsonFileLoader $fileLoader
      *
      * @api
      */
-    public function __construct(Loader\YamlFileLoader $fileLoader)
+    public function __construct(Loader\JsonFileLoader $fileLoader)
     {
         parent::__construct();
         $this->fileLoader = $fileLoader;
