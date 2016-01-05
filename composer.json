@@ -5,7 +5,7 @@
   "homepage": "https://github.com/kamilsk/Common",
   "license": "MIT",
   "authors": [
-    { "name": "Kamil Samigullin", "email": "kamil@samigullin.info" }
+    { "name": "Kamil Samigullin", "email": "kamil@samigullin.info", "role": "Developer" }
   ],
   "require": {
     "php": ">=5.5"
@@ -32,5 +32,10 @@
   },
   "autoload-dev": {
     "psr-4": { "Test\\OctoLab\\Common\\": "tests/" }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.1-dev"
+    }
   }
 }
