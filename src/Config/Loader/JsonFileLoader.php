@@ -2,32 +2,33 @@
 
 namespace OctoLab\Common\Config\Loader;
 
-use OctoLab\Common\Config\Parser\ParserInterface;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Config\Loader\FileLoader;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
- *
- * @see \Symfony\Component\DependencyInjection\Loader\YamlFileLoader
  */
-class YamlFileLoader extends FileLoader
+class JsonFileLoader extends FileLoader
 {
     /** @var array */
     private $content = [];
-    /** @var ParserInterface */
-    private $parser;
+    /** @var int */
+    private $depth;
+    /** @var int */
+    private $options;
 
     /**
      * @param FileLocatorInterface $locator
-     * @param ParserInterface $parser
+     * @param int $depth
+     * @param int $options
      *
      * @api
      */
-    public function __construct(FileLocatorInterface $locator, ParserInterface $parser)
+    public function __construct(FileLocatorInterface $locator, $depth = 512, $options = 0)
     {
         parent::__construct($locator);
-        $this->parser = $parser;
+        $this->depth = $depth;
+        $this->options = $options;
     }
 
     /**
@@ -70,7 +71,7 @@ class YamlFileLoader extends FileLoader
      */
     public function supports($resource, $type = null)
     {
-        return is_string($resource) && !strcasecmp('yml', pathinfo($resource, PATHINFO_EXTENSION));
+        return is_string($resource) && !strcasecmp('json', pathinfo($resource, PATHINFO_EXTENSION));
     }
 
     /**
@@ -80,7 +81,7 @@ class YamlFileLoader extends FileLoader
      */
     private function loadFile($file)
     {
-        return $this->parser->parse(file_get_contents($file));
+        return json_decode(file_get_contents($file), true, $this->depth, $this->options);
     }
 
     /**

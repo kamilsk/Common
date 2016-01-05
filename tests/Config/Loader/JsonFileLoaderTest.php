@@ -2,18 +2,16 @@
 
 namespace Test\OctoLab\Common\Config;
 
-use OctoLab\Common\Config\Loader\YamlFileLoader;
-use OctoLab\Common\Config\Parser\DipperYamlParser;
-use OctoLab\Common\Config\Parser\SymfonyYamlParser;
+use OctoLab\Common\Config\Loader\JsonFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Test\OctoLab\Common\TestCase;
 
 /**
- * phpunit tests/Config/Loader/YamlFileLoaderTest.php
+ * phpunit tests/Config/Loader/JsonFileLoaderTest.php
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class YamlFileLoaderTest extends TestCase
+class JsonFileLoaderTest extends TestCase
 {
     /**
      * @return array[]
@@ -21,8 +19,7 @@ class YamlFileLoaderTest extends TestCase
     public function loaderProvider()
     {
         return [
-            [new YamlFileLoader(new FileLocator(), new SymfonyYamlParser())],
-            [new YamlFileLoader(new FileLocator(), new DipperYamlParser())],
+            [new JsonFileLoader(new FileLocator(), 512, 0)],
         ];
     }
 
@@ -30,9 +27,9 @@ class YamlFileLoaderTest extends TestCase
      * @test
      * @dataProvider loaderProvider
      *
-     * @param YamlFileLoader $loader
+     * @param JsonFileLoader $loader
      */
-    public function getContent(YamlFileLoader $loader)
+    public function getContent(JsonFileLoader $loader)
     {
         self::assertTrue(is_array($loader->getContent()));
     }
@@ -41,19 +38,19 @@ class YamlFileLoaderTest extends TestCase
      * @test
      * @dataProvider loaderProvider
      *
-     * @param YamlFileLoader $loader
+     * @param JsonFileLoader $loader
      */
-    public function load(YamlFileLoader $loader)
+    public function load(JsonFileLoader $loader)
     {
-        $loader->load($this->getConfigPath());
+        $loader->load($this->getConfigPath('config', 'json'));
         $expected = [
             [
                 'imports' => [
                     [
-                        'resource' => 'parameters.yml',
+                        'resource' => 'parameters.json',
                     ],
                     [
-                        'resource' => 'component/config.yml',
+                        'resource' => 'component/config.json',
                     ],
                 ],
                 'component' => [
@@ -70,7 +67,7 @@ class YamlFileLoaderTest extends TestCase
             [
                 'imports' => [
                     [
-                        'resource' => 'base.yml',
+                        'resource' => 'base.json',
                     ],
                 ],
                 'component' => [
@@ -91,11 +88,11 @@ class YamlFileLoaderTest extends TestCase
      * @test
      * @dataProvider loaderProvider
      *
-     * @param YamlFileLoader $loader
+     * @param JsonFileLoader $loader
      */
-    public function supports(YamlFileLoader $loader)
+    public function supports(JsonFileLoader $loader)
     {
-        self::assertTrue($loader->supports('/some/path/to/supported.yml'));
-        self::assertFalse($loader->supports('/some/path/to/unsupported.json'));
+        self::assertTrue($loader->supports('/some/path/to/supported.json'));
+        self::assertFalse($loader->supports('/some/path/to/unsupported.yml'));
     }
 }
