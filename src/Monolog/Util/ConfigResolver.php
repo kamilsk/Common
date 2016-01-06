@@ -303,6 +303,32 @@ class ConfigResolver
      */
     private function resolveClass($type, $component, $namespace)
     {
+        static $exceptions = [
+            'Formatter' => [
+                'Monolog\Formatter' => [
+                    'chrome_php' => 'Monolog\Formatter\ChromePHPFormatter',
+                    'mongo_db' => 'Monolog\Formatter\MongoDBFormatter',
+                    'mongodb' => 'Monolog\Formatter\MongoDBFormatter',
+                ],
+            ],
+            'Handler' => [
+                'Monolog\Handler' => [
+                    'chrome_php' => 'Monolog\Handler\ChromePHPHandler',
+                    'couch_db' => 'Monolog\Handler\CouchDBHandler',
+                    'couchdb' => 'Monolog\Handler\CouchDBHandler',
+                    'doctrine_couch_db' => 'Monolog\Handler\DoctrineCouchDBHandler',
+                    'doctrine_couchdb' => 'Monolog\Handler\DoctrineCouchDBHandler',
+                    'fire_php' => 'Monolog\Handler\FirePHPHandler',
+                    'ifttt' => 'Monolog\Handler\IFTTTHandler',
+                    'mongo_db' => 'Monolog\Handler\MongoDBHandler',
+                    'mongodb' => 'Monolog\Handler\MongoDBHandler',
+                    'php_console' => 'Monolog\Handler\PHPConsoleHandler',
+                ],
+            ],
+        ];
+        if (isset($exceptions[$component][$namespace][$type])) {
+            return $exceptions[$component][$namespace][$type];
+        }
         $class = implode('', explode(' ', ucwords(str_replace('_', ' ', $type))));
         return $namespace . '\\' . $class . $component;
     }
