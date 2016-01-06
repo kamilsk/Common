@@ -4,61 +4,128 @@ namespace OctoLab\Common\Monolog\Util;
 
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\HandlerInterface;
+use Monolog\Logger;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class ConfigResolver
 {
-    /** @var \Pimple */
-    private $handlers;
-    /** @var \SplObjectStorage */
-    private $processors;
+    /** @var Logger[] */
+    private $channels = [];
+    /** @var HandlerInterface[] */
+    private $handlers = [];
+    /** @var callable[] */
+    private $processors = [];
+    /** @var FormatterInterface[] */
+    private $formatters = [];
+    /** @var array[] */
+    private $unnamed;
+    /** @var string */
+    private $defaultChannel = 'default';
 
     /**
-     * @return \Pimple
+     * @return Logger[]
+     *
+     * @api
+     */
+    public function getChannels()
+    {
+        return $this->channels;
+    }
+
+    /**
+     * @return Logger|false
+     *
+     * @api
+     */
+    public function getDefaultChannel()
+    {
+        return isset($this->channels[$this->defaultChannel])
+            ? $this->channels[$this->defaultChannel]
+            : current($this->channels);
+    }
+
+    /**
+     * @return HandlerInterface[]
      *
      * @api
      */
     public function getHandlers()
     {
-        if (null === $this->handlers) {
-            $this->handlers = new \Pimple();
-        }
         return $this->handlers;
     }
 
     /**
-     * @return \SplObjectStorage
+     * @return callable[]
      *
      * @api
      */
     public function getProcessors()
     {
-        if (null === $this->processors) {
-            $this->processors = new \SplObjectStorage();
-        }
         return $this->processors;
+    }
+
+    /**
+     * @return FormatterInterface[]
+     *
+     * @api
+     */
+    public function getFormatters()
+    {
+        return $this->formatters;
     }
 
     /**
      * @param array $config
      * <pre>[..., 'handlers' => [...], 'processors' => [...]]</pre>
+     * <pre>['channels' => [...], 'handlers' => [...], 'processors' => [...], 'formatters' => [...]]</pre>
+     * @param string $defaultName Is default logger name
      *
      * @return $this
      *
      * @throws \InvalidArgumentException
+     * @throws \DomainException
      *
      * @api
      */
-    public function resolve(array $config)
+    public function resolve(array $config, $defaultName = 'app')
     {
-        if (isset($config['handlers'])) {
-            $this->resolveHandlers($config['handlers']);
+        $this->unnamed = [
+            'handlers' => [],
+            'processors' => [],
+            'formatters' => [],
+        ];
+        $this->channels = [];
+        $this->handlers = [];
+        $this->processors = [];
+        $this->formatters = [];
+        if (isset($config['formatters']) && is_array($config['formatters'])) {
+            $this->resolveFormatters($config['formatters']);
         }
-        if (isset($config['processors'])) {
+        if (isset($config['processors']) && is_array($config['processors'])) {
             $this->resolveProcessors($config['processors']);
         }
+        if (isset($config['handlers']) && is_array($config['handlers'])) {
+            $this->resolveHandlers($config['handlers']);
+        }
+        if (isset($config['channels']) && is_array($config['channels'])) {
+            if (!empty($config['default_channel'])) {
+                $this->defaultChannel = $config['default_channel'];
+            }
+            $this->resolveChannels($config['channels']);
+        } else {
+            $name = isset($config['name']) ? $config['name'] : $defaultName;
+            $this->resolveChannels([$this->defaultChannel => ['name' => $name]]);
+            $channel = $this->getDefaultChannel();
+            foreach ($this->handlers + $this->unnamed['handlers'] as $handler) {
+                $channel->pushHandler($handler);
+            }
+            foreach ($this->processors + $this->unnamed['processors'] as $processor) {
+                $channel->pushProcessor($processor);
+            }
+        }
+        $this->unnamed = null;
         return $this;
     }
 
@@ -67,18 +134,16 @@ class ConfigResolver
      *
      * @throws \InvalidArgumentException
      */
-    private function resolveHandlers(array $config)
+    private function resolveFormatters(array $config)
     {
-        foreach ($config as $key => $handler) {
-            $class = $this->getClass('Handler', 'Monolog\Handler', $handler);
-            $reflection = new \ReflectionClass($class);
-            $arguments = $this->getArguments($reflection, $handler);
-            /** @var HandlerInterface $instance */
-            $instance = $reflection->newInstanceArgs($arguments);
-            if (isset($handler['formatter'])) {
-                $this->resolveFormatter($handler['formatter'], $instance);
+        foreach ($config as $key => $component) {
+            $id = isset($component['id']) ? $component['id'] : $key;
+            $formatter = $this->resolveFormatter($component);
+            if (is_string($id)) {
+                $this->formatters[$id] = $formatter;
+            } else {
+                $this->unnamed['formatters'][] = $formatter;
             }
-            $this->getHandlers()->offsetSet($key, $instance);
         }
     }
 
@@ -89,47 +154,127 @@ class ConfigResolver
      */
     private function resolveProcessors(array $config)
     {
-        foreach ($config as $processor) {
-            $class = $this->getClass('Processor', 'Monolog\Processor', $processor);
-            $reflection = new \ReflectionClass($class);
-            $arguments = $this->getArguments($reflection, $processor);
-            $this->getProcessors()->attach($reflection->newInstanceArgs($arguments));
+        foreach ($config as $key => $component) {
+            $id = isset($component['id']) ? $component['id'] : $key;
+            $processor = $this->resolveProcessor($component);
+            if (is_string($id)) {
+                $this->processors[$id] = $processor;
+            } else {
+                $this->unnamed['processors'][] = $processor;
+            }
+        }
+    }
+
+    /**
+     * @param array $config
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function resolveHandlers(array $config)
+    {
+        foreach ($config as $key => $component) {
+            $id = isset($component['id']) ? $component['id'] : $key;
+            $handler = $this->resolveHandler($component);
+            if (is_string($id)) {
+                $this->handlers[$id] = $handler;
+            } else {
+                $this->unnamed['handlers'][] = $handler;
+            }
+            if (isset($component['formatter']) && is_array($component['formatter'])) {
+                $formatter = $this->resolveFormatter($component['formatter']);
+                $handler->setFormatter($formatter);
+                $this->unnamed['formatters'][] = $formatter;
+            }
+        }
+    }
+
+    /**
+     * @param array $config
+     *
+     * @throws \InvalidArgumentException
+     * @throws \DomainException
+     */
+    private function resolveChannels(array $config)
+    {
+        foreach ($config as $key => $component) {
+            $id = isset($component['id']) ? $component['id'] : $key;
+            if (is_string($id)) {
+                $channel = new Logger(isset($component['name']) ? $component['name'] : $id);
+                $this->channels[$id] = $channel;
+                if (isset($component['handlers']) && is_array($component['handlers'])) {
+                    $this->pushHandlers($channel, $component['handlers']);
+                }
+                if (isset($component['processors']) && is_array($component['processors'])) {
+                    $this->pushProcessors($channel, $component['processors']);
+                }
+            } else {
+                throw new \InvalidArgumentException('A channel must have an identifier.');
+            }
         }
     }
 
     /**
      * @param array $formatter
-     * @param HandlerInterface $handler
+     *
+     * @return FormatterInterface
      *
      * @throws \InvalidArgumentException
      */
-    private function resolveFormatter(array $formatter, HandlerInterface $handler)
+    private function resolveFormatter(array $formatter)
     {
-        $class = $this->getClass('Formatter', 'Monolog\Formatter', $formatter);
+        $class = $this->getClass($formatter, 'Formatter', 'Monolog\Formatter');
         $reflection = new \ReflectionClass($class);
-        $arguments = $this->getArguments($reflection, $formatter);
-        /** @var FormatterInterface $instance */
-        $instance = $reflection->newInstanceArgs($arguments);
-        $handler->setFormatter($instance);
+        $arguments = $this->getConstructorArguments($reflection, $formatter);
+        return $reflection->newInstanceArgs($arguments);
     }
 
     /**
+     * @param array $processor
+     *
+     * @return callable
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function resolveProcessor(array $processor)
+    {
+        $class = $this->getClass($processor, 'Processor', 'Monolog\Processor');
+        $reflection = new \ReflectionClass($class);
+        $arguments = $this->getConstructorArguments($reflection, $processor);
+        return $reflection->newInstanceArgs($arguments);
+    }
+
+    /**
+     * @param array $handler
+     *
+     * @return HandlerInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function resolveHandler(array $handler)
+    {
+        $class = $this->getClass($handler, 'Handler', 'Monolog\Handler');
+        $reflection = new \ReflectionClass($class);
+        $arguments = $this->getConstructorArguments($reflection, $handler);
+        return $reflection->newInstanceArgs($arguments);
+    }
+
+    /**
+     * @param array $config
      * @param string $component
      * @param string $namespace
-     * @param array $config
      *
      * @return string
      *
      * @throws \InvalidArgumentException
      */
-    private function getClass($component, $namespace, array $config)
+    private function getClass(array $config, $component, $namespace)
     {
         if (isset($config['type'])) {
-            $class = $this->resolveClass($config['type'], $namespace, $component);
+            $class = $this->resolveClass($config['type'], $component, $namespace);
         } elseif (isset($config['class'])) {
             $class = $config['class'];
         } else {
-            throw new \InvalidArgumentException(sprintf('%s\'s config requires either the type or class.', $component));
+            throw new \InvalidArgumentException(sprintf('%s\'s config requires either a type or class.', $component));
         }
         return $class;
     }
@@ -140,36 +285,35 @@ class ConfigResolver
      *
      * @return array
      */
-    private function getArguments(\ReflectionClass $reflection, array $config)
+    private function getConstructorArguments(\ReflectionClass $reflection, array $config)
     {
         $arguments = [];
-        if (!empty($config['arguments'])) {
-            $arguments = $this->resolveArguments($config['arguments'], $reflection);
+        if (isset($config['arguments']) && is_array($config['arguments'])) {
+            $arguments = $this->resolveConstructorArguments($reflection, $config['arguments']);
         }
         return $arguments;
     }
 
     /**
      * @param string $type
-     * @param string $ns
-     * @param string $postfix
+     * @param string $component
+     * @param string $namespace
      *
      * @return string
      */
-    private function resolveClass($type, $ns, $postfix = null)
+    private function resolveClass($type, $component, $namespace)
     {
-        $parts = explode(' ', ucwords(str_replace('_', ' ', $type)));
-        $class = implode('', $parts);
-        return $ns . '\\' . $class . $postfix;
+        $class = implode('', explode(' ', ucwords(str_replace('_', ' ', $type))));
+        return $namespace . '\\' . $class . $component;
     }
 
     /**
-     * @param array $arguments
      * @param \ReflectionClass $reflection
+     * @param array $arguments
      *
      * @return array
      */
-    private function resolveArguments(array $arguments, \ReflectionClass $reflection)
+    private function resolveConstructorArguments(\ReflectionClass $reflection, array $arguments)
     {
         if (defined('HHVM_VERSION') || (defined('PHP_VERSION') && version_compare(PHP_VERSION, '7.0', '>='))) {
             $key = array_keys($arguments)[0];
@@ -189,5 +333,108 @@ class ConfigResolver
             }
             return array_merge($params, array_intersect_key($arguments, $params));
         }
+    }
+
+    /**
+     * @param Logger $logger
+     * @param array $handlers
+     *
+     * @throws \DomainException
+     * @throws \InvalidArgumentException
+     */
+    private function pushHandlers(Logger $logger, array $handlers)
+    {
+        foreach ($handlers as $component) {
+            if (is_string($component)) {
+                if (isset($this->handlers[$component])) {
+                    $handler = $this->handlers[$component];
+                } else {
+                    throw new \DomainException(sprintf('Handler with ID "%s" not found.', $component));
+                }
+            } elseif (is_array($component)) {
+                if (isset($component['id'])) {
+                    if (isset($this->handlers[$component['id']])) {
+                        $handler = $this->handlers[$component['id']];
+                    } else {
+                        throw new \DomainException(sprintf('Handler with ID "%s" not found.', $component['id']));
+                    }
+                } else {
+                    $handler = $this->resolveHandler($component);
+                }
+            } else {
+                throw new \InvalidArgumentException('Handler configuration must be an array or a string (ID).');
+            }
+            if (isset($component['formatter'])) {
+                $this->setFormatter($handler, $component['formatter']);
+            }
+            if (isset($component['processors']) && is_array($component['processors'])) {
+                $this->pushProcessors($handler, $component['processors']);
+            }
+            $logger->pushHandler($handler);
+        }
+    }
+
+    /**
+     * @param Logger|HandlerInterface $target
+     * @param array $processors
+     *
+     * @throws \DomainException
+     * @throws \InvalidArgumentException
+     */
+    private function pushProcessors($target, array $processors)
+    {
+        foreach ($processors as $component) {
+            if (is_string($component)) {
+                if (isset($this->processors[$component])) {
+                    $processor = $this->processors[$component];
+                } else {
+                    throw new \DomainException(sprintf('Processor with ID "%s" not found.', $component));
+                }
+            } elseif (is_array($component)) {
+                if (isset($component['id'])) {
+                    if (isset($this->processors[$component['id']])) {
+                        $processor = $this->processors[$component['id']];
+                    } else {
+                        throw new \DomainException(sprintf('Processor with ID "%s" not found.', $component['id']));
+                    }
+                } else {
+                    $processor = $this->resolveProcessor($component);
+                }
+            } else {
+                throw new \InvalidArgumentException('Processor configuration must be an array or a string (ID).');
+            }
+            $target->pushProcessor($processor);
+        }
+    }
+
+    /**
+     * @param HandlerInterface $handler
+     * @param array|string $component
+     *
+     * @throws \DomainException
+     * @throws \InvalidArgumentException
+     */
+    private function setFormatter(HandlerInterface $handler, $component)
+    {
+        if (is_string($component)) {
+            if (isset($this->formatters[$component])) {
+                $formatter = $this->formatters[$component];
+            } else {
+                throw new \DomainException(sprintf('Formatter with ID "%s" not found.', $component));
+            }
+        } elseif (is_array($component)) {
+            if (isset($component['id'])) {
+                if (isset($this->formatters[$component['id']])) {
+                    $formatter = $this->formatters[$component['id']];
+                } else {
+                    throw new \DomainException(sprintf('Formatter with ID "%s" not found.', $component['id']));
+                }
+            } else {
+                $formatter = $this->resolveFormatter($component);
+            }
+        } else {
+            throw new \InvalidArgumentException('Formatter configuration must be an array or a string (ID).');
+        }
+        $handler->setFormatter($formatter);
     }
 }
