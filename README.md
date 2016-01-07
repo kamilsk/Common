@@ -19,7 +19,7 @@ $ git remote add upstream git@github.com:kamilsk/Common.git
 ### Composer (for use in project)
 
 ```bash
-$ composer require kamilsk/common:~1.0
+$ composer require kamilsk/common:~1.1
 ```
 
 ## Pulse of repository
