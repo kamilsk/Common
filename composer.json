@@ -5,7 +5,7 @@
   "homepage": "https://github.com/kamilsk/Common",
   "license": "MIT",
   "authors": [
-    { "name": "Kamil Samigullin", "email": "kamil@samigullin.info", "role": "Author" }
+    { "name": "Kamil Samigullin", "email": "kamil@samigullin.info", "role": "lead" }
   ],
   "require": {
     "php": ">=5.5"
@@ -33,7 +33,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "1.2-dev"
+      "dev-master": "1.2.x-dev"
     }
   }
 }

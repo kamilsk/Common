@@ -5,7 +5,7 @@ CHANGELOG for 1.x
 
   * Support multichannel for `Monolog` like [Monolog Cascade](https://github.com/theorchard/monolog-cascade)
   ([#20](/../../issues/20))
-  * Full support for configuration in json ([#22](/../../issues/22))
+  * Full support of configuration in json ([#22](/../../issues/22))
   * `SimpleConfig` now implements `ArrayAccess` and `Iterator`, and support composite key like `path:to:config`
   ([#24](/../../issues/24))
   * `pimple/pimple` now is not suggest
