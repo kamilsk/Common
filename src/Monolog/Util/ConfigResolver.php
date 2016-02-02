@@ -205,7 +205,7 @@ class ConfigResolver
                     $this->pushHandlers($channel, $component['handlers']);
                 }
                 if (isset($component['processors']) && is_array($component['processors'])) {
-                    $this->pushProcessors($channel, $component['processors']);
+                    $this->pushProcessors([$channel, 'pushProcessor'], $component['processors']);
                 }
             } else {
                 throw new \InvalidArgumentException('A channel must have an identifier.');
@@ -394,20 +394,20 @@ class ConfigResolver
                 $this->setFormatter($handler, $component['formatter']);
             }
             if (isset($component['processors']) && is_array($component['processors'])) {
-                $this->pushProcessors($handler, $component['processors']);
+                $this->pushProcessors([$handler, 'pushProcessor'], $component['processors']);
             }
             $logger->pushHandler($handler);
         }
     }
 
     /**
-     * @param Logger|HandlerInterface $target
+     * @param callable $push
      * @param array $processors
      *
      * @throws \DomainException
      * @throws \InvalidArgumentException
      */
-    private function pushProcessors($target, array $processors)
+    private function pushProcessors(callable $push, array $processors)
     {
         foreach ($processors as $component) {
             if (is_string($component)) {
@@ -429,7 +429,7 @@ class ConfigResolver
             } else {
                 throw new \InvalidArgumentException('Processor configuration must be an array or a string (ID).');
             }
-            $target->pushProcessor($processor);
+            $push($processor);
         }
     }
 

@@ -1,6 +1,11 @@
 CHANGELOG for 1.x
 =================
 
+* 1.2 (2016-02-xx)
+
+  * Up code quality and code coverage ([#19](../../issues/19))
+  * [git diff](/../../compare/1.1...master)
+
 * 1.1 (2016-01-07)
 
   * Support multichannel for `Monolog` like [Monolog Cascade](https://github.com/theorchard/monolog-cascade)
