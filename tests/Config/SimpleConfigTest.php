@@ -123,8 +123,9 @@ class SimpleConfigTest extends TestCase
      */
     public function next(SimpleConfig $config)
     {
+        $current = $config->current();
         $config->next();
-        self::assertArrayHasKey('constant', $config->current());
+        self::assertNotEquals($current, $config->current());
     }
 
     /**
@@ -135,7 +136,7 @@ class SimpleConfigTest extends TestCase
      */
     public function key(SimpleConfig $config)
     {
-        self::assertEquals('parameters', $config->key());
+        self::assertTrue(is_scalar($config->key()));
     }
 
     /**
@@ -147,9 +148,9 @@ class SimpleConfigTest extends TestCase
     public function valid(SimpleConfig $config)
     {
         self::assertTrue($config->valid());
-        $config->next();
-        $config->next();
-        self::assertFalse($config->valid());
+        while ($config->valid()) {
+            $config->next();
+        }
     }
 
     /**
@@ -160,11 +161,14 @@ class SimpleConfigTest extends TestCase
      */
     public function rewind(SimpleConfig $config)
     {
-        self::assertEquals('parameters', $config->key());
+        $currentKey = $config->key();
+        self::assertTrue(is_scalar($currentKey));
         $config->next();
-        self::assertEquals('component', $config->key());
+        $nextKey = $config->key();
+        self::assertTrue(is_scalar($nextKey));
+        self::assertNotEquals($currentKey, $nextKey);
         $config->rewind();
-        self::assertEquals('parameters', $config->key());
+        self::assertEquals($currentKey, $config->key());
     }
 
     /**

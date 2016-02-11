@@ -21,6 +21,8 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     }
 
     /**
+     * @deprecated
+     *
      * @param array $placeholders
      *
      * @return $this
@@ -39,6 +41,8 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     }
 
     /**
+     * @deprecated
+     *
      * @return array
      *
      * @api

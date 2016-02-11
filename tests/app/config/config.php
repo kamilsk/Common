@@ -7,6 +7,10 @@ return OctoLab\Common\Config\Util\ArrayHelper::merge(
             'parameter' => 'base component\'s parameter will be overwritten by root config',
             'placeholder_parameter' => '%placeholder%',
             'constant' => E_ALL,
+            'constant_map' => [
+                E_ALL => 30719,
+                E_USER_ERROR => 256,
+            ],
         ],
     ]
 );
