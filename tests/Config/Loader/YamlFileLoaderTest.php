@@ -58,10 +58,6 @@ class YamlFileLoaderTest extends TestCase
                     'parameter' => 'base component\'s parameter will be overwritten by root config',
                     'placeholder_parameter' => '%placeholder%',
                     'constant' => 'const(E_ALL)',
-                    'constant_map' => [
-                        'const(E_ALL)' => 30719,
-                        'const(E_USER_ERROR)' => 256,
-                    ],
                 ],
             ],
             [
