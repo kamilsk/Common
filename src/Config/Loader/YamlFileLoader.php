@@ -96,9 +96,17 @@ class YamlFileLoader extends FileLoader
         }
         $this->setCurrentDir(dirname($sourceResource));
         foreach ($content['imports'] as $import) {
-            if (isset($import['resource'])) {
-                $ignoreErrors = isset($import['ignore_errors']) ? (bool) $import['ignore_errors'] : false;
-                $this->import($import['resource'], null, $ignoreErrors, $sourceResource);
+            $isString = is_string($import);
+            $hasResource = !$isString && isset($import['resource']);
+            if ($isString || $hasResource) {
+                if ($isString) {
+                    $resource = $import;
+                    $ignoreErrors = false;
+                } else {
+                    $resource = $import['resource'];
+                    $ignoreErrors = isset($import['ignore_errors']) ? (bool) $import['ignore_errors'] : false;
+                }
+                $this->import($resource, null, $ignoreErrors, $sourceResource);
             }
         }
     }

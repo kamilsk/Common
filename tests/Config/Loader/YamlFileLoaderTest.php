@@ -52,9 +52,7 @@ class YamlFileLoaderTest extends TestCase
                     [
                         'resource' => 'parameters.yml',
                     ],
-                    [
-                        'resource' => 'component/config.yml',
-                    ],
+                    'component/config.yml',
                 ],
                 'component' => [
                     'parameter' => 'base component\'s parameter will be overwritten by root config',
