@@ -222,10 +222,7 @@ class ConfigResolver
      */
     private function resolveFormatter(array $formatter)
     {
-        $class = $this->getClass($formatter, 'Formatter', 'Monolog\Formatter');
-        $reflection = new \ReflectionClass($class);
-        $arguments = $this->getConstructorArguments($reflection, $formatter);
-        return $reflection->newInstanceArgs($arguments);
+        return $this->resolveComponent('Formatter', 'Monolog\Formatter', $formatter);
     }
 
     /**
@@ -237,10 +234,7 @@ class ConfigResolver
      */
     private function resolveProcessor(array $processor)
     {
-        $class = $this->getClass($processor, 'Processor', 'Monolog\Processor');
-        $reflection = new \ReflectionClass($class);
-        $arguments = $this->getConstructorArguments($reflection, $processor);
-        return $reflection->newInstanceArgs($arguments);
+        return $this->resolveComponent('Processor', 'Monolog\Processor', $processor);
     }
 
     /**
@@ -252,29 +246,34 @@ class ConfigResolver
      */
     private function resolveHandler(array $handler)
     {
-        $class = $this->getClass($handler, 'Handler', 'Monolog\Handler');
+        return $this->resolveComponent('Handler', 'Monolog\Handler', $handler);
+    }
+
+    private function resolveComponent($type, $namespace, array $config)
+    {
+        $class = $this->getClass($type, $namespace, $config);
         $reflection = new \ReflectionClass($class);
-        $arguments = $this->getConstructorArguments($reflection, $handler);
+        $arguments = $this->getConstructorArguments($reflection, $config);
         return $reflection->newInstanceArgs($arguments);
     }
 
     /**
-     * @param array $config
-     * @param string $component
+     * @param string $type
      * @param string $namespace
+     * @param array $config
      *
      * @return string
      *
      * @throws \InvalidArgumentException
      */
-    private function getClass(array $config, $component, $namespace)
+    private function getClass($type, $namespace, array $config)
     {
         if (isset($config['type'])) {
-            $class = $this->resolveClass($config['type'], $component, $namespace);
+            $class = $this->resolveClass($type, $config['type'], $namespace);
         } elseif (isset($config['class'])) {
             $class = $config['class'];
         } else {
-            throw new \InvalidArgumentException(sprintf('%s\'s config requires either a type or class.', $component));
+            throw new \InvalidArgumentException(sprintf('%s\'s config requires either a type or class.', $type));
         }
         return $class;
     }
@@ -296,12 +295,12 @@ class ConfigResolver
 
     /**
      * @param string $type
-     * @param string $component
+     * @param string $subtype
      * @param string $namespace
      *
      * @return string
      */
-    private function resolveClass($type, $component, $namespace)
+    private function resolveClass($type, $subtype, $namespace)
     {
         static $exceptions = [
             'Formatter' => [
@@ -326,11 +325,11 @@ class ConfigResolver
                 ],
             ],
         ];
-        if (isset($exceptions[$component][$namespace][$type])) {
-            return $exceptions[$component][$namespace][$type];
+        if (isset($exceptions[$type][$namespace][$subtype])) {
+            return $exceptions[$type][$namespace][$subtype];
         }
-        $class = implode('', explode(' ', ucwords(str_replace('_', ' ', $type))));
-        return $namespace . '\\' . $class . $component;
+        $class = implode('', explode(' ', ucwords(str_replace('_', ' ', $subtype))));
+        return $namespace . '\\' . $class . $type;
     }
 
     /**
@@ -432,7 +431,7 @@ class ConfigResolver
      * @param callable $setter
      * @param callable $resolver
      *
-     * @return Logger|HandlerInterface|callable|FormatterInterface
+     * @return mixed
      *
      * @throws \DomainException
      * @throws \InvalidArgumentException
