@@ -16,7 +16,7 @@ checks:
     return_doc_comments: true
     return_doc_comment_if_not_inferrable: true
     remove_extra_empty_lines: true
-    align_assignments: true
+    align_assignments: false
     avoid_fixme_comments: true
     avoid_multiple_statements_on_same_line: true
     avoid_perl_style_comments: true

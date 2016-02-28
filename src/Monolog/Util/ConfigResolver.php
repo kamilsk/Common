@@ -101,10 +101,20 @@ class ConfigResolver
         $this->processors = [];
         $this->formatters = [];
         if (isset($config['formatters']) && is_array($config['formatters'])) {
-            $this->resolveFormatters($config['formatters']);
+            $this->resolveComponents(
+                $this->formatters,
+                $config['formatters'],
+                [$this, 'resolveFormatter'],
+                'formatters'
+            );
         }
         if (isset($config['processors']) && is_array($config['processors'])) {
-            $this->resolveProcessors($config['processors']);
+            $this->resolveComponents(
+                $this->processors,
+                $config['processors'],
+                [$this, 'resolveProcessor'],
+                'processors'
+            );
         }
         if (isset($config['handlers']) && is_array($config['handlers'])) {
             $this->resolveHandlers($config['handlers']);
@@ -127,42 +137,6 @@ class ConfigResolver
         }
         $this->unnamed = null;
         return $this;
-    }
-
-    /**
-     * @param array $config
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function resolveFormatters(array $config)
-    {
-        foreach ($config as $key => $component) {
-            $id = isset($component['id']) ? $component['id'] : $key;
-            $formatter = $this->resolveFormatter($component);
-            if (is_string($id)) {
-                $this->formatters[$id] = $formatter;
-            } else {
-                $this->unnamed['formatters'][] = $formatter;
-            }
-        }
-    }
-
-    /**
-     * @param array $config
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function resolveProcessors(array $config)
-    {
-        foreach ($config as $key => $component) {
-            $id = isset($component['id']) ? $component['id'] : $key;
-            $processor = $this->resolveProcessor($component);
-            if (is_string($id)) {
-                $this->processors[$id] = $processor;
-            } else {
-                $this->unnamed['processors'][] = $processor;
-            }
-        }
     }
 
     /**
@@ -209,6 +183,25 @@ class ConfigResolver
                 }
             } else {
                 throw new \InvalidArgumentException('A channel must have an identifier.');
+            }
+        }
+    }
+
+    /**
+     * @param array $destination
+     * @param array $configs
+     * @param callable $resolver
+     * @param string $unnamed
+     */
+    private function resolveComponents(array &$destination, array $configs, callable $resolver, $unnamed)
+    {
+        foreach ($configs as $key => $config) {
+            $id = isset($config['id']) ? $config['id'] : $key;
+            $component = $resolver($config);
+            if (is_string($id)) {
+                $destination[$id] = $component;
+            } else {
+                $this->unnamed[$unnamed][] = $component;
             }
         }
     }
