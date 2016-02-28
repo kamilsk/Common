@@ -19,7 +19,7 @@ class ConfigResolver
     private $processors = [];
     /** @var FormatterInterface[] */
     private $formatters = [];
-    /** @var array<string,array,{"handlers":"array","processors":"array","formatters":"array"}>|null */
+    /** @var array<string,array>|null */
     private $unnamed;
     /** @var string */
     private $defaultChannel = 'default';
@@ -111,7 +111,7 @@ class ConfigResolver
         }
         if (isset($config['channels']) && is_array($config['channels'])) {
             if (!empty($config['default_channel'])) {
-                $this->defaultChannel = $config['default_channel'];
+                $this->defaultChannel = (string)$config['default_channel'];
             }
             $this->resolveChannels($config['channels']);
         } else {
@@ -205,7 +205,7 @@ class ConfigResolver
                     $this->pushHandlers($channel, $component['handlers']);
                 }
                 if (isset($component['processors']) && is_array($component['processors'])) {
-                    $this->pushProcessors([$channel, 'pushProcessor'], $component['processors']);
+                    $this->pushProcessors($component['processors'], [$channel, 'pushProcessor']);
                 }
             } else {
                 throw new \InvalidArgumentException('A channel must have an identifier.');
@@ -370,97 +370,95 @@ class ConfigResolver
      */
     private function pushHandlers(Logger $logger, array $handlers)
     {
-        foreach ($handlers as $component) {
-            if (is_string($component)) {
-                if (isset($this->handlers[$component])) {
-                    $handler = $this->handlers[$component];
-                } else {
-                    throw new \DomainException(sprintf('Handler with ID "%s" not found.', $component));
-                }
-            } elseif (is_array($component)) {
-                if (isset($component['id'])) {
-                    if (isset($this->handlers[$component['id']])) {
-                        $handler = $this->handlers[$component['id']];
-                    } else {
-                        throw new \DomainException(sprintf('Handler with ID "%s" not found.', $component['id']));
-                    }
-                } else {
-                    $handler = $this->resolveHandler($component);
-                }
-            } else {
-                throw new \InvalidArgumentException('Handler configuration must be an array or a string (ID).');
+        foreach ($handlers as $config) {
+            $handler = $this->attach(
+                'Handler',
+                $this->handlers,
+                $config,
+                [$logger, 'pushHandler'],
+                [$this, 'resolveHandler']
+            );
+            if (isset($config['formatter'])) {
+                $this->setFormatter($handler, $config['formatter']);
             }
-            if (isset($component['formatter'])) {
-                $this->setFormatter($handler, $component['formatter']);
+            if (isset($config['processors']) && is_array($config['processors'])) {
+                $this->pushProcessors($config['processors'], [$handler, 'pushProcessor']);
             }
-            if (isset($component['processors']) && is_array($component['processors'])) {
-                $this->pushProcessors([$handler, 'pushProcessor'], $component['processors']);
-            }
-            $logger->pushHandler($handler);
         }
     }
 
     /**
-     * @param callable $push
      * @param array $processors
+     * @param callable $push
      *
      * @throws \DomainException
      * @throws \InvalidArgumentException
      */
-    private function pushProcessors(callable $push, array $processors)
+    private function pushProcessors(array $processors, callable $push)
     {
-        foreach ($processors as $component) {
-            if (is_string($component)) {
-                if (isset($this->processors[$component])) {
-                    $processor = $this->processors[$component];
-                } else {
-                    throw new \DomainException(sprintf('Processor with ID "%s" not found.', $component));
-                }
-            } elseif (is_array($component)) {
-                if (isset($component['id'])) {
-                    if (isset($this->processors[$component['id']])) {
-                        $processor = $this->processors[$component['id']];
-                    } else {
-                        throw new \DomainException(sprintf('Processor with ID "%s" not found.', $component['id']));
-                    }
-                } else {
-                    $processor = $this->resolveProcessor($component);
-                }
-            } else {
-                throw new \InvalidArgumentException('Processor configuration must be an array or a string (ID).');
-            }
-            $push($processor);
+        foreach ($processors as $config) {
+            $this->attach(
+                'Processor',
+                $this->processors,
+                $config,
+                $push,
+                [$this, 'resolveProcessor']
+            );
         }
     }
 
     /**
      * @param HandlerInterface $handler
-     * @param array|string $component
+     * @param array|string $config
      *
      * @throws \DomainException
      * @throws \InvalidArgumentException
      */
-    private function setFormatter(HandlerInterface $handler, $component)
+    private function setFormatter(HandlerInterface $handler, $config)
     {
-        if (is_string($component)) {
-            if (isset($this->formatters[$component])) {
-                $formatter = $this->formatters[$component];
+        $this->attach(
+            'Formatter',
+            $this->formatters,
+            $config,
+            [$handler, 'setFormatter'],
+            [$this, 'resolveFormatter']
+        );
+    }
+
+    /**
+     * @param string $type
+     * @param Logger[]|HandlerInterface[]|callable[]|FormatterInterface[] $source
+     * @param array|string $componentConfig
+     * @param callable $setter
+     * @param callable $resolver
+     *
+     * @return Logger|HandlerInterface|callable|FormatterInterface
+     *
+     * @throws \DomainException
+     * @throws \InvalidArgumentException
+     */
+    private function attach($type, $source, $componentConfig, callable $setter, callable $resolver)
+    {
+        if (is_string($componentConfig)) {
+            if (isset($source[$componentConfig])) {
+                $component = $source[$componentConfig];
             } else {
-                throw new \DomainException(sprintf('Formatter with ID "%s" not found.', $component));
+                throw new \DomainException(sprintf('%s with ID "%s" not found.', $type, $componentConfig));
             }
-        } elseif (is_array($component)) {
-            if (isset($component['id'])) {
-                if (isset($this->formatters[$component['id']])) {
-                    $formatter = $this->formatters[$component['id']];
+        } elseif (is_array($componentConfig)) {
+            if (isset($componentConfig['id'])) {
+                if (isset($source[$componentConfig['id']])) {
+                    $component = $source[$componentConfig['id']];
                 } else {
-                    throw new \DomainException(sprintf('Formatter with ID "%s" not found.', $component['id']));
+                    throw new \DomainException(sprintf('%s with ID "%s" not found.', $type, $componentConfig['id']));
                 }
             } else {
-                $formatter = $this->resolveFormatter($component);
+                $component = $resolver($componentConfig);
             }
         } else {
-            throw new \InvalidArgumentException('Formatter configuration must be an array or a string (ID).');
+            throw new \InvalidArgumentException(sprintf('%s configuration must be an array or a string (ID).', $type));
         }
-        $handler->setFormatter($formatter);
+        $setter($component);
+        return $component;
     }
 }
