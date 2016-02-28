@@ -77,7 +77,7 @@ class ConfigResolver
     }
 
     /**
-     * @param array<string,array,{"default_channel":"string","name":"string"}> $config
+     * @param array<string,array|string> $config
      * <pre>[..., 'handlers' => [...], 'processors' => [...]]</pre>
      * <pre>['channels' => [...], 'handlers' => [...], 'processors' => [...], 'formatters' => [...]]</pre>
      * @param string $defaultName Is default logger name
