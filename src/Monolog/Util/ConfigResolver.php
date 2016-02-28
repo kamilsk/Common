@@ -440,7 +440,7 @@ class ConfigResolver
      * @param callable $setter
      * @param callable $resolver
      *
-     * @return mixed
+     * @return HandlerInterface or callable|FormatterInterface|Logger
      *
      * @throws \DomainException
      * @throws \InvalidArgumentException
