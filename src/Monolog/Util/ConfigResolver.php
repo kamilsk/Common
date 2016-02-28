@@ -249,6 +249,15 @@ class ConfigResolver
         return $this->resolveComponent('Handler', 'Monolog\Handler', $handler);
     }
 
+    /**
+     * @param string $type
+     * @param string $namespace
+     * @param array $config
+     *
+     * @return FormatterInterface|callable|HandlerInterface
+     *
+     * @throws \InvalidArgumentException
+     */
     private function resolveComponent($type, $namespace, array $config)
     {
         $class = $this->getClass($type, $namespace, $config);
