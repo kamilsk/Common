@@ -19,7 +19,7 @@ class ConfigResolver
     private $processors = [];
     /** @var FormatterInterface[] */
     private $formatters = [];
-    /** @var array[] */
+    /** @var array<string,array,{"handlers":"array","processors":"array","formatters":"array"}>|null */
     private $unnamed;
     /** @var string */
     private $defaultChannel = 'default';
@@ -77,7 +77,7 @@ class ConfigResolver
     }
 
     /**
-     * @param array $config
+     * @param array<string,array,{"default_channel":"string","name":"string"}> $config
      * <pre>[..., 'handlers' => [...], 'processors' => [...]]</pre>
      * <pre>['channels' => [...], 'handlers' => [...], 'processors' => [...], 'formatters' => [...]]</pre>
      * @param string $defaultName Is default logger name
