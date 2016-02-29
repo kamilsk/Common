@@ -1,18 +1,15 @@
 <?php
 
-namespace Test\OctoLab\Common\Doctrine\Util;
+namespace OctoLab\Common\Doctrine\Util;
 
 use Doctrine\DBAL\Types\Type;
 use OctoLab\Common\Config\Loader\YamlFileLoader;
 use OctoLab\Common\Config\Parser\SymfonyYamlParser;
 use OctoLab\Common\Config\YamlConfig;
-use OctoLab\Common\Doctrine\Util\ConfigResolver;
+use OctoLab\Common\TestCase;
 use Symfony\Component\Config\FileLocator;
-use Test\OctoLab\Common\TestCase;
 
 /**
- * phpunit tests/Doctrine/Util/ConfigResolverTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class ConfigResolverTest extends TestCase

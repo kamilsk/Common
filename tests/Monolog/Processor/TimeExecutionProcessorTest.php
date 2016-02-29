@@ -1,12 +1,8 @@
 <?php
 
-namespace Test\OctoLab\Common\Monolog\Processor;
-
-use OctoLab\Common\Monolog\Processor\TimeExecutionProcessor;
+namespace OctoLab\Common\Monolog\Processor;
 
 /**
- * phpunit tests/Monolog/Processor/TimeExecutionProcessorTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class TimeExecutionProcessorTest extends \PHPUnit_Framework_TestCase

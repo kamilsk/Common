@@ -1,12 +1,8 @@
 <?php
 
-namespace Test\OctoLab\Common\Helper;
-
-use OctoLab\Common\Doctrine\Util\Limiter;
+namespace OctoLab\Common\Doctrine\Util;
 
 /**
- * phpunit tests/Doctrine/Util/LimiterTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class LimiterTest extends \PHPUnit_Framework_TestCase

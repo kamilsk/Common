@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\OctoLab\Common\Doctrine\Migration\Mock;
+namespace OctoLab\Common\Doctrine\Migration\Mock;
 
 use Doctrine\DBAL\Schema\Schema;
 use OctoLab\Common\Doctrine\Migration\FileBasedMigration as AbstractMigration;

@@ -1,13 +1,10 @@
 <?php
 
-namespace Test\OctoLab\Common\Config;
+namespace OctoLab\Common\Config;
 
-use OctoLab\Common\Config\SimpleConfig;
-use Test\OctoLab\Common\TestCase;
+use OctoLab\Common\TestCase;
 
 /**
- * phpunit tests/Config/SimpleConfigTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class SimpleConfigTest extends TestCase

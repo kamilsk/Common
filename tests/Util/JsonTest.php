@@ -1,12 +1,8 @@
 <?php
 
-namespace Test\OctoLab\Common\Util;
-
-use OctoLab\Common\Util\Json;
+namespace OctoLab\Common\Util;
 
 /**
- * phpunit tests/Util/JsonTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class JsonTest extends \PHPUnit_Framework_TestCase

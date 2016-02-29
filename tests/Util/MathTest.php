@@ -1,12 +1,8 @@
 <?php
 
-namespace Test\OctoLab\Common\Util;
-
-use OctoLab\Common\Util\Math;
+namespace OctoLab\Common\Util;
 
 /**
- * phpunit tests/Util/MathTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class MathTest extends \PHPUnit_Framework_TestCase

@@ -1,12 +1,8 @@
 <?php
 
-namespace Test\OctoLab\Common\Config;
-
-use OctoLab\Common\Config\Util\ArrayHelper;
+namespace OctoLab\Common\Config\Util;
 
 /**
- * phpunit tests/Config/Util/ArrayHelperTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class ArrayHelperTest extends \PHPUnit_Framework_TestCase

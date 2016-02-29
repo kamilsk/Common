@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\OctoLab\Common\Monolog\Util;
+namespace OctoLab\Common\Monolog\Util;
 
 use Monolog\Formatter\ChromePHPFormatter;
 use Monolog\Formatter\FormatterInterface;
@@ -15,13 +15,10 @@ use OctoLab\Common\Config\Loader\YamlFileLoader;
 use OctoLab\Common\Config\Parser\SymfonyYamlParser;
 use OctoLab\Common\Config\YamlConfig;
 use OctoLab\Common\Monolog\Processor\TimeExecutionProcessor;
-use OctoLab\Common\Monolog\Util\ConfigResolver;
+use OctoLab\Common\TestCase;
 use Symfony\Component\Config\FileLocator;
-use Test\OctoLab\Common\TestCase;
 
 /**
- * phpunit tests/Monolog/Util/ConfigResolverTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class ConfigResolverTest extends TestCase

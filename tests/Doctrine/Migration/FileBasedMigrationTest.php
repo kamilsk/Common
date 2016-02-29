@@ -1,13 +1,10 @@
 <?php
 
-namespace Test\OctoLab\Common\Doctrine\Migration;
+namespace OctoLab\Common\Doctrine\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
-use OctoLab\Common\Doctrine\Migration\FileBasedMigration;
 
 /**
- * phpunit tests/Doctrine/Migration/FileBasedMigrationTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase

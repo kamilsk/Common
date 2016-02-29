@@ -1,17 +1,14 @@
 <?php
 
-namespace Test\OctoLab\Common\Doctrine\Migration;
+namespace OctoLab\Common\Doctrine\Migration;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\PDOMySql;
 use Doctrine\DBAL\Driver\PDOPgSql;
 use Doctrine\DBAL\Schema\Schema;
-use OctoLab\Common\Doctrine\Migration\DriverBasedMigration;
 
 /**
- * phpunit tests/Doctrine/Migration/DriverBasedMigrationTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase

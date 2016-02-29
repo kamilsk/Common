@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\OctoLab\Common;
+namespace OctoLab\Common;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>

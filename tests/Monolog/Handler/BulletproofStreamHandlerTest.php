@@ -1,14 +1,11 @@
 <?php
 
-namespace Test\OctoLab\Common\Monolog\Handler;
+namespace OctoLab\Common\Monolog\Handler;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use OctoLab\Common\Monolog\Handler\BulletproofStreamHandler;
 
 /**
- * phpunit tests/Monolog/Handler/BulletproofStreamHandlerTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase

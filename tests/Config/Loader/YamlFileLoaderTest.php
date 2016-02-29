@@ -1,16 +1,11 @@
 <?php
 
-namespace Test\OctoLab\Common\Config;
+namespace OctoLab\Common\Config;
 
-use OctoLab\Common\Config\Loader\YamlFileLoader;
-use OctoLab\Common\Config\Parser\DipperYamlParser;
-use OctoLab\Common\Config\Parser\SymfonyYamlParser;
+use OctoLab\Common\TestCase;
 use Symfony\Component\Config\FileLocator;
-use Test\OctoLab\Common\TestCase;
 
 /**
- * phpunit tests/Config/Loader/YamlFileLoaderTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class YamlFileLoaderTest extends TestCase
@@ -21,8 +16,8 @@ class YamlFileLoaderTest extends TestCase
     public function loaderProvider()
     {
         return [
-            [new YamlFileLoader(new FileLocator(), new SymfonyYamlParser())],
-            [new YamlFileLoader(new FileLocator(), new DipperYamlParser())],
+            [new Loader\YamlFileLoader(new FileLocator(), new Parser\SymfonyYamlParser())],
+            [new Loader\YamlFileLoader(new FileLocator(), new Parser\DipperYamlParser())],
         ];
     }
 
@@ -30,9 +25,9 @@ class YamlFileLoaderTest extends TestCase
      * @test
      * @dataProvider loaderProvider
      *
-     * @param YamlFileLoader $loader
+     * @param Loader\YamlFileLoader $loader
      */
-    public function getContent(YamlFileLoader $loader)
+    public function getContent(Loader\YamlFileLoader $loader)
     {
         self::assertTrue(is_array($loader->getContent()));
     }
@@ -41,9 +36,9 @@ class YamlFileLoaderTest extends TestCase
      * @test
      * @dataProvider loaderProvider
      *
-     * @param YamlFileLoader $loader
+     * @param Loader\YamlFileLoader $loader
      */
-    public function load(YamlFileLoader $loader)
+    public function load(Loader\YamlFileLoader $loader)
     {
         $loader->load($this->getConfigPath());
         $expected = [
@@ -89,9 +84,9 @@ class YamlFileLoaderTest extends TestCase
      * @test
      * @dataProvider loaderProvider
      *
-     * @param YamlFileLoader $loader
+     * @param Loader\YamlFileLoader $loader
      */
-    public function supports(YamlFileLoader $loader)
+    public function supports(Loader\YamlFileLoader $loader)
     {
         self::assertTrue($loader->supports('/some/path/to/supported.yml'));
         self::assertFalse($loader->supports('/some/path/to/unsupported.json'));

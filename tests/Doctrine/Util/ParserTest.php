@@ -1,12 +1,8 @@
 <?php
 
-namespace Test\OctoLab\Common\Doctrine\Util;
-
-use OctoLab\Common\Doctrine\Util\Parser;
+namespace OctoLab\Common\Doctrine\Util;
 
 /**
- * phpunit tests/Doctrine/Util/ParserTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class ParserTest extends \PHPUnit_Framework_TestCase

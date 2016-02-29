@@ -1,8 +1,7 @@
 <?php
 
-namespace Test\OctoLab\Common\Doctrine\Migration\Mock;
+namespace OctoLab\Common\Doctrine\Migration\Mock;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use OctoLab\Common\Doctrine\Migration\DriverBasedMigration as AbstractMigration;
 

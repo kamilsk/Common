@@ -1,12 +1,8 @@
 <?php
 
-namespace Test\OctoLab\Common\Monolog\Util;
-
-use OctoLab\Common\Monolog\Util\Dumper;
+namespace OctoLab\Common\Monolog\Util;
 
 /**
- * phpunit tests/Monolog/Util/DumperTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class DumperTest extends \PHPUnit_Framework_TestCase

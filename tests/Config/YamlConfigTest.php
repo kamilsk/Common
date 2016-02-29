@@ -1,15 +1,10 @@
 <?php
 
-namespace Test\OctoLab\Common\Config;
+namespace OctoLab\Common\Config;
 
-use OctoLab\Common\Config\Loader\YamlFileLoader;
-use OctoLab\Common\Config\Parser\SymfonyYamlParser;
-use OctoLab\Common\Config\YamlConfig;
 use Symfony\Component\Config\FileLocator;
 
 /**
- * phpunit tests/Config/YamlConfigTest.php
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class YamlConfigTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +15,7 @@ class YamlConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function throwDomainException()
     {
-        $config = new YamlConfig(new YamlFileLoader(new FileLocator(), new SymfonyYamlParser()));
+        $config = new YamlConfig(new Loader\YamlFileLoader(new FileLocator(), new Parser\SymfonyYamlParser()));
         $config->load('not_yaml.file', true);
     }
 }
