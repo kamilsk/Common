@@ -38,7 +38,7 @@ abstract class FileLoader extends AbstractFileLoader
 
     /**
      * @param string $resource
-     * @param string $type
+     * @param string|null $type
      *
      * @throws \InvalidArgumentException
      * @throws \Symfony\Component\Config\Exception\FileLoaderLoadException
@@ -58,7 +58,7 @@ abstract class FileLoader extends AbstractFileLoader
 
     /**
      * @param string $resource
-     * @param string $type
+     * @param string|null $type
      *
      * @return bool
      *
@@ -82,5 +82,25 @@ abstract class FileLoader extends AbstractFileLoader
      *
      * @throws \Symfony\Component\Config\Exception\FileLoaderLoadException
      */
-    abstract protected function parseImports($content, $sourceResource);
+    protected function parseImports($content, $sourceResource)
+    {
+        if (!isset($content['imports'])) {
+            return;
+        }
+        $this->setCurrentDir(dirname($sourceResource));
+        foreach ($content['imports'] as $import) {
+            $isString = is_string($import);
+            $hasResource = !$isString && isset($import['resource']);
+            if ($isString || $hasResource) {
+                if ($isString) {
+                    $resource = $import;
+                    $ignoreErrors = false;
+                } else {
+                    $resource = $import['resource'];
+                    $ignoreErrors = isset($import['ignore_errors']) ? (bool) $import['ignore_errors'] : false;
+                }
+                $this->import($resource, null, $ignoreErrors, $sourceResource);
+            }
+        }
+    }
 }

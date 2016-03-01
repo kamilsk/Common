@@ -37,32 +37,4 @@ class YamlFileLoader extends FileLoader
     {
         return $this->parser->parse(file_get_contents($file));
     }
-
-    /**
-     * @param array $content
-     * @param string $sourceResource
-     *
-     * @throws \Symfony\Component\Config\Exception\FileLoaderLoadException
-     */
-    protected function parseImports($content, $sourceResource)
-    {
-        if (!isset($content['imports'])) {
-            return;
-        }
-        $this->setCurrentDir(dirname($sourceResource));
-        foreach ($content['imports'] as $import) {
-            $isString = is_string($import);
-            $hasResource = !$isString && isset($import['resource']);
-            if ($isString || $hasResource) {
-                if ($isString) {
-                    $resource = $import;
-                    $ignoreErrors = false;
-                } else {
-                    $resource = $import['resource'];
-                    $ignoreErrors = isset($import['ignore_errors']) ? (bool) $import['ignore_errors'] : false;
-                }
-                $this->import($resource, null, $ignoreErrors, $sourceResource);
-            }
-        }
-    }
 }
