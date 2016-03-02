@@ -5,6 +5,8 @@ namespace OctoLab\Common\Config\Loader;
 use Symfony\Component\Config\FileLocatorInterface;
 
 /**
+ * @deprecated moved to {@link FileLoader}
+ *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class JsonFileLoader extends FileLoader

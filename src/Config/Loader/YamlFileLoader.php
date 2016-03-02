@@ -6,9 +6,9 @@ use OctoLab\Common\Config\Parser\ParserInterface;
 use Symfony\Component\Config\FileLocatorInterface;
 
 /**
- * @author Kamil Samigullin <kamil@samigullin.info>
+ * @deprecated moved to {@link FileLoader}
  *
- * @see \Symfony\Component\DependencyInjection\Loader\YamlFileLoader
+ * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class YamlFileLoader extends FileLoader
 {
