@@ -49,11 +49,10 @@ abstract class FileLoader extends AbstractFileLoader
     {
         $path = (string) $this->locator->locate($resource);
         $content = $this->loadFile($path);
-        if (null === $content) {
-            return;
+        if (null !== $content) {
+            $this->content[] = $content;
+            $this->parseImports($content, $path);
         }
-        $this->content[] = $content;
-        $this->parseImports($content, $path);
     }
 
     /**
