@@ -19,10 +19,9 @@ class ConfigResolver
     public function resolve(array $config)
     {
         if (!empty($config['types'])) {
-            $types = Type::getTypesMap();
             foreach ($config['types'] as $name => $class) {
                 if (!Type::hasType($name)) {
-                    Type::addType($name, Type::hasType($class) ? $types[$class] : $class);
+                    Type::addType($name, Type::hasType($class) ? get_class(Type::getType($class)) : $class);
                 }
             }
         }

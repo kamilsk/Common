@@ -66,7 +66,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
      */
     public function offsetExists($offset)
     {
-        return $this->resolvePath($offset);
+        return (bool) $this->resolvePath($offset);
     }
 
     /**
@@ -76,7 +76,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
      */
     public function offsetGet($offset)
     {
-        return $this->resolvePath($offset, true);
+        return $this->resolvePath($offset);
     }
 
     /**
@@ -184,27 +184,23 @@ class SimpleConfig implements \ArrayAccess, \Iterator
 
     /**
      * @param string $path
-     * @param bool $return
      *
-     * @return bool|null|mixed
+     * @return mixed null if not exists
      */
-    private function resolvePath($path, $return = false)
+    private function resolvePath($path)
     {
         if (mb_strpos($path, ':')) {
             $chain = explode(':', $path);
             $scope = $this->config;
             foreach ($chain as $i => $key) {
-                if (!is_array($scope) || !array_key_exists($key, $scope)) {
-                    return $return ? null : false;
+                if (!is_array($scope) || !isset($scope[$key])) {
+                    $scope = null;
+                    break;
                 }
                 $scope = $scope[$key];
             }
-            return $return ? $scope : true;
+            return $scope;
         }
-        $exists = array_key_exists($path, $this->config);
-        if ($return) {
-            return $exists ? $this->config[$path] : null;
-        }
-        return $exists;
+        return isset($this->config[$path]) ? $this->config[$path] : null;
     }
 }
