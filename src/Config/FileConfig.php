@@ -16,7 +16,7 @@ class FileConfig extends SimpleConfig
      * @param Loader\FileLoader $fileLoader
      *
      * @api
-     */куафсещкrre
+     */
     public function __construct(Loader\FileLoader $fileLoader)
     {
         parent::__construct();
