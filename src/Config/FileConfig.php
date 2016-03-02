@@ -9,7 +9,7 @@ use OctoLab\Common\Config\Util\ArrayHelper;
  */
 class FileConfig extends SimpleConfig
 {
-    /** @var Loader\JsonFileLoader */
+    /** @var Loader\FileLoader */
     private $fileLoader;
 
     /**
