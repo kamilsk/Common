@@ -13,7 +13,7 @@ class Math
      * @param int $limit
      * @param int $offset
      *
-     * @return array<string,integer>
+     * @return array<string,int>
      */
     public function getTwoTablePagination($tableCount1, $tableCount2, $limit, $offset = 0)
     {
@@ -25,14 +25,12 @@ class Math
         } elseif ($offset >= $tableCount1 + $tableCount2) {
             $offset2 = $tableCount2;
             $limit2 = 0;
+        } elseif ($offset < $tableCount1) {
+            $offset2 = 0;
+            $limit2 = $offset1 + $limit - $tableCount1;
         } else {
-            if ($offset < $tableCount1) {
-                $offset2 = 0;
-                $limit2 = $offset1 + $limit - $tableCount1;
-            } else {
-                $offset2 = $offset - $tableCount1;
-                $limit2 = $limit;
-            }
+            $offset2 = $offset - $tableCount1;
+            $limit2 = $limit;
         }
         return [
             'limit1'  => $limit1,

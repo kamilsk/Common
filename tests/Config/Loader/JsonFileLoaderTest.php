@@ -1,6 +1,6 @@
 <?php
 
-namespace OctoLab\Common\Config;
+namespace OctoLab\Common\Config\Loader;
 
 use OctoLab\Common\TestCase;
 use Symfony\Component\Config\FileLocator;
@@ -16,7 +16,7 @@ class JsonFileLoaderTest extends TestCase
     public function loaderProvider()
     {
         return [
-            [new Loader\JsonFileLoader(new FileLocator(), 512, 0)],
+            [new JsonFileLoader(new FileLocator(), 512, 0)],
         ];
     }
 
@@ -24,9 +24,9 @@ class JsonFileLoaderTest extends TestCase
      * @test
      * @dataProvider loaderProvider
      *
-     * @param Loader\JsonFileLoader $loader
+     * @param JsonFileLoader $loader
      */
-    public function getContent(Loader\JsonFileLoader $loader)
+    public function getContent(JsonFileLoader $loader)
     {
         self::assertTrue(is_array($loader->getContent()));
     }
@@ -35,9 +35,9 @@ class JsonFileLoaderTest extends TestCase
      * @test
      * @dataProvider loaderProvider
      *
-     * @param Loader\JsonFileLoader $loader
+     * @param JsonFileLoader $loader
      */
-    public function load(Loader\JsonFileLoader $loader)
+    public function load(JsonFileLoader $loader)
     {
         $loader->load($this->getConfigPath('config', 'json'));
         $expected = [
@@ -83,9 +83,9 @@ class JsonFileLoaderTest extends TestCase
      * @test
      * @dataProvider loaderProvider
      *
-     * @param Loader\JsonFileLoader $loader
+     * @param JsonFileLoader $loader
      */
-    public function supports(Loader\JsonFileLoader $loader)
+    public function supports(JsonFileLoader $loader)
     {
         self::assertTrue($loader->supports('/some/path/to/supported.json'));
         self::assertFalse($loader->supports('/some/path/to/unsupported.yml'));

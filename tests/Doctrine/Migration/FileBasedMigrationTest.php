@@ -17,7 +17,7 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
      */
     public function up(Schema $schema)
     {
-        $migration = $this->getMigrationMock(Mock\FileBasedMigration::class);
+        $migration = $this->getMigrationMock(FileBasedMigrationMock::class);
         $this->checkMigrations($migration, $migration->getUpgradeMigrations());
         $migration->preUp($schema);
         self::assertNotEmpty($migration->getQueries());
@@ -34,7 +34,7 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
      */
     public function down(Schema $schema)
     {
-        $migration = $this->getMigrationMock(Mock\FileBasedMigration::class);
+        $migration = $this->getMigrationMock(FileBasedMigrationMock::class);
         $this->checkMigrations($migration, $migration->getDowngradeMigrations());
         $migration->preDown($schema);
         self::assertNotEmpty($migration->getQueries());

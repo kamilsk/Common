@@ -1,14 +1,13 @@
 <?php
 
-namespace OctoLab\Common\Doctrine\Migration\Mock;
+namespace OctoLab\Common\Doctrine\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
-use OctoLab\Common\Doctrine\Migration\FileBasedMigration as AbstractMigration;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class FileBasedMigration extends AbstractMigration
+class FileBasedMigrationMock extends FileBasedMigration
 {
     /**
      * {@inheritdoc}

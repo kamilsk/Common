@@ -11,8 +11,8 @@ use Doctrine\DBAL\Types\Type;
 abstract class IntegerMapType extends Type
 {
     /**
-     * @return string[] where the key is what is stored in the database, and the value is a human readable description
-     * <pre>[int => string]</pre>
+     * @return array<int,string> where the key is what is stored in the database,
+     * and the value is a human readable description
      */
     abstract public function getValues();
 

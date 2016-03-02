@@ -1,7 +1,8 @@
 <?php
 
-namespace OctoLab\Common\Config;
+namespace OctoLab\Common\Config\Loader;
 
+use OctoLab\Common\Config\Parser;
 use OctoLab\Common\TestCase;
 use Symfony\Component\Config\FileLocator;
 
@@ -16,8 +17,8 @@ class YamlFileLoaderTest extends TestCase
     public function loaderProvider()
     {
         return [
-            [new Loader\YamlFileLoader(new FileLocator(), new Parser\SymfonyYamlParser())],
-            [new Loader\YamlFileLoader(new FileLocator(), new Parser\DipperYamlParser())],
+            [new YamlFileLoader(new FileLocator(), new Parser\SymfonyYamlParser())],
+            [new YamlFileLoader(new FileLocator(), new Parser\DipperYamlParser())],
         ];
     }
 
@@ -25,9 +26,9 @@ class YamlFileLoaderTest extends TestCase
      * @test
      * @dataProvider loaderProvider
      *
-     * @param Loader\YamlFileLoader $loader
+     * @param YamlFileLoader $loader
      */
-    public function getContent(Loader\YamlFileLoader $loader)
+    public function getContent(YamlFileLoader $loader)
     {
         self::assertTrue(is_array($loader->getContent()));
     }
@@ -36,9 +37,9 @@ class YamlFileLoaderTest extends TestCase
      * @test
      * @dataProvider loaderProvider
      *
-     * @param Loader\YamlFileLoader $loader
+     * @param YamlFileLoader $loader
      */
-    public function load(Loader\YamlFileLoader $loader)
+    public function load(YamlFileLoader $loader)
     {
         $loader->load($this->getConfigPath());
         $expected = [
@@ -84,9 +85,9 @@ class YamlFileLoaderTest extends TestCase
      * @test
      * @dataProvider loaderProvider
      *
-     * @param Loader\YamlFileLoader $loader
+     * @param YamlFileLoader $loader
      */
-    public function supports(Loader\YamlFileLoader $loader)
+    public function supports(YamlFileLoader $loader)
     {
         self::assertTrue($loader->supports('/some/path/to/supported.yml'));
         self::assertFalse($loader->supports('/some/path/to/unsupported.json'));

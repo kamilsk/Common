@@ -1,14 +1,13 @@
 <?php
 
-namespace OctoLab\Common\Doctrine\Migration\Mock;
+namespace OctoLab\Common\Doctrine\Migration;
 
 use Doctrine\DBAL\Driver;
-use OctoLab\Common\Doctrine\Migration\DriverBasedMigration as AbstractMigration;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-final class DriverBasedMigration extends AbstractMigration
+final class DriverBasedMigrationMock extends DriverBasedMigration
 {
     /**
      * @param string $sql

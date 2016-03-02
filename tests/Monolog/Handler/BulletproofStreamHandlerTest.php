@@ -124,7 +124,7 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
      */
     private function getBasePath()
     {
-        return realpath(__DIR__ . '/Mock/logs');
+        return realpath(__DIR__ . '/logs');
     }
 
     /**

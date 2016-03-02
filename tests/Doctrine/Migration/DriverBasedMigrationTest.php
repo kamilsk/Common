@@ -54,7 +54,7 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
     {
         static $reflection, $property;
         if (!$reflection) {
-            $reflection = new \ReflectionClass(Mock\DriverBasedMigration::class);
+            $reflection = new \ReflectionClass(DriverBasedMigrationMock::class);
             $property = $reflection->getProperty('connection');
             $property->setAccessible(true);
         }
