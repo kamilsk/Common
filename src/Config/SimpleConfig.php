@@ -60,7 +60,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      *
      * @api
      */
@@ -70,7 +70,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      *
      * @api
      */
@@ -105,7 +105,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      *
      * @api
      */
@@ -115,7 +115,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      *
      * @api
      */
@@ -125,7 +125,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      *
      * @api
      */
@@ -135,7 +135,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      *
      * @api
      */
@@ -145,33 +145,13 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      *
      * @api
      */
     public function rewind()
     {
         reset($this->config);
-    }
-
-    /**
-     * @param array $base
-     *
-     * @return array
-     */
-    protected function merge(array $base)
-    {
-        $mixtures = array_slice(func_get_args(), 1);
-        foreach ($mixtures as $mixture) {
-            foreach ($mixture as $key => $value) {
-                if (is_array($value) && isset($base[$key]) && is_array($base[$key])) {
-                    $base[$key] = $this->merge($base[$key], $value);
-                } else {
-                    $base[$key] = $value;
-                }
-            }
-        }
-        return $base;
     }
 
     /**

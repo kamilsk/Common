@@ -2,13 +2,25 @@
 
 namespace OctoLab\Common\Config;
 
+use OctoLab\Common\TestCase;
 use Symfony\Component\Config\FileLocator;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class YamlConfigTest extends \PHPUnit_Framework_TestCase
+class YamlConfigTest extends TestCase
 {
+    /**
+     * @test
+     * @dataProvider yamlConfigProvider
+     *
+     * @param YamlConfig $config
+     */
+    public function replace(YamlConfig $config)
+    {
+        self::assertNotEmpty($config->replace(['placeholder' => 'placeholder'])->toArray());
+    }
+
     /**
      * @test
      * @expectedException \DomainException
@@ -17,5 +29,18 @@ class YamlConfigTest extends \PHPUnit_Framework_TestCase
     {
         $config = new YamlConfig(new Loader\YamlFileLoader(new FileLocator(), new Parser\SymfonyYamlParser()));
         $config->load('not_yaml.file', true);
+    }
+
+    /**
+     * @return array[]
+     */
+    public function yamlConfigProvider()
+    {
+        return [
+            [
+                (new YamlConfig(new Loader\YamlFileLoader(new FileLocator(), new Parser\SymfonyYamlParser())))
+                    ->load($this->getConfigPath())
+            ],
+        ];
     }
 }

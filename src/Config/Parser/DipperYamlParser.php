@@ -10,7 +10,7 @@ use secondparty\Dipper\Dipper;
 class DipperYamlParser implements ParserInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function parse($content)
     {

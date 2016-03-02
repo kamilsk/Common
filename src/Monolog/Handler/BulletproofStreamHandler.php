@@ -12,7 +12,7 @@ use Monolog\Handler\StreamHandler;
 class BulletproofStreamHandler extends StreamHandler
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      *
      * @api
      */

@@ -1,6 +1,7 @@
 <?php
 
 namespace OctoLab\Common\Config;
+use OctoLab\Common\Config\Util\ArrayHelper;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
@@ -40,7 +41,7 @@ class JsonConfig extends SimpleConfig
         }
         $this->fileLoader->load($resource);
         foreach (array_reverse($this->fileLoader->getContent()) as $data) {
-            $this->config = $this->merge($this->config, $data);
+            $this->config = ArrayHelper::merge($this->config, $data);
         }
         return $this;
     }

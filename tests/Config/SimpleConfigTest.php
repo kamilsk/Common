@@ -59,6 +59,17 @@ class SimpleConfigTest extends TestCase
      *
      * @param SimpleConfig $config
      */
+    public function pathNotExists(SimpleConfig $config)
+    {
+        self::assertArrayNotHasKey('unknown:path', $config);
+    }
+
+    /**
+     * @test
+     * @dataProvider simpleConfigProvider
+     *
+     * @param SimpleConfig $config
+     */
     public function offsetGet(SimpleConfig $config)
     {
         self::assertNotEmpty($config['component']);

@@ -13,7 +13,7 @@ class Math
      * @param int $limit
      * @param int $offset
      *
-     * @return array
+     * @return array<string,integer>
      */
     public function getTwoTablePagination($tableCount1, $tableCount2, $limit, $offset = 0)
     {
