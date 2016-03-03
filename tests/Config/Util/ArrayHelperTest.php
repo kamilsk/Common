@@ -7,6 +7,9 @@ namespace OctoLab\Common\Config\Util;
  */
 class ArrayHelperTest extends \PHPUnit_Framework_TestCase
 {
+    public function findByPath()
+    {}
+
     /**
      * @test
      * @dataProvider arrayDataProvider
@@ -19,6 +22,9 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase
     {
         self::assertEquals(ArrayHelper::merge($a, $b), $expected);
     }
+
+    public function transform()
+    {}
 
     /**
      * @return array[]

@@ -24,7 +24,7 @@ $ composer require kamilsk/common:~1.1
 
 ## Pulse of repository
 
-### [Changelog](info/CHANGELOG.md)
+### [Changelog](CHANGELOG.md)
 
 ### General information
 
@@ -59,7 +59,7 @@ $ composer require kamilsk/common:~1.1
 
 ## Contributing
 
-Please see [CONTRIBUTING](info/CONTRIBUTING.md) and [CONDUCT](info/CONDUCT.md) for details.
+Please see [CONTRIBUTING](.github/CONTRIBUTING.md) and [CONDUCT](.github/CONDUCT.md) for details.
 
 ## Security
 
@@ -67,4 +67,4 @@ If you discover any security related issues, please email feedback@octolab.org i
 
 ## License
 
-The MIT License (MIT). Please see [License File](info/LICENSE.md) for more information.
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

@@ -32,11 +32,11 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     public function replace(array $placeholders)
     {
         if (isset($this->config['parameters'])) {
-            $this->transform($this->config['parameters'], $placeholders);
+            Util\ArrayHelper::transform($this->config['parameters'], $placeholders);
             $placeholders = array_merge($this->config['parameters'], $placeholders);
             unset($this->config['parameters']);
         }
-        $this->transform($this->config, $placeholders);
+        Util\ArrayHelper::transform($this->config, $placeholders);
         return $this;
     }
 
@@ -53,7 +53,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
             unset($this->config['imports']);
         }
         if (isset($this->config['parameters'])) {
-            $this->transform($this->config, $this->config['parameters']);
+            Util\ArrayHelper::transform($this->config, $this->config['parameters']);
             unset($this->config['parameters']);
         }
         return $this->config;
@@ -66,7 +66,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
      */
     public function offsetExists($offset)
     {
-        return (bool) $this->resolvePath($offset);
+        return (bool) Util\ArrayHelper::findByPath($this->config, $offset);
     }
 
     /**
@@ -76,7 +76,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
      */
     public function offsetGet($offset)
     {
-        return $this->resolvePath($offset);
+        return Util\ArrayHelper::findByPath($this->config, $offset);
     }
 
     /**
@@ -152,55 +152,5 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     public function rewind()
     {
         reset($this->config);
-    }
-
-    /**
-     * @param array $array
-     * @param array $placeholders
-     */
-    protected function transform(array &$array, array $placeholders)
-    {
-        $wrap = function (&$value) {
-            $value = sprintf('/%s/', (string) $value);
-        };
-        array_walk_recursive($array, function (&$param) use ($wrap, $placeholders) {
-            if (strpos($param, 'const(') === 0) {
-                if (preg_match('/^const\((.*)\)$/', $param, $matches) && defined($matches[1])) {
-                    $param = constant($matches[1]);
-                }
-            } elseif (preg_match('/^%([^%]+)%$/', $param, $matches)) {
-                $placeholder = $matches[1];
-                if (isset($placeholders[$placeholder])) {
-                    $param = $placeholders[$placeholder];
-                }
-            } elseif (preg_match_all('/%([^%]+)%/', $param, $matches)) {
-                array_walk($matches[0], $wrap);
-                $pattern = $matches[0];
-                $replacement = array_intersect_key($placeholders, array_flip($matches[1]));
-                $param = preg_replace($pattern, $replacement, (string) $param);
-            }
-        });
-    }
-
-    /**
-     * @param string $path
-     *
-     * @return mixed null if not exists
-     */
-    private function resolvePath($path)
-    {
-        if (mb_strpos($path, ':')) {
-            $chain = explode(':', $path);
-            $scope = $this->config;
-            foreach ($chain as $i => $key) {
-                if (!is_array($scope) || !isset($scope[$key])) {
-                    $scope = null;
-                    break;
-                }
-                $scope = $scope[$key];
-            }
-            return $scope;
-        }
-        return isset($this->config[$path]) ? $this->config[$path] : null;
     }
 }

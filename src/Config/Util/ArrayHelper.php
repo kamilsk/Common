@@ -8,6 +8,29 @@ namespace OctoLab\Common\Config\Util;
 class ArrayHelper
 {
     /**
+     * @param array $scope
+     * @param string $path
+     *
+     * @return mixed null if not exists
+     *
+     * @api
+     */
+    public static function findByPath(array $scope, $path)
+    {
+        if (mb_strpos($path, ':')) {
+            $chain = explode(':', $path);
+            foreach ($chain as $i => $key) {
+                if (!is_array($scope) || !isset($scope[$key])) {
+                    return null;
+                }
+                $scope = $scope[$key];
+            }
+            return $scope;
+        }
+        return isset($scope[$path]) ? $scope[$path] : null;
+    }
+
+    /**
      * Merges two or more arrays into one recursively.
      *
      * Based on yii\helpers\BaseArrayHelper::merge.
@@ -15,6 +38,8 @@ class ArrayHelper
      * @return array
      *
      * @author Qiang Xue <qiang.xue@gmail.com>
+     *
+     * @api
      */
     public static function merge()
     {
@@ -33,5 +58,35 @@ class ArrayHelper
             }
         }
         return $res;
+    }
+
+    /**
+     * @param array $target
+     * @param array $placeholders
+     *
+     * @api
+     */
+    public static function transform(array &$target, array $placeholders)
+    {
+        $wrap = function (&$value) {
+            $value = sprintf('/%s/', (string) $value);
+        };
+        array_walk_recursive($target, function (&$param) use ($wrap, $placeholders) {
+            if (strpos($param, 'const(') === 0) {
+                if (preg_match('/^const\((.*)\)$/', $param, $matches) && defined($matches[1])) {
+                    $param = constant($matches[1]);
+                }
+            } elseif (preg_match('/^%([^%]+)%$/', $param, $matches)) {
+                $placeholder = $matches[1];
+                if (isset($placeholders[$placeholder])) {
+                    $param = $placeholders[$placeholder];
+                }
+            } elseif (preg_match_all('/%([^%]+)%/', $param, $matches)) {
+                array_walk($matches[0], $wrap);
+                $pattern = $matches[0];
+                $replacement = array_intersect_key($placeholders, array_flip($matches[1]));
+                $param = preg_replace($pattern, $replacement, (string) $param);
+            }
+        });
     }
 }
