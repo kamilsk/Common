@@ -72,15 +72,8 @@ class ArrayHelper
             $value = sprintf('/%s/', (string) $value);
         };
         array_walk_recursive($target, function (&$param) use ($wrap, $placeholders) {
-            if (strpos($param, 'const(') === 0) {
-                if (preg_match('/^const\((.*)\)$/', $param, $matches) && defined($matches[1])) {
-                    $param = constant($matches[1]);
-                }
-            } elseif (preg_match('/^%([^%]+)%$/', $param, $matches)) {
-                $placeholder = $matches[1];
-                if (isset($placeholders[$placeholder])) {
-                    $param = $placeholders[$placeholder];
-                }
+            if (preg_match('/^const\((.*)\)$/', $param, $matches) && defined($matches[1])) {
+                $param = constant($matches[1]);
             } elseif (preg_match_all('/%([^%]+)%/', $param, $matches)) {
                 array_walk($matches[0], $wrap);
                 $pattern = $matches[0];
