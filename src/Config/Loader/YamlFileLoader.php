@@ -23,6 +23,7 @@ class YamlFileLoader extends FileLoader
      */
     public function __construct(FileLocatorInterface $locator, ParserInterface $parser)
     {
+        trigger_error(sprintf('%s is deprecated.', __CLASS__), E_USER_DEPRECATED);
         parent::__construct($locator);
         $this->parser = $parser;
         $this->extension = 'yml';

@@ -25,6 +25,7 @@ class JsonFileLoader extends FileLoader
      */
     public function __construct(FileLocatorInterface $locator, $depth = 512, $options = 0)
     {
+        trigger_error(sprintf('%s is deprecated.', __CLASS__), E_USER_DEPRECATED);
         parent::__construct($locator);
         $this->depth = $depth;
         $this->options = $options;

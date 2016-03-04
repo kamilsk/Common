@@ -21,7 +21,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     }
 
     /**
-     * @deprecated
+     * @deprecated internals
      *
      * @param array $placeholders
      *
@@ -31,6 +31,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
      */
     public function replace(array $placeholders)
     {
+        trigger_error(sprintf('%s is deprecated.', __METHOD__), E_USER_DEPRECATED);
         if (isset($this->config['parameters'])) {
             Util\ArrayHelper::transform($this->config['parameters'], $placeholders);
             $placeholders = array_merge($this->config['parameters'], $placeholders);
@@ -41,7 +42,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     }
 
     /**
-     * @deprecated
+     * @deprecated use {@link ArrayAccess} interface
      *
      * @return array
      *
@@ -49,6 +50,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
      */
     public function toArray()
     {
+        trigger_error(sprintf('%s is deprecated.', __METHOD__), E_USER_DEPRECATED);
         if (isset($this->config['imports'])) {
             unset($this->config['imports']);
         }
