@@ -7,6 +7,7 @@ use Symfony\Component\Config\FileLocatorInterface;
 
 /**
  * @deprecated moved to {@link FileLoader}
+ * @todo will removed since 2.0 version
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */

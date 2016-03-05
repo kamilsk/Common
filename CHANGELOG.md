@@ -32,3 +32,5 @@ CHANGELOG for 1.x
 - Move not specific classes from [CilexServiceProviders](https://github.com/kamilsk/CilexServiceProviders)
   ([#17](/../../issues/17))
 - [git diff](/../../compare/0.4.2...1.0)
+
+_Follows [Keep a CHANGELOG](http://keepachangelog.com)_

@@ -22,6 +22,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
 
     /**
      * @deprecated internals
+     * @todo will removed since 2.0 version
      *
      * @param array $placeholders
      *
@@ -43,6 +44,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
 
     /**
      * @deprecated use {@link ArrayAccess} interface
+     * @todo will removed since 2.0 version
      *
      * @return array
      *

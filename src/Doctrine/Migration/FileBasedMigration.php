@@ -18,6 +18,8 @@ use OctoLab\Common\Doctrine\Util\Parser;
  * - minor version extends major version
  * IMPORTANT: carefully use inheritance to avoid bugs associated with need to override "up" and "down" migration list.
  *
+ * @todo adopt Semantic Versioning {@link http://semver.org}
+ *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 abstract class FileBasedMigration extends AbstractMigration

@@ -6,7 +6,7 @@
 
 ## Installation
 
-### Git (for participate in development)
+### Git (development)
 
 [Fork it before](https://github.com/kamilsk/Common/fork).
 
@@ -16,7 +16,7 @@ $ cd Common && composer install
 $ git remote add upstream git@github.com:kamilsk/Common.git
 ```
 
-### Composer (for use in project)
+### Composer (production)
 
 ```bash
 $ composer require kamilsk/common:~1.1

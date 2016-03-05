@@ -7,6 +7,8 @@ use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
 
 /**
+ * @todo will replaced by ExtendedConfigResolver since 2.0 version
+ *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class ConfigResolver
