@@ -8,6 +8,7 @@
   - merge content of all included files and remove imports
 - `Util\Math::getTwoTablePagination()` is static now
 - `Config\Util\ArrayHelper` moved to `Util\ArrayHelper`
+- `Doctrine\Migration\FileBasedMigration` follows [SemVer](http://semver.org)
 - [git diff](/../../compare/1.2...master)
 
 ### Added

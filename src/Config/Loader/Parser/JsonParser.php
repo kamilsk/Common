@@ -16,6 +16,8 @@ class JsonParser implements ParserInterface
      * @param bool $assoc
      * @param int $options
      * @param int $depth
+     *
+     * @api
      */
     public function __construct($assoc = true, $options = 0, $depth = 512)
     {

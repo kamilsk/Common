@@ -56,7 +56,7 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array<int, array[]>
+     * @return array<int,array[]>
      */
     public function arrayProvider()
     {

@@ -22,7 +22,7 @@ class FileBasedMigrationMock extends FileBasedMigration
      */
     public function getMajorVersion()
     {
-        return '7';
+        return '2';
     }
 
     /**
@@ -30,7 +30,7 @@ class FileBasedMigrationMock extends FileBasedMigration
      */
     public function getUpgradeMigrations()
     {
-        return ['ISSUE-7/upgrade.sql'];
+        return ['ISSUE-29/upgrade.sql'];
     }
 
     /**
@@ -38,7 +38,7 @@ class FileBasedMigrationMock extends FileBasedMigration
      */
     public function getDowngradeMigrations()
     {
-        return ['ISSUE-7/downgrade.sql'];
+        return ['ISSUE-29/downgrade.sql'];
     }
 
     /**

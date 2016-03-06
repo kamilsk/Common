@@ -9,16 +9,19 @@ use OctoLab\Common\Doctrine\Util\Parser;
 /**
  * File based migrations.
  *
- * Pattern: [/path/to/sql/migrations/][<major version>/][<ticket>/(upgrade|downgrade).sql]
+ * Pattern: [/path/to/sql/migrations/][<major version>/[<minor version>/[<patch>/]]][<ticket>/(upgrade|downgrade).sql]
  * - getBasePath()
  * - getMajorVersion()
+ * - getMinorVersion()
+ * - getPatch()
  * - item of migration list
  * Strategy:
  * - major version extends FileBasedMigration
  * - minor version extends major version
- * IMPORTANT: carefully use inheritance to avoid bugs associated with need to override "up" and "down" migration list.
+ * - patch extends minor version
+ * IMPORTANT: caution use inheritance to avoid bugs associated with need to override "up" and "down" migration list.
  *
- * @todo adopt Semantic Versioning {@link http://semver.org}
+ * @see http://semver.org
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
@@ -54,6 +57,22 @@ abstract class FileBasedMigration extends AbstractMigration
      * @api
      */
     abstract public function getDowngradeMigrations();
+
+    /**
+     * @return null|string
+     */
+    public function getMinorVersion()
+    {
+        return null;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPatch()
+    {
+        return null;
+    }
 
     /**
      * @return string[]
@@ -114,14 +133,13 @@ abstract class FileBasedMigration extends AbstractMigration
      */
     public function getFullPath($migration)
     {
-        $path = $this->getBasePath();
-        if ($this->getMajorVersion()) {
-            $path .= '/';
-            $path .= $this->getMajorVersion();
-        }
-        $path .= '/';
-        $path .= $migration;
-        return $path;
+        return implode('/', array_merge(
+            [$this->getBasePath()],
+            array_filter([$this->getMajorVersion(), $this->getMinorVersion(), $this->getPatch()], function ($value) {
+                return $value === '0' || (bool)$value;
+            }),
+            [$migration]
+        ));
     }
 
     protected function routine()

@@ -11,14 +11,13 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @dataProvider schemaProvider
+     * @dataProvider migrationProvider
      *
+     * @param FileBasedMigration $migration
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(FileBasedMigration $migration, Schema $schema)
     {
-        $migration = $this->getMigrationMock(FileBasedMigrationMock::class);
-        $this->checkMigrations($migration, $migration->getUpgradeMigrations());
         $migration->preUp($schema);
         self::assertNotEmpty($migration->getQueries());
         $migration->up($schema);
@@ -28,14 +27,13 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider schemaProvider
+     * @dataProvider migrationProvider
      *
+     * @param FileBasedMigration $migration
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(FileBasedMigration $migration, Schema $schema)
     {
-        $migration = $this->getMigrationMock(FileBasedMigrationMock::class);
-        $this->checkMigrations($migration, $migration->getDowngradeMigrations());
         $migration->preDown($schema);
         self::assertNotEmpty($migration->getQueries());
         $migration->down($schema);
@@ -46,31 +44,10 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array[]
      */
-    public function schemaProvider()
+    public function migrationProvider()
     {
         return [
-            [new Schema()],
+            [(new \ReflectionClass(FileBasedMigrationMock::class))->newInstanceWithoutConstructor(), new Schema()],
         ];
-    }
-
-    /**
-     * @param string $class
-     *
-     * @return FileBasedMigration
-     */
-    private function getMigrationMock($class)
-    {
-        return (new \ReflectionClass($class))->newInstanceWithoutConstructor();
-    }
-
-    /**
-     * @param FileBasedMigration $migration
-     * @param string[] $files
-     */
-    private function checkMigrations(FileBasedMigration $migration, array $files)
-    {
-        foreach ($files as $file) {
-            self::assertFileExists($migration->getFullPath($file));
-        }
     }
 }

@@ -24,6 +24,8 @@ class YamlParser implements ParserInterface
      * @param bool $objectForMap
      *
      * @see \Symfony\Component\Yaml\Parser::parse
+     *
+     * @api
      */
     public function __construct($exceptionOnInvalidType = false, $objectSupport = false, $objectForMap = false)
     {

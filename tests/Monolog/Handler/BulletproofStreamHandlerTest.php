@@ -16,23 +16,6 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
      *
      * @param Logger $logger
      */
-    public function writeToRemovedLogFile(Logger $logger)
-    {
-        $stream = $this->getStream();
-        $logger->pushHandler(new StreamHandler($stream));
-        $logger->info('Start logging.');
-        self::assertFileExists($stream);
-        $this->rm($stream);
-        $logger->info('End logging.');
-        self::assertFileNotExists($stream);
-    }
-
-    /**
-     * @test
-     * @dataProvider loggerProvider
-     *
-     * @param Logger $logger
-     */
     public function writeToMovedLogFile(Logger $logger)
     {
         $stream = $this->getStream();
@@ -56,30 +39,11 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
      *
      * @param Logger $logger
      */
-    public function bulletproofWriteToRemovedLogFile(Logger $logger)
-    {
-        $stream = $this->getStream();
-        $logger->pushHandler(new BulletproofStreamHandler($stream, Logger::INFO, true, 0644));
-        $logger->info('Start logging.');
-        self::assertFileExists($stream);
-        $this->rm($stream);
-        $logger->info('End logging.');
-        self::assertFileExists($stream);
-        self::assertContains('End logging.', file_get_contents($stream));
-        $this->rm($stream);
-    }
-
-    /**
-     * @test
-     * @dataProvider loggerProvider
-     *
-     * @param Logger $logger
-     */
     public function bulletproofWriteToMovedLogFile(Logger $logger)
     {
         $stream = $this->getStream();
         $newStreamLocation = $this->getNewStreamLocation();
-        $logger->pushHandler(new BulletproofStreamHandler($stream, Logger::INFO, true, 0644));
+        $logger->pushHandler(new BulletproofStreamHandler($stream));
         $logger->info('Start logging.');
         self::assertFileExists($stream);
         $this->mv($stream, $newStreamLocation);
@@ -89,12 +53,48 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
         self::assertFileExists($newStreamLocation);
         self::assertContains('Start logging.', file_get_contents($newStreamLocation));
         self::assertContains('End logging.', file_get_contents($stream));
+        $this->rm($stream);
         $this->rm($newStreamLocation);
+    }
+
+    /**
+     * @test
+     * @dataProvider loggerProvider
+     *
+     * @param Logger $logger
+     */
+    public function writeToRemovedLogFile(Logger $logger)
+    {
+        $stream = $this->getStream();
+        $logger->pushHandler(new StreamHandler($stream));
+        $logger->info('Start logging.');
+        self::assertFileExists($stream);
+        $this->rm($stream);
+        $logger->info('End logging.');
+        self::assertFileNotExists($stream);
+    }
+
+    /**
+     * @test
+     * @dataProvider loggerProvider
+     *
+     * @param Logger $logger
+     */
+    public function bulletproofWriteToRemovedLogFile(Logger $logger)
+    {
+        $stream = $this->getStream();
+        $logger->pushHandler(new BulletproofStreamHandler($stream));
+        $logger->info('Start logging.');
+        self::assertFileExists($stream);
+        $this->rm($stream);
+        $logger->info('End logging.');
+        self::assertFileExists($stream);
+        self::assertContains('End logging.', file_get_contents($stream));
         $this->rm($stream);
     }
 
     /**
-     * @return array[]
+     * @return array<int,Logger[]>
      */
     public function loggerProvider()
     {
@@ -108,7 +108,7 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
      */
     private function getStream()
     {
-        return $this->getBasePath() . '/test.log';
+        return __DIR__ . '/test.log';
     }
 
     /**
@@ -116,15 +116,7 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
      */
     private function getNewStreamLocation()
     {
-        return $this->getBasePath() . '/moved.log';
-    }
-
-    /**
-     * @return string
-     */
-    private function getBasePath()
-    {
-        return realpath(__DIR__ . '/logs');
+        return __DIR__ . '/moved.log';
     }
 
     /**

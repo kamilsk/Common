@@ -15,7 +15,7 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @dataProvider migrationDataProvider
+     * @dataProvider migrationProvider
      *
      * @param DriverBasedMigration $migration
      * @param Schema $schema
@@ -32,7 +32,7 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider migrationDataProvider
+     * @dataProvider migrationProvider
      *
      * @param DriverBasedMigration $migration
      * @param Schema $schema
@@ -50,7 +50,7 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array[]
      */
-    public function migrationDataProvider()
+    public function migrationProvider()
     {
         static $reflection, $property;
         if (!$reflection) {
@@ -74,7 +74,11 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
     {
         $queries = $migration->getQueries();
         self::assertNotEmpty($queries);
-        self::assertContains($dbms, current($queries));
-        self::assertContains($direction, current($queries));
+        array_walk($queries, function ($value) use ($dbms) {
+            self::assertContains($dbms, $value);
+        });
+        array_walk($queries, function ($value) use ($direction) {
+            self::assertContains($direction, $value);
+        });
     }
 }

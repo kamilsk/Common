@@ -12,7 +12,7 @@ use Doctrine\DBAL\Schema\Schema;
  * - migration determines a preparatory method (must be protected or public), e.g. preMysqliUp, preIbmDb2Down, etc.
  * - the preparatory method fills the "queries" property
  * - "up" and "down" run these queries
- * IMPORTANT: do not use inheritance chain to avoid bugs associated with need to override "up" and "down" hooks.
+ * IMPORTANT: caution use inheritance chain to avoid bugs associated with need to override "up" and "down" hooks.
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */

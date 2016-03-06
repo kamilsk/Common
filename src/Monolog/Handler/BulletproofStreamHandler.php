@@ -13,8 +13,6 @@ class BulletproofStreamHandler extends StreamHandler
 {
     /**
      * {@inheritdoc}
-     *
-     * @api
      */
     protected function write(array $record)
     {

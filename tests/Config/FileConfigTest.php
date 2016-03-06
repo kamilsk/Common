@@ -35,7 +35,7 @@ class FileConfigTest extends TestCase
     }
 
     /**
-     * @return array<array<int, FileConfig>>
+     * @return array<int,FileConfig[]>
      */
     public function fileConfigProvider()
     {

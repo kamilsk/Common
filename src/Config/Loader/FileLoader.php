@@ -42,7 +42,7 @@ class FileLoader extends AbstractFileLoader
     public function load($resource, $type = null)
     {
         $content = [];
-        $path = (string) $this->locator->locate($resource);
+        $path = (string)$this->locator->locate($resource);
         if (!$this->supports($resource)) {
             throw new \InvalidArgumentException(sprintf('File "%s" is not supported.', $resource));
         }
@@ -56,7 +56,7 @@ class FileLoader extends AbstractFileLoader
                     $ignoreErrors = false;
                 } else {
                     $resource = $import['resource'];
-                    $ignoreErrors = isset($import['ignore_errors']) ? (bool) $import['ignore_errors'] : false;
+                    $ignoreErrors = isset($import['ignore_errors']) ? (bool)$import['ignore_errors'] : false;
                 }
                 $content[] = $this->import($resource, null, $ignoreErrors, $path);
             }

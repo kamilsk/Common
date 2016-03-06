@@ -77,7 +77,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array<int, Json[]>
+     * @return array<int,Json[]>
      */
     public function jsonProvider()
     {

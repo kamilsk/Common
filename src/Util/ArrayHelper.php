@@ -69,7 +69,7 @@ class ArrayHelper
     public static function transform(array &$target, array $placeholders)
     {
         $wrap = function (&$value) {
-            $value = sprintf('/%s/', (string) $value);
+            $value = sprintf('/%s/', (string)$value);
         };
         array_walk_recursive($target, function (&$param) use ($wrap, $placeholders) {
             if (preg_match('/^const\((.*)\)$/', $param, $matches) && defined($matches[1])) {
@@ -78,7 +78,7 @@ class ArrayHelper
                 array_walk($matches[0], $wrap);
                 $pattern = $matches[0];
                 $replacement = array_intersect_key($placeholders, array_flip($matches[1]));
-                $param = preg_replace($pattern, $replacement, (string) $param);
+                $param = preg_replace($pattern, $replacement, (string)$param);
             }
         });
     }

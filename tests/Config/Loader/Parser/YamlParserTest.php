@@ -46,7 +46,7 @@ class YamlParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array<int, YamlParser[]>
+     * @return array<int,YamlParser[]>
      */
     public function parserProvider()
     {
