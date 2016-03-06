@@ -2,7 +2,7 @@
 
 namespace OctoLab\Common\Config\Loader;
 
-use OctoLab\Common\Config\Util\ArrayHelper;
+use OctoLab\Common\Util\ArrayHelper;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Config\Loader\FileLoader as AbstractFileLoader;
 

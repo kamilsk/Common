@@ -1,6 +1,6 @@
 <?php
 
-namespace OctoLab\Common\Config\Util;
+namespace OctoLab\Common\Util;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>

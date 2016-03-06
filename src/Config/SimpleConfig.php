@@ -2,6 +2,8 @@
 
 namespace OctoLab\Common\Config;
 
+use OctoLab\Common\Util\ArrayHelper;
+
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
@@ -34,11 +36,11 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     {
         trigger_error(sprintf('%s is deprecated.', __METHOD__), E_USER_DEPRECATED);
         if (isset($this->config['parameters'])) {
-            Util\ArrayHelper::transform($this->config['parameters'], $placeholders);
+            ArrayHelper::transform($this->config['parameters'], $placeholders);
             $placeholders = array_merge($this->config['parameters'], $placeholders);
             unset($this->config['parameters']);
         }
-        Util\ArrayHelper::transform($this->config, $placeholders);
+        ArrayHelper::transform($this->config, $placeholders);
         return $this;
     }
 
@@ -57,7 +59,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
             unset($this->config['imports']);
         }
         if (isset($this->config['parameters'])) {
-            Util\ArrayHelper::transform($this->config, $this->config['parameters']);
+            ArrayHelper::transform($this->config, $this->config['parameters']);
             unset($this->config['parameters']);
         }
         return $this->config;
@@ -70,7 +72,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
      */
     public function offsetExists($offset)
     {
-        return (bool) Util\ArrayHelper::findByPath($this->config, $offset);
+        return (bool) ArrayHelper::findByPath($this->config, $offset);
     }
 
     /**
@@ -80,7 +82,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
      */
     public function offsetGet($offset)
     {
-        return Util\ArrayHelper::findByPath($this->config, $offset);
+        return ArrayHelper::findByPath($this->config, $offset);
     }
 
     /**

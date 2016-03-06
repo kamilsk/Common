@@ -25,6 +25,7 @@ class FileConfigTest extends TestCase
     /**
      * @test
      * @dataProvider fileConfigProvider
+     * @expectedException \InvalidArgumentException
      *
      * @param FileConfig $config
      */
