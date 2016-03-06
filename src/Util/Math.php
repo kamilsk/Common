@@ -14,8 +14,10 @@ class Math
      * @param int $offset
      *
      * @return array<string,int>
+     *
+     * @api
      */
-    public function getTwoTablePagination($tableCount1, $tableCount2, $limit, $offset = 0)
+    public static function getTwoTablePagination($tableCount1, $tableCount2, $limit, $offset = 0)
     {
         $offset1 = $offset > $tableCount1 ? $tableCount1 : $offset;
         $limit1 = min($limit, $tableCount1 - $offset1);

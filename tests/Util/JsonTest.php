@@ -12,7 +12,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      */
     public function construct()
     {
-        $json = new Json(true, JSON_UNESCAPED_UNICODE, 2);
+        $json = new Json(true, JSON_UNESCAPED_UNICODE);
         self::assertNotEquals(json_encode(['a' => 'б']), $json->encode(['a' => 'б']));
     }
 
@@ -22,7 +22,34 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      *
      * @param Json $json
      */
-    public function encode(Json $json)
+    public function decodeSuccess(Json $json)
+    {
+        self::assertEquals(json_decode(json_encode([])), $json->decode($json->encode([])));
+    }
+
+    /**
+     * @test
+     * @dataProvider jsonProvider
+     *
+     * @param Json $json
+     */
+    public function decodeFail(Json $json)
+    {
+        try {
+            $json->decode($json->encode(['a' => ['b' => ['c' => false]]]), false, 2);
+            self::assertTrue(false);
+        } catch (\OverflowException $e) {
+            self::assertTrue(true);
+        }
+    }
+
+    /**
+     * @test
+     * @dataProvider jsonProvider
+     *
+     * @param Json $json
+     */
+    public function encodeSuccess(Json $json)
     {
         self::assertJsonStringEqualsJsonString(json_encode([]), $json->encode([]));
     }
@@ -33,53 +60,24 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      *
      * @param Json $json
      */
-    public function decode(Json $json)
+    public function encodeFail(Json $json)
     {
-        self::assertEquals(json_decode(json_encode([])), $json->decode($json->encode([])));
-    }
-
-    /**
-     * @test
-     * @dataProvider jsonProvider
-     * @expectedException \InvalidArgumentException
-     *
-     * @param Json $json
-     */
-    public function throwInvalidArgumentException(Json $json)
-    {
-        $json->encode("\xB1\x31");
-    }
-
-    /**
-     * @test
-     * @dataProvider jsonProvider
-     * @expectedException \OverflowException
-     *
-     * @param Json $json
-     */
-    public function throwOverflowException(Json $json)
-    {
-        $json->decode($json->encode(['a' => ['b' => ['c' => false]]]), false, 2);
-    }
-
-    /**
-     * @test
-     * @dataProvider jsonProvider
-     * @expectedException \UnexpectedValueException
-     *
-     * @param Json $json
-     */
-    public function throwUnexpectedValueException(Json $json)
-    {
+        try {
+            $json->encode("\xB1\x31");
+            self::assertTrue(false);
+        } catch (\InvalidArgumentException $e) {
+            self::assertTrue(true);
+        }
         $reflection = new \ReflectionObject($json);
         $method = $reflection->getMethod('getException');
         $method->setAccessible(true);
         $json->encode([]);
-        throw $method->invoke($json);
+        $exception = $method->invoke($json);
+        self::assertInstanceOf(\UnexpectedValueException::class, $exception);
     }
 
     /**
-     * @return array[]
+     * @return array<int, Json[]>
      */
     public function jsonProvider()
     {

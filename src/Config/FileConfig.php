@@ -2,8 +2,6 @@
 
 namespace OctoLab\Common\Config;
 
-use OctoLab\Common\Config\Util\ArrayHelper;
-
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
@@ -40,10 +38,7 @@ class FileConfig extends SimpleConfig
         if ($check && !$this->fileLoader->supports($resource)) {
             throw new \DomainException(sprintf('File "%s" is not supported.', $resource));
         }
-        $this->fileLoader->load($resource);
-        foreach (array_reverse($this->fileLoader->getContent()) as $data) {
-            $this->config = ArrayHelper::merge($this->config, $data);
-        }
+        $this->config = $this->fileLoader->load($resource);
         return $this;
     }
 }

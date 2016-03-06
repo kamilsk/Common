@@ -15,11 +15,11 @@ class FileConfigTest extends TestCase
      * @dataProvider fileConfigProvider
      *
      * @param FileConfig $config
+     * @param string $extension
      */
-    public function loadSuccess(FileConfig $config)
+    public function loadSuccess(FileConfig $config, $extension)
     {
-        $config->load($this->getConfigPath('config', 'json'));
-        $config->load($this->getConfigPath('config', 'yml'));
+        $config->load($this->getConfigPath('config', $extension));
     }
 
     /**
@@ -39,7 +39,8 @@ class FileConfigTest extends TestCase
     public function fileConfigProvider()
     {
         return [
-            [new FileConfig(new Loader\FileLoaderTest(new FileLocator()))],
+            [new FileConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\JsonParser())), 'json'],
+            [new FileConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\YamlParser())), 'yml'],
         ];
     }
 }

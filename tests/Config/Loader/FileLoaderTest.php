@@ -92,7 +92,7 @@ class FileLoaderTest extends TestCase
     }
 
     /**
-     * @return array<array<int, FileLoader>>
+     * @return array<int, FileLoader[]>
      */
     public function loaderProvider()
     {

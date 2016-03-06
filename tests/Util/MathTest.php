@@ -19,8 +19,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
      */
     public function twoTablePagination($tableCount1, $tableCount2, $limit, $offset, array $expected)
     {
-        $helper = new Math();
-        $actual = $helper->getTwoTablePagination($tableCount1, $tableCount2, $limit, $offset);
+        $actual = Math::getTwoTablePagination($tableCount1, $tableCount2, $limit, $offset);
         self::assertEquals($expected, $actual);
     }
 

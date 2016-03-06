@@ -29,39 +29,6 @@ class Json
     }
 
     /**
-     * @param mixed $value
-     * @param int|null $options
-     * @param int|null $depth
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException when
-     *  JSON_ERROR_STATE_MISMATCH
-     *  JSON_ERROR_CTRL_CHAR
-     *  JSON_ERROR_SYNTAX
-     *  JSON_ERROR_UTF8
-     *  JSON_ERROR_INF_OR_NAN
-     *  JSON_ERROR_UNSUPPORTED_TYPE
-     * @throws \OverflowException when
-     *  JSON_ERROR_DEPTH
-     *  JSON_ERROR_RECURSION
-     * @throws \UnexpectedValueException otherwise
-     *
-     * @api
-     */
-    public function encode($value, $options = null, $depth = null)
-    {
-        $options = $options === null ? $this->options : $options;
-        $depth = $depth === null ? $this->depth : $depth;
-        $json = json_encode($value, $options, $depth);
-        $error = json_last_error();
-        if ($error) {
-            throw $this->getException();
-        }
-        return $json;
-    }
-
-    /**
      * @param string $json
      * @param bool|null $assoc
      * @param int|null $depth
@@ -93,6 +60,39 @@ class Json
             throw $this->getException();
         }
         return $result;
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $options
+     * @param int|null $depth
+     *
+     * @return string
+     *
+     * @throws \InvalidArgumentException when
+     *  JSON_ERROR_STATE_MISMATCH
+     *  JSON_ERROR_CTRL_CHAR
+     *  JSON_ERROR_SYNTAX
+     *  JSON_ERROR_UTF8
+     *  JSON_ERROR_INF_OR_NAN
+     *  JSON_ERROR_UNSUPPORTED_TYPE
+     * @throws \OverflowException when
+     *  JSON_ERROR_DEPTH
+     *  JSON_ERROR_RECURSION
+     * @throws \UnexpectedValueException otherwise
+     *
+     * @api
+     */
+    public function encode($value, $options = null, $depth = null)
+    {
+        $options = $options === null ? $this->options : $options;
+        $depth = $depth === null ? $this->depth : $depth;
+        $json = json_encode($value, $options, $depth);
+        $error = json_last_error();
+        if ($error) {
+            throw $this->getException();
+        }
+        return $json;
     }
 
     /**

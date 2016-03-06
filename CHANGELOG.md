@@ -6,6 +6,7 @@
 - now `Config\Loader\FileLoader::load()`
   - return content and `Config\Loader\FileLoader` does not store it
   - merge content of all included files and remove imports
+- `Util\Math::getTwoTablePagination()` is static now
 - [git diff](/../../compare/1.2...master)
 
 ### Added

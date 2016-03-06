@@ -46,7 +46,7 @@ class JsonParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array<array<int, JsonParser>>
+     * @return array<int, JsonParser[]>
      */
     public function parserProvider()
     {
