@@ -6,9 +6,9 @@
 - now `Config\Loader\FileLoader::load()`
   - return content and `Config\Loader\FileLoader` does not store it
   - merge content of all included files and remove imports
-- `Util\Math::getTwoTablePagination()` is static now
 - `Config\Util\ArrayHelper` moved to `Util\ArrayHelper`
 - `Doctrine\Migration\FileBasedMigration` follows [SemVer](http://semver.org)
+- `Doctrine\Util\Parser::extractSql()` is static now
 - [git diff](/../../compare/1.2...master)
 
 ### Added
@@ -17,6 +17,8 @@
 - classes
   - `Config\Loader\Parser\JsonParser`
   - `Config\Loader\Parser\YamlParser`
+- methods
+  - `Doctrine\Util\Limiter::getTwoTablePagination()`
 
 ### Removed
 - interfaces
@@ -26,8 +28,10 @@
   - `Config\Parser\SymfonyYamlParser`, use `Config\Loader\Parser\YamlParser` instead
   - `Config\Loader\JsonFileLoader`, use `Config\Loader\FileLoader` with `Config\Loader\Parser\JsonParser` instead
   - `Config\Loader\YamlFileLoader`, use `Config\Loader\FileLoader` with `Config\Loader\Parser\YamlParser` instead
+  - `Util\Math`, merged with `Doctrine\Util\Limiter` now
 - methods
   - `Config\Loader\FileLoader::getContent()`, use `Config\Loader\FileLoader::load()` and save output
+  - `Util\Math::getTwoTablePagination()`, use static `Doctrine\Util\Limiter::getTwoTablePagination()` instead
 
 ## [1.2] - 2016-03-06
 ### Changed

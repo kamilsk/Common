@@ -9,21 +9,20 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @dataProvider sqlDataProvider
+     * @dataProvider sqlQueryProvider
      *
      * @param string $text
      * @param string[] $expected
      */
     public function extractSql($text, array $expected)
     {
-        $parser = new Parser();
-        self::assertEquals($expected, $parser->extractSql($text));
+        self::assertEquals($expected, Parser::extractSql($text));
     }
 
     /**
      * @return array[]
      */
-    public function sqlDataProvider()
+    public function sqlQueryProvider()
     {
         return [
             [

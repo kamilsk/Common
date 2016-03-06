@@ -9,7 +9,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @dataProvider dumpToStringProvider
+     * @dataProvider valueProvider
      *
      * @param mixed $value
      * @param string $expected
@@ -20,9 +20,9 @@ class DumperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
-    public function dumpToStringProvider()
+    public function valueProvider()
     {
         $object = new \stdClass();
         $object->property = 'value';
