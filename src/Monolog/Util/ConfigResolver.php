@@ -344,11 +344,8 @@ class ConfigResolver
      */
     private function resolveConstructorArguments(\ReflectionClass $reflection, array $arguments)
     {
-        if (defined('HHVM_VERSION') || (defined('PHP_VERSION') && version_compare(PHP_VERSION, '7.0', '>='))) {
-            $key = array_keys($arguments)[0];
-        } else {
-            $key = key($arguments);
-        }
+        // compatible with HHVM and PHP 7.0
+        $key = array_keys($arguments)[0];
         if (is_int($key)) {
             return $arguments;
         } else {

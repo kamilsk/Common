@@ -1,15 +1,27 @@
-CHANGELOG for 1.x
-=================
+[CHANGELOG](http://keepachangelog.com)
+======================================
 
 ## [Unreleased]
+### Changed
+- [git diff](/../../compare/1.2...master)
+
+## [1.2] - 2016-03-06
 ### Changed
 - Up code quality and code coverage ([#19](../../issues/19))
 - Support import section in config as strings ([#25](../../issues/25))
 - [git diff](/../../compare/1.1...master)
 
 ### Deprecated
-- `SimpleConfig::replace`
-- `SimpleConfig::toArray`
+- package `secondparty/dipper`
+- class `Config\JsonConfig`
+- class `Config\YamlConfig`
+- class `Config\Loader\JsonFileLoader`
+- class `Config\Loader\YamlFileLoader`
+- interface `Config\Parser\ParserInterface`
+- class `Config\Parser\SymfonyYamlParser`
+- class `Config\Parser\DipperYamlParser`
+- method `Config\SimpleConfig::replace`
+- method `Config\SimpleConfig::toArray`
 
 ## [1.1] - 2016-01-07
 ### Added
@@ -32,5 +44,3 @@ CHANGELOG for 1.x
 - Move not specific classes from [CilexServiceProviders](https://github.com/kamilsk/CilexServiceProviders)
   ([#17](/../../issues/17))
 - [git diff](/../../compare/0.4.2...1.0)
-
-_Follows [Keep a CHANGELOG](http://keepachangelog.com)_
