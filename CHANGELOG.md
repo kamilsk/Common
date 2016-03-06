@@ -9,7 +9,7 @@
 ### Changed
 - Up code quality and code coverage ([#19](../../issues/19))
 - Support import section in config as strings ([#25](../../issues/25))
-- [git diff](/../../compare/1.1...master)
+- [git diff](/../../compare/1.1...1.2)
 
 ### Deprecated
 - package `secondparty/dipper`
