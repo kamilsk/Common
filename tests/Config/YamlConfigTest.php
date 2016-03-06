@@ -27,7 +27,7 @@ class YamlConfigTest extends TestCase
      */
     public function throwDomainException()
     {
-        $config = new YamlConfig(new Loader\YamlFileLoader(new FileLocator(), new Parser\SymfonyYamlParser()));
+        $config = new YamlConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\YamlParser()));
         $config->load('not_yaml.file', true);
     }
 
@@ -38,7 +38,7 @@ class YamlConfigTest extends TestCase
     {
         return [
             [
-                (new YamlConfig(new Loader\YamlFileLoader(new FileLocator(), new Parser\SymfonyYamlParser())))
+                (new YamlConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\YamlParser())))
                     ->load($this->getConfigPath())
             ],
         ];

@@ -3,8 +3,7 @@
 namespace OctoLab\Common\Doctrine\Util;
 
 use Doctrine\DBAL\Types\Type;
-use OctoLab\Common\Config\Loader\YamlFileLoader;
-use OctoLab\Common\Config\Parser\SymfonyYamlParser;
+use OctoLab\Common\Config\Loader;
 use OctoLab\Common\Config\YamlConfig;
 use OctoLab\Common\TestCase;
 use Symfony\Component\Config\FileLocator;
@@ -19,7 +18,7 @@ class ConfigResolverTest extends TestCase
      */
     public function resolve()
     {
-        $config = (new YamlConfig(new YamlFileLoader(new FileLocator(), new SymfonyYamlParser())))
+        $config = (new YamlConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\YamlParser())))
             ->load($this->getConfigPath('doctrine/config'))
             ->toArray()
         ;

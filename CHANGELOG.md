@@ -3,7 +3,28 @@
 
 ## [Unreleased]
 ### Changed
+- now `Config\Loader\FileLoader::load()`
+  - return content and `Config\Loader\FileLoader` does not store it
+  - merge content of all included files and remove imports
 - [git diff](/../../compare/1.2...master)
+
+### Added
+- interfaces
+  - `Config\Loader\Parser\ParserInterface`
+- classes
+  - `Config\Loader\Parser\JsonParser`
+  - `Config\Loader\Parser\YamlParser`
+
+### Removed
+- interfaces
+  - `Config\Parser\ParserInterface`, use `Config\Loader\Parser\ParserInterface` instead
+- classes
+  - `Config\Parser\DipperYamlParser`, not supported now
+  - `Config\Parser\SymfonyYamlParser`, use `Config\Loader\Parser\YamlParser` instead
+  - `Config\Loader\JsonFileLoader`, use `Config\Loader\FileLoader` with `Config\Loader\Parser\JsonParser` instead
+  - `Config\Loader\YamlFileLoader`, use `Config\Loader\FileLoader` with `Config\Loader\Parser\YamlParser` instead
+- methods
+  - `Config\Loader\FileLoader::getContent()`, use `Config\Loader\FileLoader::load()` and save output
 
 ## [1.2] - 2016-03-06
 ### Changed

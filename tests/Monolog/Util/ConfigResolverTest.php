@@ -11,8 +11,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\MemoryPeakUsageProcessor;
 use Monolog\Processor\UidProcessor;
-use OctoLab\Common\Config\Loader\YamlFileLoader;
-use OctoLab\Common\Config\Parser\SymfonyYamlParser;
+use OctoLab\Common\Config\Loader;
 use OctoLab\Common\Config\YamlConfig;
 use OctoLab\Common\Monolog\Processor\TimeExecutionProcessor;
 use OctoLab\Common\TestCase;
@@ -85,7 +84,7 @@ class ConfigResolverTest extends TestCase
      */
     public function resolve(ConfigResolver $resolver)
     {
-        $config = (new YamlConfig(new YamlFileLoader(new FileLocator(), new SymfonyYamlParser())))
+        $config = (new YamlConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\YamlParser())))
             ->load($this->getConfigPath('monolog/config'))
             ->replace(['root_dir' => dirname(__DIR__)])
             ->toArray()
@@ -125,7 +124,7 @@ class ConfigResolverTest extends TestCase
      */
     public function resolveCascade(ConfigResolver $resolver)
     {
-        $config = (new YamlConfig(new YamlFileLoader(new FileLocator(), new SymfonyYamlParser())))
+        $config = (new YamlConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\YamlParser())))
             ->load($this->getConfigPath('monolog/cascade'))
             ->replace(['root_dir' => dirname(__DIR__)])
             ->toArray()

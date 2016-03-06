@@ -27,7 +27,7 @@ class JsonConfigTest extends TestCase
      */
     public function throwDomainException()
     {
-        $config = new JsonConfig(new Loader\JsonFileLoader(new FileLocator()));
+        $config = new JsonConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\JsonParser()));
         $config->load('not_json.file', true);
     }
 
@@ -38,7 +38,7 @@ class JsonConfigTest extends TestCase
     {
         return [
             [
-                (new JsonConfig(new Loader\JsonFileLoader(new FileLocator())))
+                (new JsonConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\JsonParser())))
                     ->load($this->getConfigPath('config', 'json'))
             ],
         ];

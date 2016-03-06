@@ -2,57 +2,68 @@
 
 namespace OctoLab\Common\Config\Loader;
 
+use OctoLab\Common\Config\Util\ArrayHelper;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Config\Loader\FileLoader as AbstractFileLoader;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-abstract class FileLoader extends AbstractFileLoader
+class FileLoader extends AbstractFileLoader
 {
-    /** @var array */
-    protected $content;
-    /** @var string */
-    protected $extension;
+    /** @var Parser\ParserInterface */
+    private $parser;
 
     /**
      * @param FileLocatorInterface $locator
+     * @param Parser\ParserInterface $parser
      *
      * @api
      */
-    public function __construct(FileLocatorInterface $locator)
+    public function __construct(FileLocatorInterface $locator, Parser\ParserInterface $parser)
     {
         parent::__construct($locator);
-        $this->content = [];
-    }
-
-    /**
-     * @return array
-     *
-     * @api
-     */
-    public function getContent()
-    {
-        return $this->content;
+        $this->parser = $parser;
     }
 
     /**
      * @param string $resource
      * @param string|null $type
      *
+     * @return array
+     *
      * @throws \InvalidArgumentException
+     * @throws \Exception
      * @throws \Symfony\Component\Config\Exception\FileLoaderLoadException
+     * @throws \Symfony\Component\Config\Exception\FileLoaderImportCircularReferenceException
      *
      * @api
      */
     public function load($resource, $type = null)
     {
+        $content = [];
         $path = (string) $this->locator->locate($resource);
-        $content = $this->loadFile($path);
-        if (null !== $content) {
-            $this->content[] = $content;
-            $this->parseImports($content, $path);
+        if (!$this->supports($resource)) {
+            throw new \InvalidArgumentException(sprintf('File "%s" is not supported.', $resource));
         }
+        $fileContent = $this->loadFile($path);
+        $content[] = $fileContent;
+        if (isset($fileContent['imports'])) {
+            $this->setCurrentDir(dirname($path));
+            foreach ($fileContent['imports'] as $import) {
+                if (is_string($import)) {
+                    $resource = $import;
+                    $ignoreErrors = false;
+                } else {
+                    $resource = $import['resource'];
+                    $ignoreErrors = isset($import['ignore_errors']) ? (bool) $import['ignore_errors'] : false;
+                }
+                $content[] = $this->import($resource, null, $ignoreErrors, $path);
+            }
+        }
+        $content = call_user_func_array([ArrayHelper::class, 'merge'], $content);
+        unset($content['imports']);
+        return $content;
     }
 
     /**
@@ -65,41 +76,18 @@ abstract class FileLoader extends AbstractFileLoader
      */
     public function supports($resource, $type = null)
     {
-        return is_string($resource) && !strcasecmp($this->extension, pathinfo($resource, PATHINFO_EXTENSION));
+        return $this->parser->supports(pathinfo($resource, PATHINFO_EXTENSION));
     }
 
     /**
      * @param string $file
      *
      * @return mixed
-     */
-    abstract protected function loadFile($file);
-
-    /**
-     * @param array $content
-     * @param string $sourceResource
      *
-     * @throws \Symfony\Component\Config\Exception\FileLoaderLoadException
+     * @throws \Exception
      */
-    protected function parseImports($content, $sourceResource)
+    private function loadFile($file)
     {
-        if (!isset($content['imports'])) {
-            return;
-        }
-        $this->setCurrentDir(dirname($sourceResource));
-        foreach ($content['imports'] as $import) {
-            $isString = is_string($import);
-            $hasResource = !$isString && isset($import['resource']);
-            if ($isString || $hasResource) {
-                if ($isString) {
-                    $resource = $import;
-                    $ignoreErrors = false;
-                } else {
-                    $resource = $import['resource'];
-                    $ignoreErrors = isset($import['ignore_errors']) ? (bool) $import['ignore_errors'] : false;
-                }
-                $this->import($resource, null, $ignoreErrors, $sourceResource);
-            }
-        }
+        return $this->parser->parse(file_get_contents($file));
     }
 }
