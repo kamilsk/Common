@@ -9,6 +9,16 @@ class JsonParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     */
+    public function construct()
+    {
+        $parser = new JsonParser(false, 0, 512);
+        $json = '{"а":"б"}';
+        self::assertEquals(json_decode($json), $parser->parse($json));
+    }
+
+    /**
+     * @test
      * @dataProvider parserProvider
      *
      * @param ParserInterface $parser

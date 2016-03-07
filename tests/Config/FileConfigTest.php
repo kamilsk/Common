@@ -19,7 +19,8 @@ class FileConfigTest extends TestCase
      */
     public function loadSuccess(FileConfig $config, $extension)
     {
-        $config->load($this->getConfigPath('config', $extension));
+        $config->load($this->getConfigPath('config', $extension), ['placeholder' => 'placeholder']);
+        self::assertEquals(E_ALL, $config['app:constant']);
     }
 
     /**
@@ -31,7 +32,7 @@ class FileConfigTest extends TestCase
      */
     public function loadFail(FileConfig $config)
     {
-        $config->load($this->getConfigPath('config', 'xml'));
+        $config->load($this->getConfigPath('config', 'xml'), ['placeholder' => 'placeholder']);
     }
 
     /**

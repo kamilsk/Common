@@ -38,15 +38,13 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase
     public function transform()
     {
         $target = [
-            'component' => [
-                'parameter' => 'base component\'s parameter will be overwritten by root config',
+            'app' => [
                 'placeholder_parameter' => '%placeholder%',
                 'constant' => 'const(E_ALL)',
             ],
         ];
         $expected = [
-            'component' => [
-                'parameter' => 'base component\'s parameter will be overwritten by root config',
+            'app' => [
                 'placeholder_parameter' => 'transformed',
                 'constant' => E_ALL,
             ],

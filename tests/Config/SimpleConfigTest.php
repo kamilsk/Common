@@ -11,24 +11,27 @@ class SimpleConfigTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider simpleConfigProvider
-     *
-     * @param SimpleConfig $config
      */
-    public function replace(SimpleConfig $config)
+    public function construct()
     {
-        self::assertNotEmpty($config->replace(['placeholder' => 'placeholder'])->toArray());
-    }
-
-    /**
-     * @test
-     * @dataProvider simpleConfigProvider
-     *
-     * @param SimpleConfig $config
-     */
-    public function toArray(SimpleConfig $config)
-    {
-        self::assertNotEmpty($config->toArray());
+        $config = new SimpleConfig(
+            [
+                'parameters' => ['dir' => __DIR__],
+                'app' => [
+                    'current_dir' => '%dir%',
+                ],
+            ]
+        );
+        self::assertEquals(__DIR__, $config['app:current_dir']);
+        $config = new SimpleConfig(
+            [
+                'app' => [
+                    'current_dir' => '%dir%',
+                ],
+            ],
+            ['dir' => __DIR__]
+        );
+        self::assertEquals(__DIR__, $config['app:current_dir']);
     }
 
     /**
@@ -40,6 +43,7 @@ class SimpleConfigTest extends TestCase
     public function offsetExists(SimpleConfig $config)
     {
         self::assertArrayHasKey('component', $config);
+        self::assertArrayNotHasKey('unknown', $config);
     }
 
     /**
@@ -48,20 +52,10 @@ class SimpleConfigTest extends TestCase
      *
      * @param SimpleConfig $config
      */
-    public function pathExists(SimpleConfig $config)
+    public function offsetExistsByPath(SimpleConfig $config)
     {
         self::assertArrayHasKey('component:parameter', $config);
-    }
-
-    /**
-     * @test
-     * @dataProvider simpleConfigProvider
-     *
-     * @param SimpleConfig $config
-     */
-    public function pathNotExists(SimpleConfig $config)
-    {
-        self::assertArrayNotHasKey('unknown:path', $config);
+        self::assertArrayNotHasKey('component:unknown', $config);
     }
 
     /**
@@ -72,7 +66,11 @@ class SimpleConfigTest extends TestCase
      */
     public function offsetGet(SimpleConfig $config)
     {
-        self::assertNotEmpty($config['component']);
+        $expected = [
+            'parameter' => 'base component\'s parameter will be overwritten by root config',
+            'base_parameter' => 'base parameter will not be overwritten',
+        ];
+        self::assertEquals($expected, $config['component']);
     }
 
     /**
@@ -81,9 +79,9 @@ class SimpleConfigTest extends TestCase
      *
      * @param SimpleConfig $config
      */
-    public function pathGet(SimpleConfig $config)
+    public function offsetGetByPath(SimpleConfig $config)
     {
-        self::assertEquals(E_ALL, $config['component:constant']);
+        self::assertEquals(E_ALL, $config['app:constant']);
     }
 
     /**
@@ -185,7 +183,7 @@ class SimpleConfigTest extends TestCase
     public function simpleConfigProvider()
     {
         return [
-            [new SimpleConfig(require $this->getConfigPath('config', 'php'))],
+            [new SimpleConfig(require $this->getConfigPath('config', 'php'), ['placeholder' => 'placeholder'])],
         ];
     }
 }

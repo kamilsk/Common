@@ -23,22 +23,20 @@ class FileConfig extends SimpleConfig
 
     /**
      * @param string $resource
-     * @param bool $check
+     * @param array $placeholders
      *
      * @return $this
      *
      * @throws \InvalidArgumentException
+     * @throws \Exception
      * @throws \Symfony\Component\Config\Exception\FileLoaderLoadException
-     * @throws \DomainException
+     * @throws \Symfony\Component\Config\Exception\FileLoaderImportCircularReferenceException
      *
      * @api
      */
-    public function load($resource, $check = false)
+    public function load($resource, array $placeholders = [])
     {
-        if ($check && !$this->fileLoader->supports($resource)) {
-            throw new \DomainException(sprintf('File "%s" is not supported.', $resource));
-        }
         $this->config = $this->fileLoader->load($resource);
-        return $this;
+        return $this->transform($placeholders);
     }
 }

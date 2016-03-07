@@ -3,6 +3,9 @@
 
 ## [Unreleased]
 ### Changed
+- `$check` was removed from `Config\FileConfig::load()`
+- `Config\FileConfig::load()` now wait `$placeholders` for the second argument
+- `Config\SimpleConfig::__construct()` now wait `$placeholders` for the second argument
 - now `Config\Loader\FileLoader::load()`
   - return content and `Config\Loader\FileLoader` does not store it
   - merge content of all included files and remove imports
@@ -24,12 +27,17 @@
 - interfaces
   - `Config\Parser\ParserInterface`, use `Config\Loader\Parser\ParserInterface` instead
 - classes
+  - `Config\JsonConfig`, use `Config\FileConfig` instead
+  - `Config\YamlConfig`, use `Config\FileConfig` instead
   - `Config\Parser\DipperYamlParser`, not supported now
   - `Config\Parser\SymfonyYamlParser`, use `Config\Loader\Parser\YamlParser` instead
   - `Config\Loader\JsonFileLoader`, use `Config\Loader\FileLoader` with `Config\Loader\Parser\JsonParser` instead
   - `Config\Loader\YamlFileLoader`, use `Config\Loader\FileLoader` with `Config\Loader\Parser\YamlParser` instead
   - `Util\Math`, merged with `Doctrine\Util\Limiter` now
 - methods
+  - `Config\SimpleConfig::toArray()`, use array access instead
+  - `Config\SimpleConfig::transform()`, now it is internal, use `$placeholders` argument in
+  `Config\FileConfig::load()` and `Config\SimpleConfig::__construct()`
   - `Config\Loader\FileLoader::getContent()`, use `Config\Loader\FileLoader::load()` and save output
   - `Util\Math::getTwoTablePagination()`, use static `Doctrine\Util\Limiter::getTwoTablePagination()` instead
 

@@ -19,14 +19,16 @@ class FileLoaderTest extends TestCase
     public function loadSuccess(FileLoader $loader)
     {
         $expected = [
-            'component' => [
-                'parameter' => 'base parameter will be overwritten',
-                'placeholder_parameter' => '%placeholder%',
-                'constant' => 'const(E_ALL)',
-                'base_parameter' => 'base parameter will not be overwritten',
-            ],
             'parameters' => [
                 'parameter' => 'will overwrite parameter',
+            ],
+            'app' => [
+                'placeholder_parameter' => '%placeholder%',
+                'constant' => 'const(E_ALL)',
+            ],
+            'component' => [
+                'parameter' => 'base parameter will be overwritten',
+                'base_parameter' => 'base parameter will not be overwritten',
             ],
         ];
         switch (true) {
