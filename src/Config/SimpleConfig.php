@@ -21,7 +21,7 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     public function __construct(array $config = [], array $placeholders = [])
     {
         $this->config = $config;
-        if ($config && (!empty($config['parameters']) || !empty($placeholders))) {
+        if (!empty($config) && (!empty($config['parameters']) || !empty($placeholders))) {
             $this->transform($placeholders);
         }
     }
