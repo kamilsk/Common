@@ -1,1 +1,1 @@
-yaml: invalid: true
+yaml: { invalid }: true
