@@ -146,7 +146,7 @@ class LoggerLocator implements \ArrayAccess
     /**
      * @quality [D]
      *
-     * @param array<string,array|string> $config
+     * @param array $config
      * <pre>['channels' => [...], 'handlers' => [...], 'processors' => [...], 'formatters' => [...]]</pre>
      * @param string $defaultName is default logger name
      *
@@ -170,11 +170,6 @@ class LoggerLocator implements \ArrayAccess
         }
         foreach ($this->internal['rules'] as $key => $_) {
             if (isset($config[$key])) {
-                if (!is_array($config[$key])) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Configuration "%s" of "%s" is invalid.', Dumper::dumpToString($config[$key]), $key)
-                    );
-                }
                 foreach ($config[$key] as $id => $componentConfig) {
                     $this->storeComponentConfig($key, $id, $componentConfig);
                     $this->storeComponentDependencies($key, $id, $componentConfig);
