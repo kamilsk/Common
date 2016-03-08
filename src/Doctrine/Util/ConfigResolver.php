@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Type;
 class ConfigResolver
 {
     /**
-     * @todo up code quality [B]
+     * @quality [B]
      *
      * @param array $config
      *

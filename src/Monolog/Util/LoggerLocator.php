@@ -5,7 +5,7 @@ namespace OctoLab\Common\Monolog\Util;
 use Monolog\Logger;
 
 /**
- * @todo up code quality [B]
+ * @quality [B]
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
@@ -17,7 +17,7 @@ class LoggerLocator implements \ArrayAccess
     private $defaultChannel;
 
     /**
-     * @todo up code quality [B]
+     * @quality [B]
      *
      * @param array<string,array> $config
      * @param string $defaultName
@@ -144,7 +144,7 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
-     * @todo up code quality [D]
+     * @quality [D]
      *
      * @param array<string,array|string> $config
      * <pre>['channels' => [...], 'handlers' => [...], 'processors' => [...], 'formatters' => [...]]</pre>
@@ -170,7 +170,7 @@ class LoggerLocator implements \ArrayAccess
         }
         foreach ($this->internal['rules'] as $key => $_) {
             if (isset($config[$key])) {
-                if (is_array($config[$key])) {
+                if (!is_array($config[$key])) {
                     throw new \InvalidArgumentException(
                         sprintf('Configuration "%s" of "%s" is invalid.', Dumper::dumpToString($config[$key]), $key)
                     );
@@ -184,7 +184,7 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
-     * @todo up code quality [B]
+     * @quality [B]
      *
      * @param string $key
      * @param string $id
@@ -254,7 +254,7 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
-     * @todo up code quality [B]
+     * @quality [B]
      *
      * @param string $key
      * @param string $id
@@ -325,7 +325,7 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
-     * @todo up code quality [B]
+     * @quality [B]
      *
      * @param \ReflectionClass $reflection
      * @param array $arguments
