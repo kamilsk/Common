@@ -13,9 +13,7 @@ class YamlParserTest extends \PHPUnit_Framework_TestCase
     public function construct()
     {
         $parser = new YamlParser(true, true, true);
-        $expected = new \stdClass();
-        $expected->yaml = 'valid';
-        self::assertEquals($expected, $parser->parse('yaml: valid'));
+        self::assertNotEmpty($parser->parse('yaml: valid'));
     }
 
     /**

@@ -144,8 +144,6 @@ class LoggerLocator implements \ArrayAccess
      * <pre>['channels' => [...], 'handlers' => [...], 'processors' => [...], 'formatters' => [...]]</pre>
      * @param string $defaultName is default logger name
      *
-     * @return $this
-     *
      * @throws \InvalidArgumentException
      */
     private function resolve(array $config, $defaultName)
@@ -165,7 +163,7 @@ class LoggerLocator implements \ArrayAccess
             }
         }
         foreach ($this->internal['rules'] as $key => $_) {
-            if (isset($config[$key])) {
+            if (isset($config[$key]) && is_array($config[$key])) {
                 foreach ($config[$key] as $id => $componentConfig) {
                     $this->storeComponentConfig($key, $id, $componentConfig);
                     $this->storeComponentDependencies($key, $id, $componentConfig);

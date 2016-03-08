@@ -36,7 +36,7 @@ checks:
       max_length: 120
     more_specific_types_in_doc_comments: true
     naming_conventions:
-      local_variable: '^[a-z][a-zA-Z0-9]*$'
+      local_variable: '^(?:[a-z][a-zA-Z0-9]*|_)$'
       abstract_class_name: '^[A-Z][a-zA-Z0-9]*$'
       utility_class_name: '^[A-Z][a-zA-Z0-9]*$'
       constant_name: '^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$'
