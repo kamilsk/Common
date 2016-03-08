@@ -12,6 +12,15 @@ class FileLoaderTest extends TestCase
 {
     /**
      * @test
+     */
+    public function construct()
+    {
+        $loader = new FileLoader(new FileLocator(), new Parser\JsonParser());
+        self::assertTrue($loader->supports('config.json'));
+    }
+
+    /**
+     * @test
      * @dataProvider loaderProvider
      *
      * @param FileLoader $loader

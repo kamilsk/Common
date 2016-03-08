@@ -4,22 +4,19 @@ namespace OctoLab\Common\Doctrine\Util;
 
 use Doctrine\DBAL\Types\Type;
 use OctoLab\Common\Config\Loader;
-use OctoLab\Common\Config\FileConfig;
 use OctoLab\Common\Doctrine\Type\IntegerMapTypeMock;
-use OctoLab\Common\TestCase;
-use Symfony\Component\Config\FileLocator;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class ConfigResolverTest extends TestCase
+class ConfigResolverTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      */
     public function resolve()
     {
-        (new ConfigResolver())->resolve([
+        ConfigResolver::resolve([
             'default_connection' => 'mysql',
             'connections' => [
                 'mysql' => [

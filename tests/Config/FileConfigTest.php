@@ -12,6 +12,15 @@ class FileConfigTest extends TestCase
 {
     /**
      * @test
+     */
+    public function construct()
+    {
+        $config = new FileConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\JsonParser()));
+        self::assertArrayNotHasKey('unknown', $config);
+    }
+
+    /**
+     * @test
      * @dataProvider fileConfigProvider
      *
      * @param FileConfig $config

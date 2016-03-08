@@ -16,7 +16,7 @@ class ConfigResolver
      *
      * @api
      */
-    public function resolve(array $config)
+    public static function resolve(array $config)
     {
         if (!empty($config['types'])) {
             foreach ($config['types'] as $name => $class) {

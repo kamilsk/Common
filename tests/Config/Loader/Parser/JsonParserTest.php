@@ -25,8 +25,7 @@ class JsonParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parseSuccess(ParserInterface $parser)
     {
-        $content = '{"json": "valid"}';
-        $result = $parser->parse($content);
+        $result = $parser->parse('{"json": "valid"}');
         self::assertArrayHasKey('json', $result);
     }
 
@@ -39,8 +38,7 @@ class JsonParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parseFail(ParserInterface $parser)
     {
-        $content = '{"json": invalid}';
-        $parser->parse($content);
+        $parser->parse('{"json": invalid}');
     }
 
     /**

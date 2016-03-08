@@ -1,7 +1,7 @@
 [CHANGELOG](http://keepachangelog.com)
 ======================================
 
-## [Unreleased]
+## [2.0] - 2016-03-08
 ### Changed
 - `$check` was removed from `Config\FileConfig::load()`
 - `Config\FileConfig::load()` now wait `$placeholders` for the second argument
@@ -11,8 +11,44 @@
   - merge content of all included files and remove imports
 - `Config\Util\ArrayHelper` moved to `Util\ArrayHelper`
 - `Doctrine\Migration\FileBasedMigration` follows [SemVer](http://semver.org)
+- `Doctrine\Util\ConfigResolver::resolve()` is static now
 - `Doctrine\Util\Parser::extractSql()` is static now
-- [git diff](/../../compare/1.2...master)
+- `Monolog` configuration now completely changed:
+```yml
+channels:
+  app:
+    arguments: { name: APP }
+    handlers:
+    - file
+    - chrome
+  db:
+    name: app
+    handlers:
+    - file
+    processors:
+    - memory
+    - time
+handlers:
+  file:
+    type: stream
+    arguments: ["%root%/info.log", info, true]
+    formatter: normal
+  chrome:
+    type: chrome_php
+    arguments: { level: info, bubble: true }
+    formatter: chrome
+processors:
+  memory:
+    type: memory_usage
+  time:
+    class: OctoLab\Common\Monolog\Processor\TimeExecutionProcessor
+formatters:
+  normal:
+    type: normalizer
+  chrome:
+    type: chrome_php
+```
+- [git diff](/../../compare/1.2...2.0)
 
 ### Added
 - interfaces
@@ -20,6 +56,7 @@
 - classes
   - `Config\Loader\Parser\JsonParser`
   - `Config\Loader\Parser\YamlParser`
+  - `Monolog\Util\LoggerLocator` with lazy loading support
 - methods
   - `Doctrine\Util\Limiter::getTwoTablePagination()`
 
@@ -33,6 +70,7 @@
   - `Config\Parser\SymfonyYamlParser`, use `Config\Loader\Parser\YamlParser` instead
   - `Config\Loader\JsonFileLoader`, use `Config\Loader\FileLoader` with `Config\Loader\Parser\JsonParser` instead
   - `Config\Loader\YamlFileLoader`, use `Config\Loader\FileLoader` with `Config\Loader\Parser\YamlParser` instead
+  - `Monolog\Util\ConfigResolver`, use `Monolog\Util\LoggerLocator` instead
   - `Util\Math`, merged with `Doctrine\Util\Limiter` now
 - methods
   - `Config\SimpleConfig::toArray()`, use array access instead
