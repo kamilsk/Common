@@ -5,6 +5,8 @@ namespace OctoLab\Common\Monolog\Util;
 use Monolog\Logger;
 
 /**
+ * @todo up code quality [B]
+ *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
 class LoggerLocator implements \ArrayAccess
@@ -15,6 +17,8 @@ class LoggerLocator implements \ArrayAccess
     private $defaultChannel;
 
     /**
+     * @todo up code quality [B]
+     *
      * @param array<string,array> $config
      * @param string $defaultName
      *
@@ -140,6 +144,8 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
+     * @todo up code quality [D]
+     *
      * @param array<string,array|string> $config
      * <pre>['channels' => [...], 'handlers' => [...], 'processors' => [...], 'formatters' => [...]]</pre>
      * @param string $defaultName is default logger name
@@ -163,7 +169,12 @@ class LoggerLocator implements \ArrayAccess
             }
         }
         foreach ($this->internal['rules'] as $key => $_) {
-            if (isset($config[$key]) && is_array($config[$key])) {
+            if (isset($config[$key])) {
+                if (is_array($config[$key])) {
+                    throw new \InvalidArgumentException(
+                        sprintf('Configuration "%s" of "%s" is invalid.', Dumper::dumpToString($config[$key]), $key)
+                    );
+                }
                 foreach ($config[$key] as $id => $componentConfig) {
                     $this->storeComponentConfig($key, $id, $componentConfig);
                     $this->storeComponentDependencies($key, $id, $componentConfig);
@@ -173,6 +184,8 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
+     * @todo up code quality [B]
+     *
      * @param string $key
      * @param string $id
      * @param array $componentConfig
@@ -241,6 +254,8 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
+     * @todo up code quality [B]
+     *
      * @param string $key
      * @param string $id
      * @param array $componentConfig
@@ -310,6 +325,8 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
+     * @todo up code quality [B]
+     *
      * @param \ReflectionClass $reflection
      * @param array $arguments
      *

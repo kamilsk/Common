@@ -15,6 +15,8 @@ class Limiter
     private $total;
 
     /**
+     * @todo up code quality [B]
+     *
      * @param int $tableCount1
      * @param int $tableCount2
      * @param int $limit
@@ -50,6 +52,8 @@ class Limiter
     }
 
     /**
+     * @todo up code quality [B]
+     *
      * @param int $limit how many records to get (e.g. LIMIT part of SQL queries)
      * @param int $offset how many records to skip (e.g. OFFSET part of SQL queries)
      * @param int|null $total how many total records were found (e.g. SELECT COUNT(*) FROM)

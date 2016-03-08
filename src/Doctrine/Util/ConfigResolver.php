@@ -10,6 +10,8 @@ use Doctrine\DBAL\Types\Type;
 class ConfigResolver
 {
     /**
+     * @todo up code quality [B]
+     *
      * @param array $config
      *
      * @throws \Doctrine\DBAL\DBALException

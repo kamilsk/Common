@@ -29,6 +29,8 @@ class Json
     }
 
     /**
+     * @todo up code quality [B]
+     *
      * @param string $json
      * @param bool|null $assoc
      * @param int|null $depth
@@ -96,6 +98,8 @@ class Json
     }
 
     /**
+     * @todo up code quality [B]
+     *
      * @return \InvalidArgumentException|\OverflowException|\UnexpectedValueException
      */
     private function getException()

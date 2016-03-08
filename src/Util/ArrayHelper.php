@@ -8,6 +8,8 @@ namespace OctoLab\Common\Util;
 class ArrayHelper
 {
     /**
+     * @todo up code quality [B]
+     *
      * @param array $scope
      * @param string $path
      *
@@ -31,6 +33,8 @@ class ArrayHelper
     }
 
     /**
+     * @todo up code quality [B]
+     *
      * Merges two or more arrays into one recursively.
      *
      * Based on yii\helpers\BaseArrayHelper::merge.
