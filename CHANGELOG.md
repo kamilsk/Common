@@ -61,7 +61,7 @@ formatters:
 - [git diff](/../../compare/1.2...2.0)
 
 ### Fixed
-- `Config\Loader\FileLoader::load()` ([#30](../../issues/30))
+- `Config\Loader\FileLoader::load()` ([#30](../../issues/30), [#32](../../issues/32))
 
 ### Removed
 - classes

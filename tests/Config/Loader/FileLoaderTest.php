@@ -36,7 +36,7 @@ class FileLoaderTest extends TestCase
                 'constant' => 'const(E_ALL)',
             ],
             'component' => [
-                'parameter' => 'base parameter will be overwritten',
+                'parameter' => 'base component\'s parameter will be overwritten by root config',
                 'base_parameter' => 'base parameter will not be overwritten',
             ],
         ];
@@ -112,13 +112,13 @@ class FileLoaderTest extends TestCase
     }
 
     /**
-     * @return array<int,FileLoader[]>
+     * @return array[]
      */
     public function loaderProvider()
     {
         return [
-            [new FileLoader(new FileLocator(), new Parser\JsonParser())],
-            [new FileLoader(new FileLocator(), new Parser\YamlParser())],
+            [new FileLoader(new FileLocator(), new Parser\JsonParser()), 'json'],
+            [new FileLoader(new FileLocator(), new Parser\YamlParser()), 'yml'],
         ];
     }
 }

@@ -66,7 +66,7 @@ class FileLoader extends AbstractFileLoader
                 $content[] = $this->import($resource, null, $ignoreErrors, $path);
             }
         }
-        $content = call_user_func_array([ArrayHelper::class, 'merge'], $content);
+        $content = call_user_func_array([ArrayHelper::class, 'merge'], array_reverse($content));
         unset($content['imports']);
         return $content;
     }
