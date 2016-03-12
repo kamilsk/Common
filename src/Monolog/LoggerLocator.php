@@ -1,6 +1,6 @@
 <?php
 
-namespace OctoLab\Common\Monolog\Util;
+namespace OctoLab\Common\Monolog;
 
 use Monolog\Logger;
 
@@ -210,7 +210,7 @@ class LoggerLocator implements \ArrayAccess
             throw new \InvalidArgumentException(
                 sprintf(
                     'Component config "%s" does not have "class" or "type" option.',
-                    Dumper::dumpToString($componentConfig)
+                    Util\Dumper::dumpToString($componentConfig)
                 )
             );
         }

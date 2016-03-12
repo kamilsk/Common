@@ -1,6 +1,6 @@
 <?php
 
-namespace OctoLab\Common\Monolog\Util;
+namespace OctoLab\Common\Monolog;
 
 use Monolog\Logger;
 use OctoLab\Common\Monolog\Processor\TimeExecutionProcessor;

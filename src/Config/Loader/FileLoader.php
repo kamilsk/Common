@@ -49,6 +49,9 @@ class FileLoader extends AbstractFileLoader
             throw new \InvalidArgumentException(sprintf('File "%s" is not supported.', $resource));
         }
         $fileContent = $this->loadFile($path);
+        if ($fileContent === null) {
+            return $content;
+        }
         $content[] = $fileContent;
         if (isset($fileContent['imports'])) {
             $this->setCurrentDir(dirname($path));

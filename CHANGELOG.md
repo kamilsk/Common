@@ -2,6 +2,16 @@
 ======================================
 
 ## [2.0] - 2016-03-08
+### Added
+- classes
+  - `Config\Loader\Parser\JsonParser`
+  - `Config\Loader\Parser\YamlParser`
+  - `Monolog\LoggerLocator` with lazy loading support
+- interfaces
+  - `Config\Loader\Parser\ParserInterface`
+- methods
+  - `Doctrine\Util\Limiter::getTwoTablePagination()`
+
 ### Changed
 - `$check` was removed from `Config\FileConfig::load()`
 - `Config\FileConfig::load()` now wait `$placeholders` for the second argument
@@ -50,19 +60,10 @@ formatters:
 ```
 - [git diff](/../../compare/1.2...2.0)
 
-### Added
-- interfaces
-  - `Config\Loader\Parser\ParserInterface`
-- classes
-  - `Config\Loader\Parser\JsonParser`
-  - `Config\Loader\Parser\YamlParser`
-  - `Monolog\Util\LoggerLocator` with lazy loading support
-- methods
-  - `Doctrine\Util\Limiter::getTwoTablePagination()`
+### Fixed
+- `Config\Loader\FileLoader::load()` ([#30](../../issues/30))
 
 ### Removed
-- interfaces
-  - `Config\Parser\ParserInterface`, use `Config\Loader\Parser\ParserInterface` instead
 - classes
   - `Config\JsonConfig`, use `Config\FileConfig` instead
   - `Config\YamlConfig`, use `Config\FileConfig` instead
@@ -70,8 +71,10 @@ formatters:
   - `Config\Parser\SymfonyYamlParser`, use `Config\Loader\Parser\YamlParser` instead
   - `Config\Loader\JsonFileLoader`, use `Config\Loader\FileLoader` with `Config\Loader\Parser\JsonParser` instead
   - `Config\Loader\YamlFileLoader`, use `Config\Loader\FileLoader` with `Config\Loader\Parser\YamlParser` instead
-  - `Monolog\Util\ConfigResolver`, use `Monolog\Util\LoggerLocator` instead
+  - `Monolog\Util\ConfigResolver`, use `Monolog\LoggerLocator` instead
   - `Util\Math`, merged with `Doctrine\Util\Limiter` now
+- interfaces
+  - `Config\Parser\ParserInterface`, use `Config\Loader\Parser\ParserInterface` instead
 - methods
   - `Config\SimpleConfig::toArray()`, use array access instead
   - `Config\SimpleConfig::transform()`, now it is internal, use `$placeholders` argument in
@@ -81,29 +84,30 @@ formatters:
 
 ## [1.2] - 2016-03-06
 ### Changed
-- Up code quality and code coverage ([#19](../../issues/19))
-- Support import section in config as strings ([#25](../../issues/25))
+- up code quality and code coverage ([#19](../../issues/19))
+- support import section in config as strings ([#25](../../issues/25))
 - [git diff](/../../compare/1.1...1.2)
 
 ### Deprecated
-- package `secondparty/dipper`
-- class `Config\JsonConfig`
-- class `Config\YamlConfig`
-- class `Config\Loader\JsonFileLoader`
-- class `Config\Loader\YamlFileLoader`
-- interface `Config\Parser\ParserInterface`
-- class `Config\Parser\SymfonyYamlParser`
-- class `Config\Parser\DipperYamlParser`
-- method `Config\SimpleConfig::replace`
-- method `Config\SimpleConfig::toArray`
+- classes
+  - `Config\JsonConfig`
+  - `Config\YamlConfig`
+  - `Config\Loader\JsonFileLoader`
+  - `Config\Loader\YamlFileLoader`
+  - `Config\Parser\SymfonyYamlParser`
+  - `Config\Parser\DipperYamlParser`
+- interfaces
+  - `Config\Parser\ParserInterface`
+- methods
+  - `Config\SimpleConfig::replace`
+  - `Config\SimpleConfig::toArray`
+- packages
+  - `secondparty/dipper`
 
 ## [1.1] - 2016-01-07
 ### Added
-- Support multichannel for `Monolog` like [Monolog Cascade](https://github.com/theorchard/monolog-cascade)
+- support multichannel for `Monolog` like [Monolog Cascade](https://github.com/theorchard/monolog-cascade)
 ([#20](/../../issues/20))
-
-### Fixed
-- Full support of configuration in json ([#22](/../../issues/22))
 
 ### Changed
 - `SimpleConfig` now implements `ArrayAccess` and `Iterator`, and support composite key like `path:to:config`
@@ -111,10 +115,12 @@ formatters:
 - `pimple/pimple` now is not suggest
 - [git diff](/../../compare/1.0.2...1.1)
 
+### Fixed
+- full support of configuration in json ([#22](/../../issues/22))
+
 ## [1.0] - 2015-12-20
 ### Changed
-- First stable release
-- Complete support `PHP 7.0` and `HHVM` (tested on 3.6.6)
-- Move not specific classes from [CilexServiceProviders](https://github.com/kamilsk/CilexServiceProviders)
+- complete support `PHP 7.0` and `HHVM` (tested on 3.6.6)
+- move not specific classes from [CilexServiceProviders](https://github.com/kamilsk/CilexServiceProviders)
   ([#17](/../../issues/17))
 - [git diff](/../../compare/0.4.2...1.0)

@@ -29,7 +29,7 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function merge(array $a, array $b, array $expected)
     {
-        self::assertEquals(ArrayHelper::merge($a, $b), $expected);
+        self::assertEquals($expected, ArrayHelper::merge($a, $b));
     }
 
     /**

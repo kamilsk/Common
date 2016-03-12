@@ -103,6 +103,15 @@ class FileLoaderTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function issue30()
+    {
+        $loader = new FileLoader(new FileLocator(), new Parser\YamlParser());
+        self::assertEquals([], $loader->load($this->getConfigPath('empty')));
+    }
+
+    /**
      * @return array<int,FileLoader[]>
      */
     public function loaderProvider()

@@ -2,7 +2,7 @@
 >
 > Based on [don’t repeat yourself](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) principle.
 
-## [Documentation](http://kamilsk.github.io/Common)
+## [Documentation](http://kamilsk.github.io/Common/)
 
 ## Installation
 
