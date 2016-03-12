@@ -59,7 +59,7 @@ class FileLoaderTest extends TestCase
      *
      * @param FileLoader $loader
      */
-    public function loadFail(FileLoader $loader)
+    public function loadFailure(FileLoader $loader)
     {
         try {
             $loader->load('/unknown.file');

@@ -39,7 +39,7 @@ class FileConfigTest extends TestCase
      *
      * @param FileConfig $config
      */
-    public function loadFail(FileConfig $config)
+    public function loadFailure(FileConfig $config)
     {
         $config->load($this->getConfigPath('config', 'xml'));
     }

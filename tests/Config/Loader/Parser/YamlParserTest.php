@@ -35,7 +35,7 @@ class YamlParserTest extends \PHPUnit_Framework_TestCase
      *
      * @param ParserInterface $parser
      */
-    public function parseFail(ParserInterface $parser)
+    public function parseFailure(ParserInterface $parser)
     {
         $parser->parse('yaml: { invalid }: true');
     }

@@ -33,7 +33,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      *
      * @param Json $json
      */
-    public function decodeFail(Json $json)
+    public function decodeFailure(Json $json)
     {
         try {
             $json->decode($json->encode(['a' => ['b' => ['c' => false]]]), false, 2);
@@ -60,7 +60,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
      *
      * @param Json $json
      */
-    public function encodeFail(Json $json)
+    public function encodeFailure(Json $json)
     {
         try {
             $json->encode("\xB1\x31");

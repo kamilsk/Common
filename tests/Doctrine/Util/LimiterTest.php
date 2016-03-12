@@ -27,7 +27,7 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException \InvalidArgumentException
      */
-    public function constructFail()
+    public function constructFailure()
     {
         new Limiter(100, -100);
     }

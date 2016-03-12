@@ -13,7 +13,7 @@ class LoggerLocatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function constructFail()
+    public function constructFailure()
     {
         try {
             new LoggerLocator([
@@ -137,7 +137,7 @@ class LoggerLocatorTest extends \PHPUnit_Framework_TestCase
      *
      * @param LoggerLocator $locator
      */
-    public function getChannelFail(LoggerLocator $locator)
+    public function getChannelFailure(LoggerLocator $locator)
     {
         self::assertInstanceOf(Logger::class, $locator->getChannel('unknown'));
     }

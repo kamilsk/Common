@@ -57,7 +57,7 @@ class IntegerMapTypeTest extends \PHPUnit_Framework_TestCase
      * @param IntegerMapTypeMock $type
      * @param AbstractPlatform $platform
      */
-    public function convertToDatabaseValueFail(IntegerMapTypeMock $type, AbstractPlatform $platform)
+    public function convertToDatabaseValueFailure(IntegerMapTypeMock $type, AbstractPlatform $platform)
     {
         self::assertEquals(
             -IntegerMapTypeMock::MAPPED_VALUE,
