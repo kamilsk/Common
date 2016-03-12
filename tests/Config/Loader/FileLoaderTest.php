@@ -68,18 +68,18 @@ class FileLoaderTest extends TestCase
             self::assertTrue(true);
         }
         try {
-            $loader->load($this->getConfigPath('unsupported', 'xml'));
+            $loader->load($this->getConfigPath('others/unsupported', 'xml'));
             self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
             self::assertTrue(true);
         }
         try {
             switch (true) {
-                case $loader->supports($this->getConfigPath('invalid', 'json')):
-                    $loader->load($this->getConfigPath('invalid', 'json'));
+                case $loader->supports($this->getConfigPath('others/invalid', 'json')):
+                    $loader->load($this->getConfigPath('others/invalid', 'json'));
                     break;
-                case $loader->supports($this->getConfigPath('invalid', 'yml')):
-                    $loader->load($this->getConfigPath('invalid', 'yml'));
+                case $loader->supports($this->getConfigPath('others/invalid', 'yml')):
+                    $loader->load($this->getConfigPath('others/invalid', 'yml'));
                     break;
                 default:
                     throw new \RuntimeException(sprintf('Unsupported loader %s.', get_class($loader)));
@@ -108,7 +108,7 @@ class FileLoaderTest extends TestCase
     public function issue30()
     {
         $loader = new FileLoader(new FileLocator(), new Parser\YamlParser());
-        self::assertEquals([], $loader->load($this->getConfigPath('empty')));
+        self::assertEquals([], $loader->load($this->getConfigPath('others/empty')));
     }
 
     /**
