@@ -63,13 +63,13 @@ class FileLoaderTest extends TestCase
     {
         try {
             $loader->load('/unknown.file');
-            self::assertTrue(false);
+            self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
             self::assertTrue(true);
         }
         try {
             $loader->load($this->getConfigPath('unsupported', 'xml'));
-            self::assertTrue(false);
+            self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
             self::assertTrue(true);
         }
@@ -84,7 +84,7 @@ class FileLoaderTest extends TestCase
                 default:
                     throw new \RuntimeException(sprintf('Unsupported loader %s.', get_class($loader)));
             }
-            self::assertTrue(false);
+            self::fail(sprintf('%s exception expected.', \Exception::class));
         } catch (\Exception $e) {
             self::assertTrue(true);
         }

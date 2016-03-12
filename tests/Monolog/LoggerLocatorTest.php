@@ -25,7 +25,7 @@ class LoggerLocatorTest extends \PHPUnit_Framework_TestCase
                 ],
                 'default_channel' => 'unknown',
             ]);
-            self::assertTrue(false);
+            self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
             self::assertTrue(true);
         }
@@ -43,7 +43,7 @@ class LoggerLocatorTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
             ]);
-            self::assertTrue(false);
+            self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
             self::assertTrue(true);
         }
