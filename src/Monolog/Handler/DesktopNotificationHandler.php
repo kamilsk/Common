@@ -40,11 +40,10 @@ class DesktopNotificationHandler extends AbstractProcessingHandler
      */
     protected function write(array $record)
     {
-        return $this->notifier && $this->notifier->send(
-            $this->notification
-                ->setTitle(sprintf('[%s] %s', Logger::getLevelName($this->level), $this->name))
-                // https://github.com/jolicode/JoliNotif/issues/24
-                ->setBody(str_replace('"', '', $record['formatted']))
-        );
+        $this->notification
+            ->setTitle(sprintf('[%s] %s', Logger::getLevelName($this->level), $this->name))
+            ->setBody(addslashes($record['formatted']))
+        ;
+        return $this->notifier && $this->notifier->send($this->notification);
     }
 }
