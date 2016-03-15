@@ -12,6 +12,7 @@
   },
   "require-dev": {
     "doctrine/migrations": "~1.0",
+    "jolicode/jolinotif": "~1.0",
     "monolog/monolog": "~1.0",
     "symfony/config": "~2.0|~3.0",
     "symfony/yaml": "~2.0|~3.0"
@@ -19,6 +20,7 @@
   "suggest": {
     "doctrine/migrations": "for use OctoLab\\Common\\Doctrine\\Migration (~1.0 is recommended)",
     "incenteev/composer-parameter-handler": "optional for handle parameters.yml (~2.0 is recommended)",
+    "jolicode/jolinotif": "optional for show desktop notification (~1.0 is recommended)",
     "monolog/monolog": "for use OctoLab\\Common\\Monolog (~1.0 is recommended)",
     "symfony/config": "for use OctoLab\\Common\\Config (~3.0 is recommended)",
     "symfony/yaml": "for use OctoLab\\Common\\Config (~3.0 is recommended)"

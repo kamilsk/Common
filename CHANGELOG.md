@@ -1,6 +1,13 @@
 [CHANGELOG](http://keepachangelog.com)
 ======================================
 
+## [Unreleased]
+### Added
+- classes
+  - `Monolog\Handler\DesktopNotificationHandler`
+- packages
+  - `jolicode/jolinotif`
+
 ## [2.0] - 2016-03-08
 ### Added
 - classes
