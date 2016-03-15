@@ -7,6 +7,9 @@
   - `Monolog\Handler\DesktopNotificationHandler`
 - packages
   - `jolicode/jolinotif`
+  
+### Changed
+- [git diff](/../../compare/2.0.2...master)
 
 ## [2.0] - 2016-03-08
 ### Added
