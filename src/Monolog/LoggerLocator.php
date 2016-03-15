@@ -144,6 +144,19 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
+     * @return string[]
+     */
+    public function keys()
+    {
+        return array_map(function ($key) {
+            // 8 = strlen('channel.')
+            return substr($key, 8);
+        }, array_filter(array_keys($this->internal['storage']), function ($key) {
+            return strpos($key, 'channel.') === 0;
+        }));
+    }
+
+    /**
      * @quality [D]
      *
      * @param array $config

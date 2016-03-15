@@ -204,6 +204,18 @@ class LoggerLocatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @dataProvider loggerLocatorProvider
+     *
+     * @param LoggerLocator $locator
+     */
+    public function keys(LoggerLocator $locator)
+    {
+        $expected = ['app'];
+        self::assertEquals($expected, $locator->keys());
+    }
+
+    /**
      * @return array<int, LoggerLocator[]>
      */
     public function loggerLocatorProvider()
