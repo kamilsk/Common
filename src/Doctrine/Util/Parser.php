@@ -27,6 +27,6 @@ class Parser
             $text = preg_replace('/\s{2,}/', ' ', $text);
         }
         $text = trim($text, '; ');
-        return preg_split('/\s*;\s*/', $text);
+        return $text === '' ? [] : preg_split('/\s*;\s*/', $text);
     }
 }

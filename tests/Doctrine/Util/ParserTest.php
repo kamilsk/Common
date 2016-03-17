@@ -59,6 +59,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                     'UPDATE h, (SELECT i FROM j WHERE k=1) l SET m=1 WHERE n=2',
                 ]
             ],
+            ['', []],
         ];
     }
 }
