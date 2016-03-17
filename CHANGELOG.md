@@ -11,6 +11,9 @@
 ### Changed
 - [git diff](/../../compare/2.0.2...2.1)
 
+### Fixed
+- bug [#34](/../../issues/34)
+
 ## [2.0] - 2016-03-08
 ### Added
 - classes
