@@ -160,10 +160,10 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      */
     public function current()
     {
-        if (current($this->keys) === false) {
+        if (false === ($id = current($this->keys))) {
             throw new \OutOfRangeException('Current position of pointer is out of range.');
         }
-        return $this->getChannel(current($this->keys));
+        return $this->getChannel($id);
     }
 
     /**
