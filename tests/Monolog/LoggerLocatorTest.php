@@ -217,6 +217,20 @@ class LoggerLocatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider loggerLocatorProvider
+     * @expectedException \OutOfRangeException
+     *
+     * @param LoggerLocator $locator
+     */
+    public function current(LoggerLocator $locator)
+    {
+        $locator->next();
+        $locator->next();
+        $locator->current();
+    }
+
+    /**
+     * @test
+     * @dataProvider loggerLocatorProvider
      *
      * @param LoggerLocator $locator
      */
