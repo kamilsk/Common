@@ -8,7 +8,7 @@ namespace OctoLab\Common\Util;
 class ArrayHelper
 {
     /**
-     * @quality [B]
+     * @quality:method [B]
      *
      * @param array $scope
      * @param string $path
@@ -33,7 +33,7 @@ class ArrayHelper
     }
 
     /**
-     * @quality [B]
+     * @quality:method [B]
      *
      * Merges two or more arrays into one recursively.
      *

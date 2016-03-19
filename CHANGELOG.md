@@ -9,7 +9,11 @@
   - `jolicode/jolinotif`
 
 ### Changed
-- [git diff](/../../compare/2.0.2...2.1)
+- classes
+  - `Monolog\LoggerLocator` now implements `Countable` and `Iterator`
+- methods
+  - `Monolog\LoggerLocator::keys()` now internal and will be isolated in future version
+- [git diff](/../../compare/2.0.2...2.1.3)
 
 ### Fixed
 - bug [#34](/../../issues/34)
@@ -71,7 +75,7 @@ formatters:
   chrome:
     type: chrome_php
 ```
-- [git diff](/../../compare/1.2...2.0)
+- [git diff](/../../compare/1.2...2.0.2)
 
 ### Fixed
 - `Config\Loader\FileLoader::load()` ([#30](../../issues/30), [#32](../../issues/32))
@@ -136,4 +140,4 @@ formatters:
 - complete support `PHP 7.0` and `HHVM` (tested on 3.6.6)
 - move not specific classes from [CilexServiceProviders](https://github.com/kamilsk/CilexServiceProviders)
   ([#17](/../../issues/17))
-- [git diff](/../../compare/0.4.2...1.0)
+- [git diff](/../../compare/0.4.2...1.0.2)

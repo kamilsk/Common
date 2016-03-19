@@ -5,19 +5,21 @@ namespace OctoLab\Common\Monolog;
 use Monolog\Logger;
 
 /**
- * @quality [B]
+ * @quality:class [B]
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class LoggerLocator implements \ArrayAccess
+class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
 {
     /** @var array<string, array> */
     private $internal;
     /** @var string */
     private $defaultChannel;
+    /** @var string[] */
+    private $keys;
 
     /**
-     * @quality [B]
+     * @quality:method [B]
      *
      * @param array<string,array> $config
      * @param string $defaultName
@@ -144,20 +146,67 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return count($this->keys);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \OutOfRangeException
+     */
+    public function current()
+    {
+        return $this->getChannel(current($this->keys));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function next()
+    {
+        next($this->keys);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function key()
+    {
+        return current($this->keys);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function valid()
+    {
+        return current($this->keys);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rewind()
+    {
+        reset($this->keys);
+    }
+
+    /**
+     * @internal remove LoggerLocatorTest::keys()
+     *
      * @return string[]
      */
     public function keys()
     {
-        return array_map(function ($key) {
-            // 8 = strlen('channel.')
-            return substr($key, 8);
-        }, array_filter(array_keys($this->internal['storage']), function ($key) {
-            return strpos($key, 'channel.') === 0;
-        }));
+        return $this->keys;
     }
 
     /**
-     * @quality [D]
+     * @quality:method [D]
      *
      * @param array $config
      * <pre>['channels' => [...], 'handlers' => [...], 'processors' => [...], 'formatters' => [...]]</pre>
@@ -176,6 +225,7 @@ class LoggerLocator implements \ArrayAccess
             );
         }
         foreach ($config['channels'] as $id => $channelConfig) {
+            $this->keys[] = $id;
             if (!isset($channelConfig['arguments'])) {
                 $name = isset($channelConfig['name']) ? $channelConfig['name'] : $defaultName;
                 $config['channels'][$id]['arguments'] = [$name];
@@ -192,7 +242,7 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
-     * @quality [B]
+     * @quality:method [B]
      *
      * @param string $key
      * @param string $id
@@ -262,7 +312,7 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
-     * @quality [B]
+     * @quality:method [B]
      *
      * @param string $key
      * @param string $id
@@ -333,7 +383,7 @@ class LoggerLocator implements \ArrayAccess
     }
 
     /**
-     * @quality [B]
+     * @quality:method [B]
      *
      * @param \ReflectionClass $reflection
      * @param array $arguments

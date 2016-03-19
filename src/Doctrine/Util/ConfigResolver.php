@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Type;
 class ConfigResolver
 {
     /**
-     * @quality [B]
+     * @quality:method [B]
      *
      * @param array $config
      *

@@ -15,7 +15,7 @@ class Limiter
     private $total;
 
     /**
-     * @quality [B]
+     * @quality:method [B]
      *
      * @param int $tableCount1
      * @param int $tableCount2
@@ -52,7 +52,7 @@ class Limiter
     }
 
     /**
-     * @quality [B]
+     * @quality:method [B]
      *
      * @param int $limit how many records to get (e.g. LIMIT part of SQL queries)
      * @param int $offset how many records to skip (e.g. OFFSET part of SQL queries)

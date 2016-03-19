@@ -29,7 +29,7 @@ class Json
     }
 
     /**
-     * @quality [B]
+     * @quality:method [B]
      *
      * @param string $json
      * @param bool|null $assoc
@@ -98,7 +98,7 @@ class Json
     }
 
     /**
-     * @quality [B]
+     * @quality:method [B]
      *
      * @return \InvalidArgumentException|\OverflowException|\UnexpectedValueException
      */

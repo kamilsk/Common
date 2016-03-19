@@ -27,7 +27,7 @@ class FileLoader extends AbstractFileLoader
     }
 
     /**
-     * @quality [C]
+     * @quality:method [C]
      *
      * @param string $resource
      * @param string|null $type

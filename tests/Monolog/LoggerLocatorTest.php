@@ -209,9 +209,33 @@ class LoggerLocatorTest extends \PHPUnit_Framework_TestCase
      *
      * @param LoggerLocator $locator
      */
+    public function countTest(LoggerLocator $locator)
+    {
+        self::assertCount(2, $locator);
+    }
+
+    /**
+     * @test
+     * @dataProvider loggerLocatorProvider
+     *
+     * @param LoggerLocator $locator
+     */
+    public function iterator(LoggerLocator $locator)
+    {
+        foreach ($locator as $key => $channel) {
+            self::assertInstanceOf(Logger::class, $channel);
+        }
+    }
+
+    /**
+     * @test
+     * @dataProvider loggerLocatorProvider
+     *
+     * @param LoggerLocator $locator
+     */
     public function keys(LoggerLocator $locator)
     {
-        $expected = ['app'];
+        $expected = ['app', 'debug'];
         self::assertEquals($expected, $locator->keys());
     }
 
@@ -224,6 +248,7 @@ class LoggerLocatorTest extends \PHPUnit_Framework_TestCase
             [new LoggerLocator([
                 'channels' => [
                     'app' => ['name' => 'APP'],
+                    'debug' => [],
                 ],
             ])],
         ];
