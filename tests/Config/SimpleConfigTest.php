@@ -116,6 +116,17 @@ class SimpleConfigTest extends TestCase
      *
      * @param SimpleConfig $config
      */
+    public function countTest(SimpleConfig $config)
+    {
+        self::assertCount(array_slice(func_get_args(), 1, 1)[0], $config);
+    }
+
+    /**
+     * @test
+     * @dataProvider simpleConfigProvider
+     *
+     * @param SimpleConfig $config
+     */
     public function current(SimpleConfig $config)
     {
         self::assertArrayHasKey('parameter', $config->current());
@@ -178,12 +189,36 @@ class SimpleConfigTest extends TestCase
     }
 
     /**
+     * @test
+     * @dataProvider simpleConfigProvider
+     *
+     * @param SimpleConfig $config
+     */
+    public function jsonSerialize(SimpleConfig $config)
+    {
+        self::assertJsonStringEqualsJsonString(array_slice(func_get_args(), 2, 1)[0], json_encode($config));
+    }
+
+    /**
      * @return array[]
      */
     public function simpleConfigProvider()
     {
         return [
-            [new SimpleConfig(require $this->getConfigPath('config', 'php'), ['placeholder' => 'placeholder'])],
+            [
+                new SimpleConfig(require $this->getConfigPath('config', 'php'), ['placeholder' => 'placeholder']),
+                2,
+                json_encode([
+                    'app' => [
+                        'placeholder_parameter' => 'placeholder',
+                        'constant' => E_ALL,
+                    ],
+                    'component' => [
+                        'parameter' => 'base component\'s parameter will be overwritten by root config',
+                        'base_parameter' => 'base parameter will not be overwritten',
+                    ],
+                ])
+            ],
         ];
     }
 }

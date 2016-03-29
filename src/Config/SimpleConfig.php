@@ -7,7 +7,7 @@ use OctoLab\Common\Util\ArrayHelper;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class SimpleConfig implements \ArrayAccess, \Iterator
+class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializable
 {
     /** @var array */
     protected $config;
@@ -75,6 +75,16 @@ class SimpleConfig implements \ArrayAccess, \Iterator
      *
      * @api
      */
+    public function count()
+    {
+        return count($this->config);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     */
     public function current()
     {
         return current($this->config);
@@ -118,6 +128,18 @@ class SimpleConfig implements \ArrayAccess, \Iterator
     public function rewind()
     {
         reset($this->config);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return array
+     *
+     * @api
+     */
+    public function jsonSerialize()
+    {
+        return $this->config;
     }
 
     /**

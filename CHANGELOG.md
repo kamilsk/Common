@@ -10,10 +10,11 @@
 
 ### Changed
 - classes
+  - `Config\SimpleConfig` now implements `Countable` and `JsonSerializable`
   - `Monolog\LoggerLocator` now implements `Countable` and `Iterator`
 - methods
   - `Monolog\LoggerLocator::keys()` now internal and will be isolated in future version
-- [git diff](/../../compare/2.0.2...2.1.3)
+- [git diff](/../../compare/2.0.2...2.1.4)
 
 ### Fixed
 - bug [#34](/../../issues/34)
