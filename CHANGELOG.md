@@ -5,6 +5,7 @@
 ### Added
 - classes
   - `Monolog\Handler\DesktopNotificationHandler`
+  - `Util\System`
 - packages
   - `jolicode/jolinotif`
 
