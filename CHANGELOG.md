@@ -15,7 +15,7 @@
   - `Monolog\LoggerLocator` now implements `Countable` and `Iterator`
 - methods
   - `Monolog\LoggerLocator::keys()` now internal and will be isolated in future version
-- [git diff](/../../compare/2.0.2...2.1.4)
+- [git diff](/../../compare/2.0.2...2.1.5)
 
 ### Fixed
 - bug [#34](/../../issues/34)
