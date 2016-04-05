@@ -29,7 +29,7 @@ $ composer require kamilsk/common:~2.1
 ### General information
 
 [![Build status](https://travis-ci.org/kamilsk/Common.svg)](https://travis-ci.org/kamilsk/Common)
-[![HHVM status](http://hhvm.h4cc.de/badge/kamilsk/common.svg?style=flat)](http://hhvm.h4cc.de/package/kamilsk/common)
+[![Tests status](http://php-eye.com/badge/kamilsk/common/tested.svg)](http://php-eye.com/package/kamilsk/common)
 [![Latest stable version](https://poser.pugx.org/kamilsk/common/v/stable.png)](https://packagist.org/packages/kamilsk/common)
 [![License](https://poser.pugx.org/kamilsk/common/license.png)](https://packagist.org/packages/kamilsk/common)
 
