@@ -34,5 +34,9 @@
     "branch-alias": {
       "dev-master": "2.x-dev"
     }
+  },
+  "support": {
+    "irc": "irc://irc.gitter.im/kamilsk/small-tools",
+    "issues": "https://github.com/kamilsk/CilexServiceProviders/issues"
   }
 }
