@@ -5,7 +5,7 @@ namespace OctoLab\Common\Util;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class CallableSugar
+final class CallableSugar
 {
     /**
      * @param callable $callable
@@ -44,6 +44,8 @@ class CallableSugar
     }
 
     /**
+     * @quality:method [B]
+     *
      * @param int $times to repeat
      * @param int $timeout in milliseconds between repeats
      *
@@ -55,15 +57,14 @@ class CallableSugar
     {
         if ($this->current !== null) {
             $this->catchers[$this->current][] = function () use ($times, $timeout) {
-                static $_times, $_timeout;
-                if ($_times === null || $_timeout === null) {
-                    $_times = $times;
-                    $_timeout = $timeout;
+                static $lTimes;
+                if ($lTimes === null) {
+                    $lTimes = $times;
                 }
                 // the first was an end() call
-                $_times--;
-                if ($_times > 0) {
-                    usleep($_timeout);
+                $lTimes--;
+                if ($lTimes > 0) {
+                    usleep($timeout);
                     return call_user_func_array([$this, 'end'], func_get_args());
                 }
                 return null;
@@ -73,8 +74,6 @@ class CallableSugar
     }
 
     /**
-     * @param mixed $_ arguments for $callable
-     *
      * @return mixed
      *
      * @throws \Exception
@@ -83,15 +82,15 @@ class CallableSugar
      */
     public function end()
     {
-        $param_arr = func_get_args();
+        $args = func_get_args();
         try {
-            return call_user_func_array($this->wrapped, $param_arr);
+            return call_user_func_array($this->wrapped, $args);
         } catch (\Exception $e) {
             $class = get_class($e);
             if (array_key_exists($class, $this->catchers)) {
                 $latest = null;
                 foreach ($this->catchers[$class] as $catcher) {
-                    $latest = call_user_func_array($catcher, $param_arr);
+                    $latest = call_user_func_array($catcher, $args);
                 }
                 return $latest;
             } else {
