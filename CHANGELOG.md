@@ -1,6 +1,14 @@
 [CHANGELOG](http://keepachangelog.com)
 ======================================
 
+## [Unreleased]
+### Added
+- classes
+  - `Util\CallableSugar`
+
+### Changed
+- [git diff](/../../compare/2.1.5...master)
+
 ## [2.1] - 2016-03-17
 ### Added
 - classes
