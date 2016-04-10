@@ -3,9 +3,7 @@
 ## Callable sugar
 
 ```php
-$sugar = CallableSugar::begin([$http, 'get']);
-
-$sugar
+CallableSugar::begin([$http, 'get'])
     // if have thrown HttpTimeoutException, then will retry three times with interval of three second
     ->rescue(HttpTimeoutException::class)
     ->retry(3, 3000)

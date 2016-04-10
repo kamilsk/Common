@@ -81,7 +81,7 @@ class CallableSugar
      *
      * @api
      */
-    public function end($_ = null)
+    public function end()
     {
         $param_arr = func_get_args();
         try {
