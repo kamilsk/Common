@@ -44,8 +44,6 @@ final class CallableSugar
     }
 
     /**
-     * @quality:method [B]
-     *
      * @param int $times to repeat
      * @param int $timeout in milliseconds between repeats
      *
