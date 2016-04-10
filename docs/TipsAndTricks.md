@@ -4,7 +4,7 @@
 
 ```php
 CallableSugar::begin([$http, 'get'])
-    // if have thrown HttpTimeoutException, then will retry three times with interval of three second
+    // if have thrown HttpTimeoutException, then will retry three times with interval of three seconds
     ->rescue(HttpTimeoutException::class)
     ->retry(3, 3000)
     // if have thrown HttpServiceUnavailableException, then will write to log file
