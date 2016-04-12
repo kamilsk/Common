@@ -18,10 +18,16 @@ $ cd Common && composer install
 $ git remote add upstream git@github.com:kamilsk/Common.git
 ```
 
+#### Mirror
+
+```bash
+$ git remote add mirror git@bitbucket.org:kamilsk/common.git
+```
+
 ### Composer (production)
 
 ```bash
-$ composer require kamilsk/common:~2.1
+$ composer require kamilsk/common:~2.2
 ```
 
 ## Pulse of repository
