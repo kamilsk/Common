@@ -10,13 +10,13 @@ use Doctrine\DBAL\Types\Type;
 class ConfigResolver
 {
     /**
-     * @quality:method [B]
-     *
      * @param array $config
      *
      * @throws \Doctrine\DBAL\DBALException
      *
      * @api
+     *
+     * @quality:method [B]
      */
     public static function resolve(array $config)
     {

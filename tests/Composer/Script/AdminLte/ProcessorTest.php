@@ -33,13 +33,17 @@ class ProcessorTest extends TestCase
      */
     public function publish($targetPath, $installPath, array $map, $isSymlink, $isRelative)
     {
-        self::assertTrue((new Processor(new Filesystem(), $this->io->reveal()))->publish(
+        (new Processor(new Filesystem(), $this->io->reveal()))->publish(
             $targetPath,
             $installPath,
             $map,
             $isSymlink,
             $isRelative
-        ));
+        );
+        foreach ($map as $from => $to) {
+            self::assertFileExists($installPath . '/' . $from);
+            self::assertFileExists($targetPath . '/' . $to);
+        }
     }
 
     /**
@@ -58,13 +62,15 @@ class ProcessorTest extends TestCase
         $filesystem->mkdir($targetDir, 0777)->willReturn(null);
         $filesystem->mirror($sourceDir, $targetDir)->willReturn(null);
 
-        self::assertTrue((new Processor($filesystem->reveal(), $this->io->reveal()))->publish(
+        (new Processor($filesystem->reveal(), $this->io->reveal()))->publish(
             $root . '/web',
             $root . '/vendor/adminlte',
             ['dist' => 'adminlte'],
             true,
             false
-        ));
+        );
+        self::assertFileExists($sourceDir);
+        self::assertFileExists($targetDir);
     }
 
     /**

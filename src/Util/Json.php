@@ -29,8 +29,6 @@ class Json
     }
 
     /**
-     * @quality:method [B]
-     *
      * @param string $json
      * @param bool|null $assoc
      * @param int|null $depth
@@ -51,6 +49,8 @@ class Json
      * @throws \UnexpectedValueException otherwise
      *
      * @api
+     *
+     * @quality:method [B]
      */
     public function decode($json, $assoc = null, $depth = null, $options = null)
     {
@@ -98,9 +98,9 @@ class Json
     }
 
     /**
-     * @quality:method [B]
-     *
      * @return \InvalidArgumentException|\OverflowException|\UnexpectedValueException
+     *
+     * @quality:method [B]
      */
     private function getException()
     {

@@ -27,8 +27,6 @@ class FileLoader extends AbstractFileLoader
     }
 
     /**
-     * @quality:method [C]
-     *
      * @param string $resource
      * @param string|null $type
      *
@@ -40,6 +38,8 @@ class FileLoader extends AbstractFileLoader
      * @throws \Symfony\Component\Config\Exception\FileLoaderImportCircularReferenceException
      *
      * @api
+     *
+     * @quality:method [C]
      */
     public function load($resource, $type = null)
     {

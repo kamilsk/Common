@@ -8,14 +8,14 @@ namespace OctoLab\Common\Util;
 class ArrayHelper
 {
     /**
-     * @quality:method [B]
-     *
      * @param array $scope
      * @param string $path
      *
      * @return mixed null if not exists
      *
      * @api
+     *
+     * @quality:method [B]
      */
     public static function findByPath(array $scope, $path)
     {
@@ -33,8 +33,6 @@ class ArrayHelper
     }
 
     /**
-     * @quality:method [B]
-     *
      * Merges two or more arrays into one recursively.
      *
      * Based on yii\helpers\BaseArrayHelper::merge.
@@ -44,6 +42,8 @@ class ArrayHelper
      * @author Qiang Xue <qiang.xue@gmail.com>
      *
      * @api
+     *
+     * @quality:method [B]
      */
     public static function merge()
     {

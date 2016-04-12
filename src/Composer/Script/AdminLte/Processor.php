@@ -35,12 +35,12 @@ class Processor
      * @param bool $isSymlink
      * @param bool $isRelative
      *
-     * @return bool
-     *
      * @throws IOException
      * @throws \InvalidArgumentException
      *
      * @api
+     *
+     * @quality:method [B]
      */
     public function publish($targetPath, $installPath, array $map, $isSymlink, $isRelative)
     {
@@ -73,7 +73,6 @@ class Processor
                 $this->hardCopy($sourceDir, $targetDir);
             }
         }
-        return true;
     }
 
     /**

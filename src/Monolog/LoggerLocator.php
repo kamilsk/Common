@@ -5,9 +5,9 @@ namespace OctoLab\Common\Monolog;
 use Monolog\Logger;
 
 /**
- * @quality:class [B]
- *
  * @author Kamil Samigullin <kamil@samigullin.info>
+ *
+ * @quality:class [B]
  */
 class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
 {
@@ -19,14 +19,14 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
     private $keys;
 
     /**
-     * @quality:method [B]
-     *
      * @param array<string,array> $config
      * @param string $defaultName
      *
      * @throws \InvalidArgumentException
      *
      * @api
+     *
+     * @quality:method [B]
      */
     public function __construct(array $config, $defaultName = 'app')
     {
@@ -209,13 +209,13 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
     }
 
     /**
-     * @quality:method [D]
-     *
      * @param array $config
      * <pre>['channels' => [...], 'handlers' => [...], 'processors' => [...], 'formatters' => [...]]</pre>
      * @param string $defaultName is default logger name
      *
      * @throws \InvalidArgumentException
+     *
+     * @quality:method [D]
      */
     private function resolve(array $config, $defaultName)
     {
@@ -245,13 +245,13 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
     }
 
     /**
-     * @quality:method [B]
-     *
      * @param string $key
      * @param string $id
      * @param array $componentConfig
      *
      * @throws \InvalidArgumentException
+     *
+     * @quality:method [B]
      */
     private function storeComponentConfig($key, $id, array $componentConfig)
     {
@@ -315,11 +315,11 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
     }
 
     /**
-     * @quality:method [B]
-     *
      * @param string $key
      * @param string $id
      * @param array $componentConfig
+     *
+     * @quality:method [B]
      */
     private function storeComponentDependencies($key, $id, array $componentConfig)
     {
@@ -386,12 +386,12 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
     }
 
     /**
-     * @quality:method [B]
-     *
      * @param \ReflectionClass $reflection
      * @param array $arguments
      *
      * @return array
+     *
+     * @quality:method [B]
      */
     private function resolveConstructorArguments(\ReflectionClass $reflection, array $arguments)
     {

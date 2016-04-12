@@ -15,8 +15,6 @@ class Limiter
     private $total;
 
     /**
-     * @quality:method [B]
-     *
      * @param int $tableCount1
      * @param int $tableCount2
      * @param int $limit
@@ -25,6 +23,8 @@ class Limiter
      * @return array<string,int>
      *
      * @api
+     *
+     * @quality:method [B]
      */
     public static function getTwoTablePagination($tableCount1, $tableCount2, $limit, $offset = 0)
     {
@@ -52,8 +52,6 @@ class Limiter
     }
 
     /**
-     * @quality:method [B]
-     *
      * @param int $limit how many records to get (e.g. LIMIT part of SQL queries)
      * @param int $offset how many records to skip (e.g. OFFSET part of SQL queries)
      * @param int|null $total how many total records were found (e.g. SELECT COUNT(*) FROM)
@@ -61,6 +59,8 @@ class Limiter
      * @throws \InvalidArgumentException if the values are negative
      *
      * @api
+     *
+     * @quality:method [B]
      */
     public function __construct($limit, $offset = 0, $total = null)
     {

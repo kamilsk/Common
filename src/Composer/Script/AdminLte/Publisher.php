@@ -13,13 +13,13 @@ class Publisher
     /**
      * @param Event $event
      *
-     * @return bool
-     *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @throws \Symfony\Component\Filesystem\Exception\IOException
      *
      * @api
+     *
+     * @quality:method [B]
      */
     public static function publish(Event $event)
     {
@@ -48,7 +48,7 @@ class Publisher
             $forPublishing['plugins'] = 'adminlte-plugins';
         }
 
-        return (new Processor(new Filesystem(), $event->getIO()))->publish(
+        (new Processor(new Filesystem(), $event->getIO()))->publish(
             $config['target'],
             $composer->getInstallationManager()->getInstallPath($package),
             $forPublishing,

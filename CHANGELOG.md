@@ -1,7 +1,7 @@
 [CHANGELOG](http://keepachangelog.com)
 ======================================
 
-## [Unreleased]
+## [2.2] - 2016-04-12
 ### Added
 - classes
   - `Composer\Script\AdminLte\Processor`
@@ -10,7 +10,7 @@
   - `Util\CallableSugar`
 
 ### Changed
-- [git diff](/../../compare/2.1.5...master)
+- [git diff](/../../compare/2.1.5...2.2)
 
 ## [2.1] - 2016-03-17
 ### Added

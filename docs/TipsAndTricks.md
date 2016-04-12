@@ -7,7 +7,7 @@
 ```json
 {
   "require": {
-    "almasaeed2010/adminlte": "~2.3",
+    "almasaeed2010/adminlte": "~2.0",
     "kamilsk/common": "~2.2"
   },
   "scripts": {

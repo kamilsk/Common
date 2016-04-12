@@ -76,8 +76,10 @@ class PublisherTest extends TestCase
         $this->localRepository->findPackage('almasaeed2010/adminlte', '~2.0')->willReturn($package);
         $this->composer->getInstallationManager()->willReturn($installationManager);
         $installationManager->getInstallPath($package)->willReturn($root . '/vendor/adminlte');
-
-        self::assertTrue(Publisher::publish($this->event->reveal()));
+        
+        Publisher::publish($this->event->reveal());
+        self::assertFileExists($root . '/vendor/adminlte/dist');
+        self::assertFileExists($root . '/web/adminlte');
     }
 
     /**
