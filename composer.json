@@ -11,6 +11,7 @@
     "php": ">=5.5"
   },
   "require-dev": {
+    "composer/composer": "~1.0",
     "doctrine/migrations": "~1.0",
     "jolicode/jolinotif": "~1.0",
     "monolog/monolog": "~1.0",
@@ -22,6 +23,7 @@
     "jolicode/jolinotif": "optional for show desktop notification (~1.0 is recommended)",
     "monolog/monolog": "for use OctoLab\\Common\\Monolog (~1.0 is recommended)",
     "symfony/config": "for use OctoLab\\Common\\Config (~3.0 is recommended)",
+    "symfony/filesystem": "for use OctoLab\\Common\\Composer\\Script\\AdminLte (~3.0 is recommended)",
     "symfony/yaml": "for use OctoLab\\Common\\Config (~3.0 is recommended)"
   },
   "autoload": {

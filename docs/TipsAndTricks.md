@@ -1,5 +1,38 @@
 # Tips and tricks
 
+## Composer integration
+
+### AdminLTE assets publishing
+
+```json
+{
+  "require": {
+    "almasaeed2010/adminlte": "~2.3",
+    "kamilsk/common": "~2.2"
+  },
+  "scripts": {
+    "configure": [
+      "OctoLab\\Common\\Composer\\Script\\AdminLte\\Publisher::publish"
+    ],
+    "post-install-cmd": [
+      "@configure"
+    ],
+    "post-update-cmd": [
+      "@configure"
+    ]
+  },
+  "extra": {
+    "admin-lte": {
+      "target": "web/assets/",
+      "bootstrap": true,
+      "plugins": true,
+      "symlink": true,
+      "relative": true
+    }
+  }
+}
+```
+
 ## Callable sugar
 
 ### Misuse

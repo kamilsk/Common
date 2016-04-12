@@ -4,6 +4,9 @@
 ## [Unreleased]
 ### Added
 - classes
+  - `Composer\Script\AdminLte\Processor`
+  - `Composer\Script\AdminLte\Publisher`
+  - `Monolog\Processor\SignProcessor`
   - `Util\CallableSugar`
 
 ### Changed
