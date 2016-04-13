@@ -26,9 +26,9 @@
       "target": "web/assets/",
       "bootstrap": true,
       "plugins": true,
+      "demo": true,
       "symlink": true,
-      "relative": true,
-      "demo": true
+      "relative": true
     }
   }
 }

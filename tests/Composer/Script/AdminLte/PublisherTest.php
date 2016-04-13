@@ -69,9 +69,9 @@ class PublisherTest extends TestCase
                 'target' => $root . '/web/assets',
                 'bootstrap' => true,
                 'plugins' => true,
+                'demo' => true,
                 'symlink' => true,
                 'relative' => true,
-                'demo' => true,
             ],
         ]);
         $this->localRepository->findPackage('almasaeed2010/adminlte', '~2.0')->willReturn($package);
