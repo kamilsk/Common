@@ -47,6 +47,9 @@ class Publisher
         if (!empty($config['plugins'])) {
             $forPublishing['plugins'] = 'adminlte-plugins';
         }
+        if (!empty($config['demo'])) {
+            $forPublishing[''] = (string)$config['demo'];
+        }
 
         (new Processor(new Filesystem(), $event->getIO()))->publish(
             $config['target'],

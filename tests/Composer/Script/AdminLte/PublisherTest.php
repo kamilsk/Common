@@ -71,6 +71,7 @@ class PublisherTest extends TestCase
                 'plugins' => true,
                 'symlink' => true,
                 'relative' => true,
+                'demo' => 'demo',
             ],
         ]);
         $this->localRepository->findPackage('almasaeed2010/adminlte', '~2.0')->willReturn($package);
@@ -80,6 +81,7 @@ class PublisherTest extends TestCase
         Publisher::publish($this->event->reveal());
         self::assertFileExists($root . '/vendor/adminlte/dist');
         self::assertFileExists($root . '/web/adminlte');
+        self::assertFileExists($root . '/web/demo');
     }
 
     /**

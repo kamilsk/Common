@@ -27,7 +27,8 @@
       "bootstrap": true,
       "plugins": true,
       "symlink": true,
-      "relative": true
+      "relative": true,
+      "demo": "../demo/"
     }
   }
 }
