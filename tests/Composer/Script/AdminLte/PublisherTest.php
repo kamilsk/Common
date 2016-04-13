@@ -66,22 +66,23 @@ class PublisherTest extends TestCase
 
         $this->package->getExtra()->willReturn([
             'admin-lte' => [
-                'target' => $root . '/web',
+                'target' => $root . '/web/assets',
                 'bootstrap' => true,
                 'plugins' => true,
                 'symlink' => true,
                 'relative' => true,
-                'demo' => 'demo',
+                'demo' => true,
             ],
         ]);
         $this->localRepository->findPackage('almasaeed2010/adminlte', '~2.0')->willReturn($package);
         $this->composer->getInstallationManager()->willReturn($installationManager);
         $installationManager->getInstallPath($package)->willReturn($root . '/vendor/adminlte');
-        
+
         Publisher::publish($this->event->reveal());
-        self::assertFileExists($root . '/vendor/adminlte/dist');
-        self::assertFileExists($root . '/web/adminlte');
-        self::assertFileExists($root . '/web/demo');
+        self::assertFileExists($root . '/web/assets/adminlte');
+        self::assertFileExists($root . '/web/assets/adminlte-bootstrap');
+        self::assertFileExists($root . '/web/assets/adminlte-plugins');
+        self::assertFileExists($root . '/web/assets/adminlte-demo');
     }
 
     /**

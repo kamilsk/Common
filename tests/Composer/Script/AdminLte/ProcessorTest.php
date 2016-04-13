@@ -52,18 +52,18 @@ class ProcessorTest extends TestCase
     public function publishHardCopy()
     {
         $root = rtrim(substr(__DIR__, 0, strrpos(__DIR__, 'tests')), '\\/') . '/tests/app';
-        $targetDir = realpath($root . '/web') . '/adminlte';
-        $sourceDir = realpath($root . '/vendor/adminlte') . '/dist';
+        $targetDir = realpath($root . '/web') . '/assets/adminlte';
+        $sourceDir = realpath($root . '/vendor/adminlte/dist');
 
         $filesystem = $this->prophesize(Filesystem::class);
-        $filesystem->mkdir($root . '/web', 0777)->willReturn(null);
+        $filesystem->mkdir($root . '/web/assets', 0777)->willReturn(null);
         $filesystem->remove($targetDir)->willReturn(null);
         $filesystem->symlink($sourceDir, $targetDir)->willThrow(IOException::class);
         $filesystem->mkdir($targetDir, 0777)->willReturn(null);
         $filesystem->mirror($sourceDir, $targetDir)->willReturn(null);
 
         (new Processor($filesystem->reveal(), $this->io->reveal()))->publish(
-            $root . '/web',
+            $root . '/web/assets',
             $root . '/vendor/adminlte',
             ['dist' => 'adminlte'],
             true,
@@ -81,7 +81,7 @@ class ProcessorTest extends TestCase
         $root = rtrim(substr(__DIR__, 0, strrpos(__DIR__, 'tests')), '\\/') . '/tests/app';
         return [
             'default' => [
-                $root . '/web',
+                $root . '/web/assets',
                 $root . '/vendor/adminlte',
                 [
                     'dist' => 'adminlte',
@@ -90,7 +90,7 @@ class ProcessorTest extends TestCase
                 false,
             ],
             'with bootstrap' => [
-                $root . '/web',
+                $root . '/web/assets',
                 $root . '/vendor/adminlte',
                 [
                     'dist' => 'adminlte',
@@ -100,18 +100,27 @@ class ProcessorTest extends TestCase
                 false,
             ],
             'with plugins' => [
-                $root . '/web',
+                $root . '/web/assets',
                 $root . '/vendor/adminlte',
                 [
                     'dist' => 'adminlte',
-                    'bootstrap' => 'adminlte-bootstrap',
                     'plugins' => 'adminlte-plugins',
                 ],
                 false,
                 false,
             ],
+            'with demo' => [
+                $root . '/web/assets',
+                $root . '/vendor/adminlte',
+                [
+                    'dist' => 'adminlte',
+                    '' => 'adminlte-demo',
+                ],
+                false,
+                false,
+            ],
             'symlink' => [
-                $root . '/web',
+                $root . '/web/assets',
                 $root . '/vendor/adminlte',
                 [
                     'dist' => 'adminlte',
@@ -120,7 +129,7 @@ class ProcessorTest extends TestCase
                 false,
             ],
             'relative' => [
-                $root . '/web',
+                $root . '/web/assets',
                 $root . '/vendor/adminlte',
                 [
                     'dist' => 'adminlte',

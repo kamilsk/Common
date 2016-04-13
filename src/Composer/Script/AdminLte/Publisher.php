@@ -19,7 +19,7 @@ class Publisher
      *
      * @api
      *
-     * @quality:method [B]
+     * @quality:method [C]
      */
     public static function publish(Event $event)
     {
@@ -48,7 +48,7 @@ class Publisher
             $forPublishing['plugins'] = 'adminlte-plugins';
         }
         if (!empty($config['demo'])) {
-            $forPublishing[''] = (string)$config['demo'];
+            $forPublishing[''] = 'adminlte-demo';
         }
 
         (new Processor(new Filesystem(), $event->getIO()))->publish(
