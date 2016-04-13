@@ -28,7 +28,7 @@
       "plugins": true,
       "symlink": true,
       "relative": true,
-      "demo": "../demo/"
+      "demo": true
     }
   }
 }
