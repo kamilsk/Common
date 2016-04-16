@@ -1,20 +1,20 @@
 language: php
 
 php:
-  - 7.0
-  - hhvm
+- 7.0
+- hhvm
 
 matrix:
-    allow_failures:
-        - php: hhvm
+  allow_failures:
+  - php: hhvm
 
 sudo: false
 
 before_install:
-  - travis_retry composer self-update
+- travis_retry composer self-update
 
 install:
-  - composer install
+- composer install
 
 notifications:
   slack: octolab:1eMS7IqOArBipiu31jYVd0cN
