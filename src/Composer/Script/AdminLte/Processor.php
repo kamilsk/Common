@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace OctoLab\Common\Composer\Script\AdminLte;
 
 use Composer\IO\IOInterface;

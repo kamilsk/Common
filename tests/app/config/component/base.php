@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 return [
     'component' => [
         'parameter' => 'base parameter will be overwritten',

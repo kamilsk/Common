@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace OctoLab\Common\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace OctoLab\Common\Doctrine\Util;
 
 use Doctrine\DBAL\Types\Type;

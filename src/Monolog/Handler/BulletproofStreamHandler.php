@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace OctoLab\Common\Monolog\Handler;
 
 use Monolog\Handler\StreamHandler;

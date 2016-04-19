@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace OctoLab\Common\Util;
 
 /**
@@ -76,6 +78,9 @@ class ArrayHelper
             $value = sprintf('/%s/', (string)$value);
         };
         array_walk_recursive($target, function (&$param) use ($wrap, $placeholders) {
+            if (!is_string($param)) {
+                return;
+            }
             if (preg_match('/^const\((.*)\)$/', $param, $matches) && defined($matches[1])) {
                 $param = constant($matches[1]);
             } elseif (preg_match_all('/%([^%]+)%/', $param, $matches)) {

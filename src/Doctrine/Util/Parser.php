@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace OctoLab\Common\Doctrine\Util;
 
 /**
@@ -14,7 +16,7 @@ class Parser
      *
      * @api
      */
-    public static function extractSql($text)
+    public static function extractSql(string $text) : array
     {
         // remove comments
         // inline

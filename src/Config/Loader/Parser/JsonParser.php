@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace OctoLab\Common\Config\Loader\Parser;
 
 use OctoLab\Common\Util\Json;
