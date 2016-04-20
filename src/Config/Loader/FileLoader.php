@@ -43,7 +43,7 @@ class FileLoader extends AbstractFileLoader
      *
      * @quality:method [C]
      */
-    public function load($resource, $type = null): array
+    public function load($resource, $type = null)
     {
         $content = [];
         $path = (string)$this->locator->locate($resource);

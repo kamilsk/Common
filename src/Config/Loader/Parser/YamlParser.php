@@ -29,8 +29,11 @@ class YamlParser implements ParserInterface
      *
      * @api
      */
-    public function __construct($exceptionOnInvalidType = false, $objectSupport = false, $objectForMap = false)
-    {
+    public function __construct(
+        bool $exceptionOnInvalidType = false,
+        bool $objectSupport = false,
+        bool $objectForMap = false
+    ) {
         $this->decoder = new Parser();
         $this->exceptionOnInvalidType = $exceptionOnInvalidType;
         $this->objectForMap = $objectForMap;
@@ -39,8 +42,10 @@ class YamlParser implements ParserInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Symfony\Component\Yaml\Exception\ParseException
      */
-    public function parse($content)
+    public function parse(string $content)
     {
         return $this->decoder->parse(
             $content,
@@ -53,7 +58,7 @@ class YamlParser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($extension)
+    public function supports(string $extension): bool
     {
         return in_array(strtolower($extension), ['yml', 'yaml'], true);
     }

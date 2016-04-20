@@ -21,15 +21,17 @@ class JsonParser implements ParserInterface
      *
      * @api
      */
-    public function __construct($assoc = true, $options = 0, $depth = 512)
+    public function __construct(bool $assoc = true, int $options = 0, int $depth = 512)
     {
-        $this->decoder = new Json($assoc, $options, $depth);
+        $this->decoder = Json::new($assoc, $options, $depth);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
      */
-    public function parse($content)
+    public function parse(string $content)
     {
         return $this->decoder->decode($content);
     }
@@ -37,7 +39,7 @@ class JsonParser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($extension)
+    public function supports(string $extension): bool
     {
         return 'json' === strtolower($extension);
     }

@@ -10,6 +10,8 @@
 - classes
   - `Util\CallableSugar` was renamed to `Util\Call`
 - method signature
+  - `Config\Loader\Parser\ParserInterface::parse()`
+  - `Config\Loader\Parser\ParserInterface::supports()`
   - `Doctrine\Migration\FileBasedMigration::getBasePath()` _return_ part
   - `Doctrine\Migration\FileBasedMigration::getMajorVersion()` _return_ part
   - `Doctrine\Migration\FileBasedMigration::getUpgradeMigrations()` _return_ part

@@ -14,12 +14,12 @@ interface ParserInterface
      *
      * @throws \Exception
      */
-    public function parse($content);
+    public function parse(string $content);
 
     /**
      * @param string $extension
      *
      * @return bool
      */
-    public function supports($extension);
+    public function supports(string $extension): bool;
 }

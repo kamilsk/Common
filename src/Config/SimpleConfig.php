@@ -139,7 +139,7 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
      *
      * @api
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->config;
     }

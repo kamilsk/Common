@@ -17,34 +17,21 @@ class Limiter
     private $total;
 
     /**
-     * @param int $tableCount1
-     * @param int $tableCount2
+     * @param int $table1Count
+     * @param int $table2Count
      * @param int $limit
      * @param int $offset
      *
      * @return array<string,int>
      *
      * @api
-     *
-     * @quality:method [B]
      */
-    public static function getTwoTablePagination(int $tableCount1, int $tableCount2, int $limit, int $offset = 0): array
+    public static function getTwoTablePagination(int $table1Count, int $table2Count, int $limit, int $offset = 0): array
     {
-        $offset1 = $offset > $tableCount1 ? $tableCount1 : $offset;
-        $limit1 = min($limit, $tableCount1 - $offset1);
-        if ($offset1 + $limit1 < $tableCount1) {
-            $offset2 = 0;
-            $limit2 = 0;
-        } elseif ($offset >= $tableCount1 + $tableCount2) {
-            $offset2 = $tableCount2;
-            $limit2 = 0;
-        } elseif ($offset < $tableCount1) {
-            $offset2 = 0;
-            $limit2 = $offset1 + $limit - $tableCount1;
-        } else {
-            $offset2 = $offset - $tableCount1;
-            $limit2 = $limit;
-        }
+        $offset1 = min($offset, $table1Count);
+        $limit1 = min($limit, $table1Count - $offset1);
+        $offset2 = min($offset - $offset1, $table2Count);
+        $limit2 = min($limit - $limit1, $table2Count - $offset2);
         return [
             'limit1'  => $limit1,
             'offset1' => $offset1,
