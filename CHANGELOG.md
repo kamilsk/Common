@@ -1,6 +1,11 @@
 [CHANGELOG](http://keepachangelog.com)
 ======================================
 
+## [3.x] - unreleased
+### Changed
+- PHP support is up to 7.0 version
+- [git diff](/../../compare/master...3.x)
+
 ## [2.3.x] - LTS - 2016-04-20
 ### Changed
 - PHP support is up to 5.6 version

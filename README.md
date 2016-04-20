@@ -27,7 +27,7 @@ $ git remote add mirror git@bitbucket.org:kamilsk/common.git
 ### Composer (production)
 
 ```bash
-$ composer require kamilsk/common:~2.3
+$ composer require kamilsk/common:~3.0@dev
 ```
 
 ## Pulse of repository
@@ -42,15 +42,15 @@ $ composer require kamilsk/common:~2.3
 
 ### General information
 
-[![Build status](https://travis-ci.org/kamilsk/Common.svg)](https://travis-ci.org/kamilsk/Common)
-[![Tests status](http://php-eye.com/badge/kamilsk/common/tested.svg)](http://php-eye.com/package/kamilsk/common)
+[![Build status](https://travis-ci.org/kamilsk/Common.svg?branch=3.x)](https://travis-ci.org/kamilsk/Common)
+[![Tests status](http://php-eye.com/badge/kamilsk/common/tested.svg?branch=3.x)](http://php-eye.com/package/kamilsk/common)
 [![Latest stable version](https://poser.pugx.org/kamilsk/common/v/stable.png)](https://packagist.org/packages/kamilsk/common)
 [![License](https://poser.pugx.org/kamilsk/common/license.png)](https://packagist.org/packages/kamilsk/common)
 
 ### Code quality
 
-[![Code coverage](https://scrutinizer-ci.com/g/kamilsk/Common/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/Common/?branch=master)
-[![Scrutinizer code quality](https://scrutinizer-ci.com/g/kamilsk/Common/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/Common/?branch=master)
+[![Code coverage](https://scrutinizer-ci.com/g/kamilsk/Common/badges/coverage.png?b=3.x)](https://scrutinizer-ci.com/g/kamilsk/Common/?branch=3.x)
+[![Scrutinizer code quality](https://scrutinizer-ci.com/g/kamilsk/Common/badges/quality-score.png?b=3.x)](https://scrutinizer-ci.com/g/kamilsk/Common/?branch=3.x)
 [![Code Climate code quality](https://codeclimate.com/github/kamilsk/Common/badges/gpa.svg)](https://codeclimate.com/github/kamilsk/Common)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/37088460-5995-43cd-9dcb-920ca502984d/big.png)](https://insight.sensiolabs.com/projects/37088460-5995-43cd-9dcb-920ca502984d)
