@@ -10,6 +10,13 @@
 - classes
   - `Util\CallableSugar` was renamed to `Util\Call`
 - method signature
+  - `Doctrine\Migration\FileBasedMigration::getBasePath()` _return_ part
+  - `Doctrine\Migration\FileBasedMigration::getMajorVersion()` _return_ part
+  - `Doctrine\Migration\FileBasedMigration::getUpgradeMigrations()` _return_ part
+  - `Doctrine\Migration\FileBasedMigration::getDowngradeMigrations()` _return_ part
+  - `Doctrine\Migration\FileBasedMigration::getQueries()` _return_ part
+  - `Doctrine\Migration\FileBasedMigration::getFullPath()` _return_ part
+  - `Doctrine\Migration\DriverBasedMigration::getQueries()` _return_ part
   - `Util\Call::end()` _throws_ part
   - `Util\Json::encode()` _throws_ part
   - `Util\Json::decode()` _throws_ part

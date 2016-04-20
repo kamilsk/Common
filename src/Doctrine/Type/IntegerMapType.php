@@ -16,12 +16,12 @@ abstract class IntegerMapType extends Type
      * @return array<int,string> where the key is what is stored in the database,
      * and the value is a human readable description
      */
-    abstract public function getValues();
+    abstract public function getValues(): array;
 
     /**
      * {@inheritdoc}
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         return $platform->getSmallIntTypeDeclarationSQL($fieldDeclaration);
     }
@@ -33,7 +33,7 @@ abstract class IntegerMapType extends Type
      *
      * @throws \InvalidArgumentException
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): int
     {
         if (!isset($this->getValues()[$value])) {
             throw new \InvalidArgumentException('Invalid type.');

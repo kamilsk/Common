@@ -177,8 +177,6 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      * @param string $defaultName is default logger name
      *
      * @throws \InvalidArgumentException
-     *
-     * @quality:method [B]
      */
     private function resolve(array $config, string $defaultName)
     {
@@ -331,6 +329,8 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      * @param array $arguments
      *
      * @return array
+     *
+     * @quality:method [B]
      */
     private function resolveConstructorArguments(\ReflectionClass $reflection, array $arguments): array
     {

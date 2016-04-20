@@ -28,7 +28,7 @@ abstract class DriverBasedMigration extends AbstractMigration
      *
      * @api
      */
-    public function getQueries()
+    public function getQueries(): array
     {
         return $this->queries;
     }
@@ -105,7 +105,7 @@ abstract class DriverBasedMigration extends AbstractMigration
      * @param string $postfix
      * @param Schema $schema
      */
-    private function prepare($prefix, $postfix, Schema $schema)
+    private function prepare(string $prefix, string $postfix, Schema $schema)
     {
         $method = $this->resolve($prefix, $postfix);
         if (method_exists($this, $method)) {
@@ -119,7 +119,7 @@ abstract class DriverBasedMigration extends AbstractMigration
      *
      * @return string
      */
-    private function resolve($prefix, $postfix)
+    private function resolve(string $prefix, string $postfix): string
     {
         $driver = $this->connection->getDriver()->getName();
         $parts = explode(' ', ucwords(str_replace('_', ' ', $driver)));

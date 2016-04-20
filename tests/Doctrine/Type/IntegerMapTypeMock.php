@@ -14,7 +14,7 @@ class IntegerMapTypeMock extends IntegerMapType
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'integer_map';
     }
@@ -22,7 +22,7 @@ class IntegerMapTypeMock extends IntegerMapType
     /**
      * @return string[]
      */
-    public function getValues()
+    public function getValues(): array
     {
         return [
             self::MAPPED_VALUE => 'Mapped value description.',

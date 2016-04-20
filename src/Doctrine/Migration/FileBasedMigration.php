@@ -37,28 +37,28 @@ abstract class FileBasedMigration extends AbstractMigration
      *
      * @api
      */
-    abstract public function getBasePath();
+    abstract public function getBasePath(): string;
 
     /**
      * @return string
      *
      * @api
      */
-    abstract public function getMajorVersion();
+    abstract public function getMajorVersion(): string;
 
     /**
      * @return string[]
      *
      * @api
      */
-    abstract public function getUpgradeMigrations();
+    abstract public function getUpgradeMigrations(): array;
 
     /**
      * @return string[]
      *
      * @api
      */
-    abstract public function getDowngradeMigrations();
+    abstract public function getDowngradeMigrations(): array;
 
     /**
      * @return null|string
@@ -81,7 +81,7 @@ abstract class FileBasedMigration extends AbstractMigration
      *
      * @api
      */
-    public function getQueries()
+    public function getQueries(): array
     {
         return $this->queries;
     }
@@ -133,7 +133,7 @@ abstract class FileBasedMigration extends AbstractMigration
      *
      * @api
      */
-    public function getFullPath($migration)
+    public function getFullPath(string $migration): string
     {
         return implode('/', array_merge(
             [$this->getBasePath()],

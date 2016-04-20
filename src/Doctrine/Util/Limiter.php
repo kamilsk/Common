@@ -28,7 +28,7 @@ class Limiter
      *
      * @quality:method [B]
      */
-    public static function getTwoTablePagination($tableCount1, $tableCount2, $limit, $offset = 0)
+    public static function getTwoTablePagination(int $tableCount1, int $tableCount2, int $limit, int $offset = 0): array
     {
         $offset1 = $offset > $tableCount1 ? $tableCount1 : $offset;
         $limit1 = min($limit, $tableCount1 - $offset1);
@@ -64,7 +64,7 @@ class Limiter
      *
      * @quality:method [B]
      */
-    public function __construct($limit, $offset = 0, $total = null)
+    public function __construct(int $limit, int $offset = 0, int $total = null)
     {
         $this->limit = $total ? min($limit, $total) : $limit;
         $this->offset = $offset;
@@ -79,7 +79,7 @@ class Limiter
      *
      * @api
      */
-    public function getLimit()
+    public function getLimit(): int
     {
         return $this->limit;
     }
@@ -89,7 +89,7 @@ class Limiter
      *
      * @api
      */
-    public function getOffset()
+    public function getOffset(): int
     {
         return $this->offset;
     }
@@ -99,7 +99,7 @@ class Limiter
      *
      * @api
      */
-    public function hasPortion()
+    public function hasPortion(): bool
     {
         return $this->total ? $this->offset < $this->total : (bool)$this->limit;
     }

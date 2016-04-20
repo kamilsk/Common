@@ -16,7 +16,7 @@ class Parser
      *
      * @api
      */
-    public static function extractSql(string $text) : array
+    public static function extractSql(string $text): array
     {
         // remove comments
         // inline
