@@ -196,30 +196,66 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      */
     protected function setupRules()
     {
-        $this->internal['rules'] = [
-            'channels' => [
-                'class' => 'Monolog\Logger',
-                'dependencies' => [
-                    'handlers' => 'pushHandler',
-                    'processors' => 'pushProcessor',
-                ],
+        $this
+            ->setupChannelRules()
+            ->setupFormatterRules()
+            ->setupHandlerRules()
+            ->setupProcessorRules()
+        ;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function setupChannelRules()
+    {
+        $this->internal['rules']['channels'] = [
+            'class' => 'Monolog\Logger',
+            'dependencies' => [
+                'handlers' => 'pushHandler',
+                'processors' => 'pushProcessor',
             ],
-            'formatters' => [
-                'suffix' => 'Formatter',
-                'namespace' => 'Monolog\Formatter',
+        ];
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function setupFormatterRules()
+    {
+        $this->internal['rules']['formatters'] = [
+            'suffix' => 'Formatter',
+            'namespace' => 'Monolog\Formatter',
+        ];
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function setupHandlerRules()
+    {
+        $this->internal['rules']['handlers'] = [
+            'suffix' => 'Handler',
+            'namespace' => 'Monolog\Handler',
+            'dependencies' => [
+                'processors' => 'pushProcessor',
+                'formatter' => 'setFormatter',
             ],
-            'handlers' => [
-                'suffix' => 'Handler',
-                'namespace' => 'Monolog\Handler',
-                'dependencies' => [
-                    'processors' => 'pushProcessor',
-                    'formatter' => 'setFormatter',
-                ],
-            ],
-            'processors' => [
-                'suffix' => 'Processor',
-                'namespace' => 'Monolog\Processor',
-            ],
+        ];
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function setupProcessorRules()
+    {
+        $this->internal['rules']['processors'] = [
+            'suffix' => 'Processor',
+            'namespace' => 'Monolog\Processor',
         ];
         return $this;
     }
@@ -244,9 +280,7 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      */
     private function resolve(array $config, $defaultName)
     {
-        $this->defaultChannel = isset($config['default_channel'])
-            ? $config['default_channel']
-            : key($config['channels']);
+        $this->defaultChannel = $config['default_channel'] ?? key($config['channels']);
         if (!isset($config['channels'][$this->defaultChannel])) {
             throw new \InvalidArgumentException(
                 sprintf('Channel with ID "%s" does not exists.', $this->defaultChannel)
@@ -415,26 +449,15 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      * @param array $arguments
      *
      * @return array
-     *
-     * @quality:method [B]
      */
-    private function resolveConstructorArguments(\ReflectionClass $reflection, array $arguments)
+    private function resolveConstructorArguments(\ReflectionClass $reflection, array $arguments): array
     {
-        if (empty($arguments)) {
-            return $arguments;
-        }
-        // compatible with HHVM and PHP 7.0
-        $key = array_keys($arguments)[0];
-        if (is_int($key)) {
+        if ($arguments === [] or is_int(key($arguments))) {
             return $arguments;
         } else {
             $params = [];
             foreach ($reflection->getConstructor()->getParameters() as $param) {
-                try {
-                    $params[$param->getName()] = $param->getDefaultValue();
-                } catch (\Exception $e) {
-                    $params[$param->getName()] = null;
-                }
+                $params[$param->getName()] = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
             }
             return array_merge($params, array_intersect_key($arguments, $params));
         }
