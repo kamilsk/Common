@@ -25,7 +25,7 @@ class DesktopNotificationHandler extends AbstractProcessingHandler
      * @param int $level
      * @param bool $bubble
      */
-    public function __construct($name, $level = Logger::DEBUG, $bubble = true)
+    public function __construct(string $name, int $level = Logger::DEBUG, bool $bubble = true)
     {
         parent::__construct($level, $bubble);
         $this->name = $name;
@@ -36,8 +36,6 @@ class DesktopNotificationHandler extends AbstractProcessingHandler
     /**
      * @param array $record
      *
-     * @return bool
-     *
      * @throws \Joli\JoliNotif\Exception\InvalidNotificationException
      */
     protected function write(array $record)
@@ -46,6 +44,6 @@ class DesktopNotificationHandler extends AbstractProcessingHandler
             ->setTitle(sprintf('[%s] %s', Logger::getLevelName($this->level), $this->name))
             ->setBody(addslashes($record['formatted']))
         ;
-        return $this->notifier && $this->notifier->send($this->notification);
+        $this->notifier && $this->notifier->send($this->notification);
     }
 }

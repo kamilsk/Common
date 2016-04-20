@@ -17,7 +17,7 @@ class SignProcessor
      *
      * @api
      */
-    public function __construct($sign)
+    public function __construct(string $sign)
     {
         $this->sign = $sign;
     }
@@ -29,7 +29,7 @@ class SignProcessor
      *
      * @api
      */
-    public function __invoke(array $record)
+    public function __invoke(array $record): array
     {
         $record['extra']['sign'] = $this->sign;
         return $record;

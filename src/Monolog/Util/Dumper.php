@@ -16,7 +16,7 @@ class Dumper
      *
      * @api
      */
-    public static function dumpToString($value) : string
+    public static function dumpToString($value): string
     {
         $string = (string)print_r($value, true);
         while (preg_match('/\n|\s{2}/', $string)) {

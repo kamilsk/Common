@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common\Monolog;
 
-use Monolog\Logger;
-
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  *
@@ -27,58 +25,21 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      * @throws \InvalidArgumentException
      *
      * @api
-     *
-     * @quality:method [B]
      */
-    public function __construct(array $config, $defaultName = 'app')
+    public function __construct(array $config, string $defaultName = 'app')
     {
-        $this->internal = [
-            'dict' => [
-                'chrome_php' => 'ChromePHP',
-                'mongo_db' => 'MongoDB',
-                'mongodb' => 'MongoDB',
-                'couch_db' => 'CouchDB',
-                'couchdb' => 'CouchDB',
-                'doctrine_couch_db' => 'DoctrineCouchDB',
-                'doctrine_couchdb' => 'DoctrineCouchDB',
-                'fire_php' => 'FirePHP',
-                'ifttt' => 'IFTTT',
-                'php_console' => 'PHPConsole',
-            ],
-            'rules' => [
-                'channels' => [
-                    'class' => Logger::class,
-                    'dependencies' => [
-                        'handlers' => 'pushHandler',
-                        'processors' => 'pushProcessor',
-                    ],
-                ],
-                'formatters' => [
-                    'suffix' => 'Formatter',
-                    'namespace' => 'Monolog\Formatter',
-                ],
-                'handlers' => [
-                    'suffix' => 'Handler',
-                    'namespace' => 'Monolog\Handler',
-                    'dependencies' => [
-                        'processors' => 'pushProcessor',
-                        'formatter' => 'setFormatter',
-                    ],
-                ],
-                'processors' => [
-                    'suffix' => 'Processor',
-                    'namespace' => 'Monolog\Processor',
-                ],
-            ],
-            'storage' => [],
-        ];
+        $this
+            ->setupDict()
+            ->setupRules()
+            ->setupStorage()
+        ;
         $this->resolve($config, $defaultName);
     }
 
     /**
      * @param string $id
      *
-     * @return Logger
+     * @return \Monolog\Logger
      *
      * @throws \OutOfRangeException
      *
@@ -90,7 +51,7 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
     }
 
     /**
-     * @return Logger
+     * @return \Monolog\Logger
      *
      * @throws \OutOfRangeException
      *
@@ -208,6 +169,68 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
     public function keys()
     {
         return $this->keys;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function setupDict()
+    {
+        $this->internal['dict'] = [
+            'chrome_php' => 'ChromePHP',
+            'mongo_db' => 'MongoDB',
+            'mongodb' => 'MongoDB',
+            'couch_db' => 'CouchDB',
+            'couchdb' => 'CouchDB',
+            'doctrine_couch_db' => 'DoctrineCouchDB',
+            'doctrine_couchdb' => 'DoctrineCouchDB',
+            'fire_php' => 'FirePHP',
+            'ifttt' => 'IFTTT',
+            'php_console' => 'PHPConsole',
+        ];
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function setupRules()
+    {
+        $this->internal['rules'] = [
+            'channels' => [
+                'class' => 'Monolog\Logger',
+                'dependencies' => [
+                    'handlers' => 'pushHandler',
+                    'processors' => 'pushProcessor',
+                ],
+            ],
+            'formatters' => [
+                'suffix' => 'Formatter',
+                'namespace' => 'Monolog\Formatter',
+            ],
+            'handlers' => [
+                'suffix' => 'Handler',
+                'namespace' => 'Monolog\Handler',
+                'dependencies' => [
+                    'processors' => 'pushProcessor',
+                    'formatter' => 'setFormatter',
+                ],
+            ],
+            'processors' => [
+                'suffix' => 'Processor',
+                'namespace' => 'Monolog\Processor',
+            ],
+        ];
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function setupStorage()
+    {
+        $this->internal['storage'] = [];
+        return $this;
     }
 
     /**

@@ -27,7 +27,7 @@ class TimeExecutionProcessor
      *
      * @api
      */
-    public function __invoke(array $record)
+    public function __invoke(array $record): array
     {
         $record['extra']['time_execution'] = sprintf('%01.3f', microtime(true) - $this->started);
         return $record;

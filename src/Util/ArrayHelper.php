@@ -16,8 +16,6 @@ class ArrayHelper
      * @return mixed null if not exists
      *
      * @api
-     *
-     * @quality:method [B]
      */
     public static function findByPath(array $scope, string $path)
     {
@@ -72,13 +70,11 @@ class ArrayHelper
      * @param array $placeholders
      *
      * @api
-     *
-     * @quality:method [B]
      */
     public static function transform(array &$target, array $placeholders)
     {
-        $wrap = function (&$value) {
-            $value = sprintf('/%s/', (string)$value);
+        $wrap = function (string &$value) {
+            $value = sprintf('/%s/', $value);
         };
         array_walk_recursive($target, function (&$param) use ($wrap, $placeholders) {
             if (!is_string($param)) {
