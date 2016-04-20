@@ -48,17 +48,15 @@ class Limiter
      * @throws \InvalidArgumentException if the values are negative
      *
      * @api
-     *
-     * @quality:method [B]
      */
     public function __construct(int $limit, int $offset = 0, int $total = null)
     {
-        $this->limit = $total ? min($limit, $total) : $limit;
-        $this->offset = $offset;
-        $this->total = $total ?: PHP_INT_MAX;
-        if ($this->limit < 0 || $this->offset < 0 || $this->total < 0) {
+        if (min($limit, $offset, (int)$total) < 0) {
             throw new \InvalidArgumentException('Values must be unsigned.');
         }
+        $this->total = $total ?: PHP_INT_MAX;
+        $this->limit = min($limit, $this->total);
+        $this->offset = $offset;
     }
 
     /**
@@ -92,11 +90,11 @@ class Limiter
     }
 
     /**
-     * @return $this
+     * @return Limiter
      *
      * @api
      */
-    public function nextPortion()
+    public function nextPortion(): Limiter
     {
         if ($this->limit) {
             $this->offset = min($this->offset + $this->limit, $this->total);
