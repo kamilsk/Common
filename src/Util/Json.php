@@ -50,20 +50,9 @@ class Json
      *
      * @return mixed
      *
-     * @throws \OverflowException when
-     *  JSON_ERROR_DEPTH
-     *  JSON_ERROR_RECURSION
-     * @throws \InvalidArgumentException when
-     *  JSON_ERROR_STATE_MISMATCH
-     *  JSON_ERROR_CTRL_CHAR
-     *  JSON_ERROR_SYNTAX
-     *  JSON_ERROR_UTF8
-     *  JSON_ERROR_INF_OR_NAN
-     *  JSON_ERROR_UNSUPPORTED_TYPE
+     * @throws \InvalidArgumentException
      *
      * @api
-     *
-     * @quality:method [B]
      */
     public function decode(string $json, bool $assoc = null, int $depth = null, int $options = null)
     {
@@ -79,16 +68,7 @@ class Json
      *
      * @return string
      *
-     * @throws \OverflowException when
-     *  JSON_ERROR_DEPTH
-     *  JSON_ERROR_RECURSION
-     * @throws \InvalidArgumentException when
-     *  JSON_ERROR_STATE_MISMATCH
-     *  JSON_ERROR_CTRL_CHAR
-     *  JSON_ERROR_SYNTAX
-     *  JSON_ERROR_UTF8
-     *  JSON_ERROR_INF_OR_NAN
-     *  JSON_ERROR_UNSUPPORTED_TYPE
+     * @throws \InvalidArgumentException
      *
      * @api
      */
@@ -100,27 +80,12 @@ class Json
     }
 
     /**
-     * @throws \OverflowException
      * @throws \InvalidArgumentException
-     *
-     * @quality:method [B]
      */
     private function checkError()
     {
         if (JSON_ERROR_NONE !== json_last_error()) {
-            $message = json_last_error_msg();
-            switch (json_last_error()) {
-                case JSON_ERROR_DEPTH:
-                case JSON_ERROR_RECURSION:
-                    throw new \OverflowException($message);
-                case JSON_ERROR_STATE_MISMATCH:
-                case JSON_ERROR_CTRL_CHAR:
-                case JSON_ERROR_SYNTAX:
-                case JSON_ERROR_UTF8:
-                case JSON_ERROR_INF_OR_NAN:
-                case JSON_ERROR_UNSUPPORTED_TYPE:
-                    throw new \InvalidArgumentException($message);
-            }
+            throw new \InvalidArgumentException(json_last_error_msg(), json_last_error());
         }
     }
 }

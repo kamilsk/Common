@@ -9,6 +9,10 @@
 ### Changed
 - classes
   - `Util\CallableSugar` was renamed to `Util\Call`
+- method signature
+  - `Util\Call::end` _throws_ part
+  - `Util\Json::encode` _throws_ part
+  - `Util\Json::decode` _throws_ part
 - PHP support is up to 7.0 version
 - [git diff](/../../compare/master...3.x)
 

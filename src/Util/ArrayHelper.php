@@ -24,7 +24,7 @@ class ArrayHelper
         if (mb_strpos($path, ':')) {
             $chain = explode(':', $path);
             foreach ($chain as $i => $key) {
-                if (!is_array($scope) || !isset($scope[$key])) {
+                if (!isset($scope[$key])) {
                     return null;
                 }
                 $scope = $scope[$key];
@@ -52,7 +52,7 @@ class ArrayHelper
     public static function merge(array ...$args): array
     {
         $res = array_shift($args);
-        while (!empty($args)) {
+        while ($args !== []) {
             $next = array_shift($args);
             foreach ($next as $k => $v) {
                 if (is_int($k)) {
@@ -83,7 +83,7 @@ class ArrayHelper
         array_walk_recursive($target, function (&$param) use ($wrap, $placeholders) {
             if (!is_string($param)) {
                 return;
-            } elseif (preg_match('/^const\((.*)\)$/', $param, $matches) && defined($matches[1])) {
+            } elseif (preg_match('/^const\((.*)\)$/', $param, $matches)) {
                 $param = constant($matches[1]);
             } elseif (preg_match_all('/%([^%]+)%/', $param, $matches)) {
                 array_walk($matches[0], $wrap);

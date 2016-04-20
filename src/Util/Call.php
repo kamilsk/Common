@@ -19,7 +19,7 @@ final class Call
         return new static($callable);
     }
 
-    /** @var callable[] */
+    /** @var array<string,callable[]> */
     private $catchers = [];
     /** @var string */
     private $current;

@@ -48,8 +48,8 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     {
         try {
             $json->decode($json->encode(['a' => ['b' => ['c' => false]]]), false, 2);
-            self::fail(sprintf('%s exception expected.', \OverflowException::class));
-        } catch (\OverflowException $e) {
+            self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
+        } catch (\InvalidArgumentException $e) {
             self::assertTrue(true);
         }
     }

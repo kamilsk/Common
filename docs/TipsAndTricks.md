@@ -39,7 +39,7 @@
 ### Misuse
 
 ```php
-CallableSugar::begin([$http, 'get'])
+Call::begin([$http, 'get'])
     // if an HttpTimeoutException will be thrown, then will attempt to repeat it three times every three seconds
     ->rescue(HttpTimeoutException::class)
     ->retry(3, 3000)
@@ -55,7 +55,7 @@ In example above you have opaque implementation that complicate refactoring in t
 ### Proper use
 
 ```php
-CallableSugar::begin(function (Request $request) use ($http) {
+Call::begin(function (Request $request) use ($http) {
     return $http->get($request);
 })
     ->rescue(HttpTimeoutException::class)
