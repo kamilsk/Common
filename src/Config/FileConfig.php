@@ -36,7 +36,7 @@ class FileConfig extends SimpleConfig
      *
      * @api
      */
-    public function load($resource, array $placeholders = [])
+    public function load(string $resource, array $placeholders = [])
     {
         $this->config = $this->fileLoader->load($resource);
         return $this->transform($placeholders);

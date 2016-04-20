@@ -44,7 +44,7 @@ class Processor
      *
      * @quality:method [B]
      */
-    public function publish($targetPath, $installPath, array $map, $isSymlink, $isRelative)
+    public function publish(string $targetPath, string $installPath, array $map, bool $isSymlink, bool $isRelative)
     {
         $targetPath = rtrim($targetPath, '/');
         $installPath = rtrim($installPath, '/');
@@ -84,7 +84,7 @@ class Processor
      * @throws IOException
      * @throws \InvalidArgumentException
      */
-    private function hardCopy($originDir, $targetDir)
+    private function hardCopy(string $originDir, string $targetDir)
     {
         $this->filesystem->mkdir($targetDir, 0777);
         $this->filesystem->mirror($originDir, $targetDir);

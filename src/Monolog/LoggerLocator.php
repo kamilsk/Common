@@ -178,7 +178,7 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \InvalidArgumentException
      *
-     * @quality:method [C]
+     * @quality:method [B]
      */
     private function resolve(array $config, string $defaultName)
     {

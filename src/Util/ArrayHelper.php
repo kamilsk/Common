@@ -50,8 +50,7 @@ class ArrayHelper
     public static function merge(array ...$args): array
     {
         $res = array_shift($args);
-        while ($args !== []) {
-            $next = array_shift($args);
+        foreach ($args as $next) {
             foreach ($next as $k => $v) {
                 $isIndexed = is_int($k);
                 $isArrayed = !$isIndexed && is_array($v) && isset($res[$k]) && is_array($res[$k]);

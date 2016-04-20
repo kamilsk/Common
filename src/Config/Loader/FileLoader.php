@@ -43,7 +43,7 @@ class FileLoader extends AbstractFileLoader
      *
      * @quality:method [C]
      */
-    public function load($resource, $type = null)
+    public function load($resource, $type = null): array
     {
         $content = [];
         $path = (string)$this->locator->locate($resource);
@@ -51,7 +51,7 @@ class FileLoader extends AbstractFileLoader
             throw new \InvalidArgumentException(sprintf('File "%s" is not supported.', $resource));
         }
         $fileContent = $this->loadFile($path);
-        if ($fileContent === null) {
+        if (!is_array($fileContent)) {
             return $content;
         }
         $content[] = $fileContent;
@@ -81,7 +81,7 @@ class FileLoader extends AbstractFileLoader
      *
      * @api
      */
-    public function supports($resource, $type = null)
+    public function supports($resource, $type = null): bool
     {
         return $this->parser->supports(pathinfo($resource, PATHINFO_EXTENSION));
     }
@@ -93,7 +93,7 @@ class FileLoader extends AbstractFileLoader
      *
      * @throws \Exception
      */
-    private function loadFile($file)
+    private function loadFile(string $file)
     {
         return $this->parser->parse(file_get_contents($file));
     }
