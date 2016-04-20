@@ -190,6 +190,16 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
                 $config['channels'][$id]['arguments'] = [$name];
             }
         }
+        $this->store($config);
+    }
+
+    /**
+     * @param array $config
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function store(array $config)
+    {
         foreach (array_intersect(array_keys($this->internal['rules']), array_keys($config)) as $key) {
             foreach ($config[$key] as $id => $componentConfig) {
                 $this->storeComponentConfig($key, $id, $componentConfig);
@@ -263,12 +273,10 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      * @param string $key
      * @param string $id
      * @param array $componentConfig
-     *
-     * @quality:method [B]
      */
     private function storeComponentDependencies(string $key, string $id, array $componentConfig)
     {
-        foreach ($this->internal['rules'][$key] as $dependencyKey => $methodName) {
+        foreach ($this->internal['rules'][$key]['dependencies'] as $dependencyKey => $methodName) {
             $componentConfig[$dependencyKey] = (array)($componentConfig[$dependencyKey] ?? []);
             foreach ($componentConfig[$dependencyKey] as $dependencyId) {
                 $this->storeDependency(
