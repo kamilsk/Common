@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common\Monolog;
 
+use Monolog\Logger;
+
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  *
- * @quality:class [B]
+ * @quality:class [C]
  */
 class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
 {
@@ -28,36 +30,32 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      */
     public function __construct(array $config, string $defaultName = 'app')
     {
-        $this
-            ->setupDict()
-            ->setupRules()
-            ->setupStorage()
-        ;
+        $this->internal = InternalConfig::build();
         $this->resolve($config, $defaultName);
     }
 
     /**
      * @param string $id
      *
-     * @return \Monolog\Logger
+     * @return Logger
      *
      * @throws \OutOfRangeException
      *
      * @api
      */
-    public function getChannel($id)
+    public function getChannel($id): Logger
     {
         return $this[$id];
     }
 
     /**
-     * @return \Monolog\Logger
+     * @return Logger
      *
      * @throws \OutOfRangeException
      *
      * @api
      */
-    public function getDefaultChannel()
+    public function getDefaultChannel(): Logger
     {
         return $this[$this->defaultChannel];
     }
@@ -110,6 +108,8 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function count()
     {
@@ -120,6 +120,8 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      * {@inheritdoc}
      *
      * @throws \OutOfRangeException
+     *
+     * @api
      */
     public function current()
     {
@@ -131,6 +133,8 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function next()
     {
@@ -139,6 +143,8 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function key()
     {
@@ -147,6 +153,8 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function valid()
     {
@@ -155,118 +163,12 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function rewind()
     {
         reset($this->keys);
-    }
-
-    /**
-     * @internal remove LoggerLocatorTest::keys()
-     *
-     * @return string[]
-     */
-    public function keys()
-    {
-        return $this->keys;
-    }
-
-    /**
-     * @return $this
-     */
-    protected function setupDict()
-    {
-        $this->internal['dict'] = [
-            'chrome_php' => 'ChromePHP',
-            'mongo_db' => 'MongoDB',
-            'mongodb' => 'MongoDB',
-            'couch_db' => 'CouchDB',
-            'couchdb' => 'CouchDB',
-            'doctrine_couch_db' => 'DoctrineCouchDB',
-            'doctrine_couchdb' => 'DoctrineCouchDB',
-            'fire_php' => 'FirePHP',
-            'ifttt' => 'IFTTT',
-            'php_console' => 'PHPConsole',
-        ];
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    protected function setupRules()
-    {
-        $this
-            ->setupChannelRules()
-            ->setupFormatterRules()
-            ->setupHandlerRules()
-            ->setupProcessorRules()
-        ;
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    protected function setupChannelRules()
-    {
-        $this->internal['rules']['channels'] = [
-            'class' => 'Monolog\Logger',
-            'dependencies' => [
-                'handlers' => 'pushHandler',
-                'processors' => 'pushProcessor',
-            ],
-        ];
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    protected function setupFormatterRules()
-    {
-        $this->internal['rules']['formatters'] = [
-            'suffix' => 'Formatter',
-            'namespace' => 'Monolog\Formatter',
-        ];
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    protected function setupHandlerRules()
-    {
-        $this->internal['rules']['handlers'] = [
-            'suffix' => 'Handler',
-            'namespace' => 'Monolog\Handler',
-            'dependencies' => [
-                'processors' => 'pushProcessor',
-                'formatter' => 'setFormatter',
-            ],
-        ];
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    protected function setupProcessorRules()
-    {
-        $this->internal['rules']['processors'] = [
-            'suffix' => 'Processor',
-            'namespace' => 'Monolog\Processor',
-        ];
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    protected function setupStorage()
-    {
-        $this->internal['storage'] = [];
-        return $this;
     }
 
     /**
@@ -276,9 +178,9 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \InvalidArgumentException
      *
-     * @quality:method [D]
+     * @quality:method [C]
      */
-    private function resolve(array $config, $defaultName)
+    private function resolve(array $config, string $defaultName)
     {
         $this->defaultChannel = $config['default_channel'] ?? key($config['channels']);
         if (!isset($config['channels'][$this->defaultChannel])) {
@@ -289,7 +191,7 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
         foreach ($config['channels'] as $id => $channelConfig) {
             $this->keys[] = $id;
             if (!isset($channelConfig['arguments'])) {
-                $name = isset($channelConfig['name']) ? $channelConfig['name'] : $defaultName;
+                $name = $channelConfig['name'] ?? $defaultName;
                 $config['channels'][$id]['arguments'] = [$name];
             }
         }
@@ -312,10 +214,9 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      *
      * @quality:method [B]
      */
-    private function storeComponentConfig($key, $id, array $componentConfig)
+    private function storeComponentConfig(string $key, string $id, array $componentConfig)
     {
         $config = [
-            'class' => null,
             'arguments' => [],
             'calls' => [],
         ];
@@ -330,8 +231,7 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
             );
         } elseif (isset($rule['class'])) {
             $config['class'] = $rule['class'];
-        }
-        if (!isset($config['class'])) {
+        } else {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Component config "%s" does not have "class" or "type" option.',
@@ -352,7 +252,7 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      *
      * @return string
      */
-    private function resolveClassName($namespace, $type, $suffix)
+    private function resolveClassName(string $namespace, string $type, string $suffix): string
     {
         if (isset($this->internal['dict'][$type])) {
             $class = $this->internal['dict'][$type];
@@ -368,7 +268,7 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      *
      * @return string
      */
-    private function resolveStorageId($key, $id)
+    private function resolveStorageId(string $key, string $id): string
     {
         return sprintf('%s.%s', rtrim($key, 's'), $id);
     }
@@ -380,7 +280,7 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      *
      * @quality:method [B]
      */
-    private function storeComponentDependencies($key, $id, array $componentConfig)
+    private function storeComponentDependencies(string $key, string $id, array $componentConfig)
     {
         $rule = $this->internal['rules'][$key];
         if (isset($rule['dependencies'])) {
@@ -411,7 +311,7 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      * @param string $dependencyId
      * @param string $methodName
      */
-    private function storeDependency($componentId, $dependencyId, $methodName)
+    private function storeDependency(string $componentId, string $dependencyId, string $methodName)
     {
         $this->internal['storage'][$componentId]['calls'][] = [
             'method' => $methodName,
@@ -426,7 +326,7 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      */
-    private function getComponent($storageId)
+    private function getComponent(string $storageId)
     {
         if (!isset($this->internal['storage'][$storageId])) {
             throw new \OutOfRangeException(sprintf('Component with ID "%s" not found.', $storageId));
@@ -452,7 +352,7 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      */
     private function resolveConstructorArguments(\ReflectionClass $reflection, array $arguments): array
     {
-        if ($arguments === [] or is_int(key($arguments))) {
+        if ($arguments === [] || is_int(key($arguments))) {
             return $arguments;
         } else {
             $params = [];
