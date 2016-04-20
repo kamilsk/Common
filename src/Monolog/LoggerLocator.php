@@ -9,7 +9,7 @@ use Monolog\Logger;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  *
- * @quality:class [C]
+ * @quality:class [B]
  */
 class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
 {
@@ -183,11 +183,6 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
     private function resolve(array $config, string $defaultName)
     {
         $this->defaultChannel = $config['default_channel'] ?? key($config['channels']);
-        if (!isset($config['channels'][$this->defaultChannel])) {
-            throw new \InvalidArgumentException(
-                sprintf('Channel with ID "%s" does not exists.', $this->defaultChannel)
-            );
-        }
         foreach ($config['channels'] as $id => $channelConfig) {
             $this->keys[] = $id;
             if (!isset($channelConfig['arguments'])) {
@@ -195,12 +190,10 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
                 $config['channels'][$id]['arguments'] = [$name];
             }
         }
-        foreach ($this->internal['rules'] as $key => $_) {
-            if (isset($config[$key])) {
-                foreach ($config[$key] as $id => $componentConfig) {
-                    $this->storeComponentConfig($key, $id, $componentConfig);
-                    $this->storeComponentDependencies($key, $id, $componentConfig);
-                }
+        foreach (array_intersect(array_keys($this->internal['rules']), array_keys($config)) as $key) {
+            foreach ($config[$key] as $id => $componentConfig) {
+                $this->storeComponentConfig($key, $id, $componentConfig);
+                $this->storeComponentDependencies($key, $id, $componentConfig);
             }
         }
     }
@@ -216,21 +209,16 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      */
     private function storeComponentConfig(string $key, string $id, array $componentConfig)
     {
-        $config = [
-            'arguments' => [],
-            'calls' => [],
-        ];
+        $config = ['calls' => []];
         $rule = $this->internal['rules'][$key];
-        if (isset($componentConfig['class'])) {
-            $config['class'] = $componentConfig['class'];
-        } elseif (isset($componentConfig['type'])) {
+        if (isset($componentConfig['type'])) {
             $config['class'] = $this->resolveClassName(
                 $rule['namespace'],
                 $componentConfig['type'],
                 $rule['suffix']
             );
-        } elseif (isset($rule['class'])) {
-            $config['class'] = $rule['class'];
+        } elseif (isset($componentConfig['class']) || isset($rule['class'])) {
+            $config['class'] = $componentConfig['class'] ?? $rule['class'];
         } else {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -239,9 +227,7 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
                 )
             );
         }
-        if (isset($componentConfig['arguments'])) {
-            $config['arguments'] = $componentConfig['arguments'];
-        }
+        $config['arguments'] = $componentConfig['arguments'] ?? [];
         $this->internal['storage'][$this->resolveStorageId($key, $id)] = $config;
     }
 
@@ -283,24 +269,22 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
     private function storeComponentDependencies(string $key, string $id, array $componentConfig)
     {
         $rule = $this->internal['rules'][$key];
-        if (isset($rule['dependencies'])) {
-            foreach ($rule['dependencies'] as $dependencyKey => $methodName) {
-                if (isset($componentConfig[$dependencyKey])) {
-                    if (is_array($componentConfig[$dependencyKey])) {
-                        foreach ($componentConfig[$dependencyKey] as $dependencyId) {
-                            $this->storeDependency(
-                                $this->resolveStorageId($key, $id),
-                                $this->resolveStorageId($dependencyKey, $dependencyId),
-                                $methodName
-                            );
-                        }
-                    } else {
+        foreach ($rule['dependencies'] as $dependencyKey => $methodName) {
+            if (isset($componentConfig[$dependencyKey])) {
+                if (is_array($componentConfig[$dependencyKey])) {
+                    foreach ($componentConfig[$dependencyKey] as $dependencyId) {
                         $this->storeDependency(
                             $this->resolveStorageId($key, $id),
-                            $this->resolveStorageId($dependencyKey, $componentConfig[$dependencyKey]),
+                            $this->resolveStorageId($dependencyKey, $dependencyId),
                             $methodName
                         );
                     }
+                } else {
+                    $this->storeDependency(
+                        $this->resolveStorageId($key, $id),
+                        $this->resolveStorageId($dependencyKey, $componentConfig[$dependencyKey]),
+                        $methodName
+                    );
                 }
             }
         }

@@ -22,20 +22,6 @@ class LoggerLocatorTest extends \PHPUnit_Framework_TestCase
                 'channels' => [
                     'app' => [
                         'name' => 'APP',
-                        'handlers' => ['file', 'chrome'],
-                    ],
-                ],
-                'default_channel' => 'unknown',
-            ]);
-            self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
-        } catch (\InvalidArgumentException $e) {
-            self::assertTrue(true);
-        }
-        try {
-            new LoggerLocator([
-                'channels' => [
-                    'app' => [
-                        'name' => 'APP',
                         'handlers' => ['file'],
                     ],
                 ],

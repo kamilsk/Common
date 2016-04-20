@@ -23,7 +23,7 @@ class InternalConfig
     /**
      * @param array $config
      */
-    private static function setupDict(array &$config)
+    protected static function setupDict(array &$config)
     {
         $config['dict'] = [
             'chrome_php' => 'ChromePHP',
@@ -42,7 +42,7 @@ class InternalConfig
     /**
      * @param array $config
      */
-    private static function setupRules(array &$config)
+    protected static function setupRules(array &$config)
     {
         static::setupChannelRules($config);
         static::setupHandlerRules($config);
@@ -53,7 +53,7 @@ class InternalConfig
     /**
      * @param array $config
      */
-    private static function setupChannelRules(array &$config)
+    protected static function setupChannelRules(array &$config)
     {
         $config['rules']['channels'] = [
             'class' => 'Monolog\Logger',
@@ -67,7 +67,7 @@ class InternalConfig
     /**
      * @param array $config
      */
-    private static function setupHandlerRules(array &$config)
+    protected static function setupHandlerRules(array &$config)
     {
         $config['rules']['handlers'] = [
             'suffix' => 'Handler',
@@ -82,29 +82,31 @@ class InternalConfig
     /**
      * @param array $config
      */
-    private static function setupFormatterRules(array &$config)
+    protected static function setupFormatterRules(array &$config)
     {
         $config['rules']['formatters'] = [
             'suffix' => 'Formatter',
             'namespace' => 'Monolog\Formatter',
+            'dependencies' => [],
         ];
     }
 
     /**
      * @param array $config
      */
-    private static function setupProcessorRules(array &$config)
+    protected static function setupProcessorRules(array &$config)
     {
         $config['rules']['processors'] = [
             'suffix' => 'Processor',
             'namespace' => 'Monolog\Processor',
+            'dependencies' => [],
         ];
     }
 
     /**
      * @param array $config
      */
-    private static function setupStorage(array &$config)
+    protected static function setupStorage(array &$config)
     {
         $config['storage'] = [];
     }
