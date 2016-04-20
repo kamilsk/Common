@@ -71,6 +71,8 @@ class ArrayHelper
      * @param array $placeholders
      *
      * @api
+     *
+     * @quality:method [B]
      */
     public static function transform(array &$target, array $placeholders)
     {
