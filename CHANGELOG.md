@@ -2,7 +2,13 @@
 ======================================
 
 ## [3.x] - unreleased
+### Added
+- methods
+  - `Util\Json::new`
+
 ### Changed
+- classes
+  - `Util\CallableSugar` was renamed to `Util\Call`
 - PHP support is up to 7.0 version
 - [git diff](/../../compare/master...3.x)
 
@@ -17,7 +23,7 @@
   - `Composer\Script\AdminLte\Processor`
   - `Composer\Script\AdminLte\Publisher`
   - `Monolog\Processor\SignProcessor`
-  - `Util\CallableSugar`
+  - `Util\Call`
 
 ### Changed
 - [git diff](/../../compare/2.1.5...2.2.2)

@@ -9,6 +9,18 @@ namespace OctoLab\Common\Util;
  */
 class Json
 {
+    /**
+     * @param bool $assoc
+     * @param int $options
+     * @param int $depth
+     *
+     * @return Json
+     */
+    public static function new(bool $assoc = false, int $options = 0, int $depth = 512): Json
+    {
+        return new static($assoc, $options, $depth);
+    }
+
     /** @var bool */
     private $assoc;
     /** @var int */
@@ -23,7 +35,7 @@ class Json
      *
      * @api
      */
-    public function __construct($assoc = false, $options = 0, $depth = 512)
+    public function __construct(bool $assoc = false, int $options = 0, int $depth = 512)
     {
         $this->assoc = $assoc;
         $this->options = $options;
@@ -38,6 +50,9 @@ class Json
      *
      * @return mixed
      *
+     * @throws \OverflowException when
+     *  JSON_ERROR_DEPTH
+     *  JSON_ERROR_RECURSION
      * @throws \InvalidArgumentException when
      *  JSON_ERROR_STATE_MISMATCH
      *  JSON_ERROR_CTRL_CHAR
@@ -45,24 +60,15 @@ class Json
      *  JSON_ERROR_UTF8
      *  JSON_ERROR_INF_OR_NAN
      *  JSON_ERROR_UNSUPPORTED_TYPE
-     * @throws \OverflowException when
-     *  JSON_ERROR_DEPTH
-     *  JSON_ERROR_RECURSION
-     * @throws \UnexpectedValueException otherwise
      *
      * @api
      *
      * @quality:method [B]
      */
-    public function decode($json, $assoc = null, $depth = null, $options = null)
+    public function decode(string $json, bool $assoc = null, int $depth = null, int $options = null)
     {
-        $assoc = $assoc === null ? $this->assoc : $assoc;
-        $options = $options === null ? $this->options : $options;
-        $depth = $depth === null ? $this->depth : $depth;
-        $result = json_decode($json, $assoc, $depth, $options);
-        if (json_last_error()) {
-            throw $this->getException();
-        }
+        $result = json_decode($json, $assoc ?? $this->assoc, $depth ?? $this->depth, $options ?? $this->options);
+        $this->checkError();
         return $result;
     }
 
@@ -73,6 +79,9 @@ class Json
      *
      * @return string
      *
+     * @throws \OverflowException when
+     *  JSON_ERROR_DEPTH
+     *  JSON_ERROR_RECURSION
      * @throws \InvalidArgumentException when
      *  JSON_ERROR_STATE_MISMATCH
      *  JSON_ERROR_CTRL_CHAR
@@ -80,46 +89,38 @@ class Json
      *  JSON_ERROR_UTF8
      *  JSON_ERROR_INF_OR_NAN
      *  JSON_ERROR_UNSUPPORTED_TYPE
-     * @throws \OverflowException when
-     *  JSON_ERROR_DEPTH
-     *  JSON_ERROR_RECURSION
-     * @throws \UnexpectedValueException otherwise
      *
      * @api
      */
-    public function encode($value, $options = null, $depth = null)
+    public function encode($value, int $options = null, int $depth = null): string
     {
-        $options = $options === null ? $this->options : $options;
-        $depth = $depth === null ? $this->depth : $depth;
-        $json = json_encode($value, $options, $depth);
-        $error = json_last_error();
-        if ($error) {
-            throw $this->getException();
-        }
+        $json = json_encode($value, $options ?? $this->options, $depth ?? $this->depth);
+        $this->checkError();
         return $json;
     }
 
     /**
-     * @return \InvalidArgumentException|\OverflowException|\UnexpectedValueException
+     * @throws \OverflowException
+     * @throws \InvalidArgumentException
      *
      * @quality:method [B]
      */
-    private function getException()
+    private function checkError()
     {
-        $message = json_last_error_msg();
-        switch (json_last_error()) {
-            case JSON_ERROR_DEPTH:
-            case JSON_ERROR_RECURSION:
-                return new \OverflowException($message);
-            case JSON_ERROR_STATE_MISMATCH:
-            case JSON_ERROR_CTRL_CHAR:
-            case JSON_ERROR_SYNTAX:
-            case JSON_ERROR_UTF8:
-            case JSON_ERROR_INF_OR_NAN:
-            case JSON_ERROR_UNSUPPORTED_TYPE:
-                return new \InvalidArgumentException($message);
-            default:
-                return new \UnexpectedValueException($message);
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            $message = json_last_error_msg();
+            switch (json_last_error()) {
+                case JSON_ERROR_DEPTH:
+                case JSON_ERROR_RECURSION:
+                    throw new \OverflowException($message);
+                case JSON_ERROR_STATE_MISMATCH:
+                case JSON_ERROR_CTRL_CHAR:
+                case JSON_ERROR_SYNTAX:
+                case JSON_ERROR_UTF8:
+                case JSON_ERROR_INF_OR_NAN:
+                case JSON_ERROR_UNSUPPORTED_TYPE:
+                    throw new \InvalidArgumentException($message);
+            }
         }
     }
 }

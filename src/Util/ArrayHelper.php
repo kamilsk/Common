@@ -19,7 +19,7 @@ class ArrayHelper
      *
      * @quality:method [B]
      */
-    public static function findByPath(array $scope, $path)
+    public static function findByPath(array $scope, string $path)
     {
         if (mb_strpos($path, ':')) {
             $chain = explode(':', $path);
@@ -31,13 +31,15 @@ class ArrayHelper
             }
             return $scope;
         }
-        return isset($scope[$path]) ? $scope[$path] : null;
+        return $scope[$path] ?? null;
     }
 
     /**
      * Merges two or more arrays into one recursively.
      *
      * Based on yii\helpers\BaseArrayHelper::merge.
+     *
+     * @param array[] ...$args
      *
      * @return array
      *
@@ -47,9 +49,8 @@ class ArrayHelper
      *
      * @quality:method [B]
      */
-    public static function merge()
+    public static function merge(array ...$args): array
     {
-        $args = func_get_args();
         $res = array_shift($args);
         while (!empty($args)) {
             $next = array_shift($args);
@@ -57,7 +58,7 @@ class ArrayHelper
                 if (is_int($k)) {
                     $res[] = $v;
                 } elseif (is_array($v) && isset($res[$k]) && is_array($res[$k])) {
-                    $res[$k] = self::merge($res[$k], $v);
+                    $res[$k] = static::merge($res[$k], $v);
                 } else {
                     $res[$k] = $v;
                 }
@@ -82,14 +83,13 @@ class ArrayHelper
         array_walk_recursive($target, function (&$param) use ($wrap, $placeholders) {
             if (!is_string($param)) {
                 return;
-            }
-            if (preg_match('/^const\((.*)\)$/', $param, $matches) && defined($matches[1])) {
+            } elseif (preg_match('/^const\((.*)\)$/', $param, $matches) && defined($matches[1])) {
                 $param = constant($matches[1]);
             } elseif (preg_match_all('/%([^%]+)%/', $param, $matches)) {
                 array_walk($matches[0], $wrap);
                 $pattern = $matches[0];
                 $replacement = array_intersect_key($placeholders, array_flip($matches[1]));
-                $param = preg_replace($pattern, $replacement, (string)$param);
+                $param = preg_replace($pattern, $replacement, $param);
             }
         });
     }

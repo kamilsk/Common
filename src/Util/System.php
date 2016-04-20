@@ -14,7 +14,7 @@ class System
      *
      * @api
      */
-    public static function isLinux()
+    public static function isLinux(): bool
     {
         return stripos(PHP_OS, 'LIN') === 0;
     }
@@ -24,7 +24,7 @@ class System
      *
      * @api
      */
-    public static function isMac()
+    public static function isMac(): bool
     {
         return stripos(PHP_OS, 'DAR') === 0;
     }
@@ -34,7 +34,7 @@ class System
      *
      * @api
      */
-    public static function isWindows()
+    public static function isWindows(): bool
     {
         return stripos(PHP_OS, 'WIN') === 0;
     }

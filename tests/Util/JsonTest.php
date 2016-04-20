@@ -12,6 +12,15 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function new()
+    {
+        $json = Json::new(true, JSON_UNESCAPED_UNICODE);
+        self::assertNotEquals(json_encode(['a' => 'б']), $json->encode(['a' => 'б']));
+    }
+
+    /**
+     * @test
+     */
     public function construct()
     {
         $json = new Json(true, JSON_UNESCAPED_UNICODE);
@@ -70,12 +79,18 @@ class JsonTest extends \PHPUnit_Framework_TestCase
         } catch (\InvalidArgumentException $e) {
             self::assertTrue(true);
         }
-        $reflection = new \ReflectionObject($json);
-        $method = $reflection->getMethod('getException');
-        $method->setAccessible(true);
-        $json->encode([]);
-        $exception = $method->invoke($json);
-        self::assertInstanceOf(\UnexpectedValueException::class, $exception);
+        try {
+            $json->encode(curl_init());
+            self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
+        } catch (\InvalidArgumentException $e) {
+            self::assertTrue(true);
+        }
+        try {
+            $json->encode(NAN);
+            self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
+        } catch (\InvalidArgumentException $e) {
+            self::assertTrue(true);
+        }
     }
 
     /**

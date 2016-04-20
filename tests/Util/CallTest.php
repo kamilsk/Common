@@ -9,14 +9,14 @@ use OctoLab\Common\TestCase;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class CallableSugarTest extends TestCase
+class CallTest extends TestCase
 {
     /**
      * @test
      */
     public function begin()
     {
-        self::assertInstanceOf(CallableSugar::class, CallableSugar::begin([$this, 'begin']));
+        self::assertInstanceOf(Call::class, Call::begin([$this, 'begin']));
     }
 
     /**
@@ -24,7 +24,7 @@ class CallableSugarTest extends TestCase
      */
     public function rescue()
     {
-        $sugar = CallableSugar::begin(function ($message, $code = 0) {
+        $sugar = Call::begin(function ($message, $code = 0) {
             throw new \Exception($message, $code);
         });
         try {
@@ -41,7 +41,7 @@ class CallableSugarTest extends TestCase
     public function retry()
     {
         $times = 0;
-        $sugar = CallableSugar::begin(function ($message, $code = 0) use (&$times) {
+        $sugar = Call::begin(function ($message, $code = 0) use (&$times) {
             $times++;
             throw new \Exception($message, $code);
         });
@@ -58,7 +58,7 @@ class CallableSugarTest extends TestCase
      */
     public function end()
     {
-        $sugar = CallableSugar::begin(function ($message, $code = 0) {
+        $sugar = Call::begin(function ($message, $code = 0) {
             throw new \RuntimeException($message, $code);
         });
         try {
@@ -86,7 +86,7 @@ class CallableSugarTest extends TestCase
             }
         };
         try {
-            CallableSugar::begin($exceptionGenerator)->end(1);
+            Call::begin($exceptionGenerator)->end(1);
             self::assertTrue(false);
         } catch (\RuntimeException $e) {
             self::assertTrue(true);
@@ -94,7 +94,7 @@ class CallableSugarTest extends TestCase
         try {
             ob_clean();
             ob_start();
-            CallableSugar::begin($exceptionGenerator)
+            Call::begin($exceptionGenerator)
                 ->rescue(\LogicException::class, function () {
                     echo 'Success!';
                 })
@@ -107,7 +107,7 @@ class CallableSugarTest extends TestCase
         try {
             ob_clean();
             ob_start();
-            CallableSugar::begin($exceptionGenerator)
+            Call::begin($exceptionGenerator)
                 ->rescue()
                 ->retry(2)
                 ->end(3)

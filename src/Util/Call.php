@@ -7,19 +7,19 @@ namespace OctoLab\Common\Util;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-final class CallableSugar
+final class Call
 {
     /**
      * @param callable $callable
      *
-     * @return $this
+     * @return Call
      */
-    public static function begin(callable $callable)
+    public static function begin(callable $callable): Call
     {
         return new static($callable);
     }
 
-    /** @var array */
+    /** @var callable[] */
     private $catchers = [];
     /** @var string */
     private $current;
@@ -34,7 +34,7 @@ final class CallableSugar
      *
      * @api
      */
-    public function rescue($exceptionClass = \Exception::class, callable $catcher = null)
+    public function rescue(string $exceptionClass = \Exception::class, callable $catcher = null)
     {
         $this->catchers[$exceptionClass][] = $catcher !== null
             ? $catcher
@@ -53,19 +53,19 @@ final class CallableSugar
      *
      * @api
      */
-    public function retry($times = 1, $timeout = 0)
+    public function retry(int $times = 1, int $timeout = 0)
     {
         if ($this->current !== null) {
-            $this->catchers[$this->current][] = function () use ($times, $timeout) {
+            $this->catchers[$this->current][] = function (...$args) use ($times, $timeout) {
                 static $lTimes;
                 if ($lTimes === null) {
                     $lTimes = $times;
                 }
-                // the first was an end() call
+                // the first end() is already invoked
                 $lTimes--;
                 if ($lTimes > 0) {
                     usleep($timeout);
-                    return call_user_func_array([$this, 'end'], func_get_args());
+                    return $this->end(...$args);
                 }
                 return null;
             };
@@ -74,23 +74,25 @@ final class CallableSugar
     }
 
     /**
+     * @param array ...$args
+     *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws \Throwable
      *
      * @api
      */
-    public function end()
+    public function end(...$args)
     {
-        $args = func_get_args();
         try {
-            return call_user_func_array($this->wrapped, $args);
-        } catch (\Exception $e) {
+            $callback = $this->wrapped;
+            return $callback(...$args);
+        } catch (\Throwable $e) {
             $class = get_class($e);
             if (array_key_exists($class, $this->catchers)) {
                 $latest = null;
                 foreach ($this->catchers[$class] as $catcher) {
-                    $latest = call_user_func_array($catcher, $args);
+                    $latest = $catcher(...$args);
                 }
                 return $latest;
             } else {
