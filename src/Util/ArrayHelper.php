@@ -53,12 +53,12 @@ class ArrayHelper
         while ($args !== []) {
             $next = array_shift($args);
             foreach ($next as $k => $v) {
-                if (is_int($k)) {
+                $isIndexed = is_int($k);
+                $isArrayed = !$isIndexed && is_array($v) && isset($res[$k]) && is_array($res[$k]);
+                if ($isIndexed) {
                     $res[] = $v;
-                } elseif (is_array($v) && isset($res[$k]) && is_array($res[$k])) {
-                    $res[$k] = static::merge($res[$k], $v);
                 } else {
-                    $res[$k] = $v;
+                    $res[$k] = $isArrayed ? static::merge($res[$k], $v) : $v;
                 }
             }
         }
