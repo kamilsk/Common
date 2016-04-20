@@ -43,7 +43,7 @@ $ composer require kamilsk/common:~3.0@dev
 ### General information
 
 [![Build status](https://travis-ci.org/kamilsk/Common.svg?branch=3.x)](https://travis-ci.org/kamilsk/Common)
-[![Tests status](http://php-eye.com/badge/kamilsk/common/tested.svg?branch=3.x)](http://php-eye.com/package/kamilsk/common)
+[![Tests status](http://php-eye.com/badge/kamilsk/common/tested.svg?branch=3.x-dev)](http://php-eye.com/package/kamilsk/common)
 [![Latest stable version](https://poser.pugx.org/kamilsk/common/v/stable.png)](https://packagist.org/packages/kamilsk/common)
 [![License](https://poser.pugx.org/kamilsk/common/license.png)](https://packagist.org/packages/kamilsk/common)
 
