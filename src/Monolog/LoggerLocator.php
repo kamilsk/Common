@@ -268,24 +268,14 @@ class LoggerLocator implements \ArrayAccess, \Countable, \Iterator
      */
     private function storeComponentDependencies(string $key, string $id, array $componentConfig)
     {
-        $rule = $this->internal['rules'][$key];
-        foreach ($rule['dependencies'] as $dependencyKey => $methodName) {
-            if (isset($componentConfig[$dependencyKey])) {
-                if (is_array($componentConfig[$dependencyKey])) {
-                    foreach ($componentConfig[$dependencyKey] as $dependencyId) {
-                        $this->storeDependency(
-                            $this->resolveStorageId($key, $id),
-                            $this->resolveStorageId($dependencyKey, $dependencyId),
-                            $methodName
-                        );
-                    }
-                } else {
-                    $this->storeDependency(
-                        $this->resolveStorageId($key, $id),
-                        $this->resolveStorageId($dependencyKey, $componentConfig[$dependencyKey]),
-                        $methodName
-                    );
-                }
+        foreach ($this->internal['rules'][$key] as $dependencyKey => $methodName) {
+            $componentConfig[$dependencyKey] = (array)($componentConfig[$dependencyKey] ?? []);
+            foreach ($componentConfig[$dependencyKey] as $dependencyId) {
+                $this->storeDependency(
+                    $this->resolveStorageId($key, $id),
+                    $this->resolveStorageId($dependencyKey, $dependencyId),
+                    $methodName
+                );
             }
         }
     }
