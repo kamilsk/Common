@@ -99,7 +99,9 @@ class ComponentBuilder
     {
         $class = $class ?? $this->class ?? $this->resolveClassName($type);
         $reflection = new \ReflectionClass($class);
-        $args = $this->resolveConstructorArguments($reflection, $args);
+        if ($args !== [] && !is_int(key($args))) {
+            $args = $this->resolveConstructorArguments($args, $reflection);
+        }
         return $reflection->newInstanceArgs($args);
     }
 
@@ -124,16 +126,13 @@ class ComponentBuilder
     }
 
     /**
-     * @param \ReflectionClass $reflection
      * @param array $args
+     * @param \ReflectionClass $reflection
      *
      * @return array
      */
-    private function resolveConstructorArguments(\ReflectionClass $reflection, array $args): array
+    private function resolveConstructorArguments(array $args, \ReflectionClass $reflection): array
     {
-        if ($args === [] || is_int(key($args))) {
-            return $args;
-        }
         $params = [];
         foreach ($reflection->getConstructor()->getParameters() as $param) {
             $params[$param->getName()] = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
