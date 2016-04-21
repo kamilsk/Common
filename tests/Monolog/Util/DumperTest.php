@@ -16,7 +16,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
      * @param mixed $value
      * @param string $expected
      */
-    public function dumpToString($value, $expected)
+    public function dumpToString($value, string $expected)
     {
         self::assertEquals($expected, Dumper::dumpToString($value));
     }
@@ -24,12 +24,11 @@ class DumperTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array[]
      */
-    public function valueProvider()
+    public function valueProvider(): array
     {
         $object = new \stdClass();
         $object->property = 'value';
         $object->another = 'value';
-        $dumper = new Dumper();
         return [
             [null, ''],
             [true, '1'],
@@ -38,7 +37,7 @@ class DumperTest extends \PHPUnit_Framework_TestCase
             ['a', 'a'],
             [(array)$object, 'Array([property] => value,[another] => value)'],
             [$object, 'stdClass Object([property] => value,[another] => value)'],
-            [$dumper, sprintf('%s Object()', get_class($dumper))],
+            [new Dumper(), sprintf('%s Object()', Dumper::class)],
         ];
     }
 }

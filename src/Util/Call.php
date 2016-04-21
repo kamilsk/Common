@@ -104,7 +104,7 @@ class Call
     /**
      * @param callable $callable
      */
-    private function __construct(callable $callable)
+    protected function __construct(callable $callable)
     {
         $this->wrapped = $callable;
     }

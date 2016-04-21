@@ -3,6 +3,10 @@
 
 ## [3.x] - unreleased
 ### Added
+- classes
+  - `Monolog\Service\Locator`
+  - `Monolog\Service\ComponentFactory`
+  - `Monolog\Service\Component`
 - methods
   - `Util\Json::new()`
 
@@ -20,6 +24,11 @@
   - `Doctrine\Migration\FileBasedMigration::getQueries()` _return_ part
   - `Doctrine\Migration\FileBasedMigration::getFullPath()` _return_ part
   - `Doctrine\Migration\DriverBasedMigration::getQueries()` _return_ part
+  - `Monolog\Handler\DesktopNotificationHandler::__construct()` scalar type declaration
+  - `Monolog\Processor\SignProcessor::__construct()` scalar type declaration
+  - `Monolog\Processor\SignProcessor::__invoke()` return type declaration
+  - `Monolog\Processor\TimeExecutionProcessor::__invoke()` return type declaration
+  - `Monolog\Util\Dumper::dumpToString()` return type declaration
   - `Util\ArrayHelper::findByPath()` scalar type declaration
   - `Util\ArrayHelper::merge()` scalar and return type declaration
   - `Util\Call::begin()` return type declaration
@@ -33,8 +42,8 @@
 - [git diff](/../../compare/master...3.x)
 
 ### Removed
-- methods
-  - `Monolog\LoggerLocator::keys()`
+- classes
+  - `Monolog\LoggerLocator`, use `Monolog\Service\Locator` instead
 
 ## [2.3.x] - LTS - 2016-04-20
 ### Changed

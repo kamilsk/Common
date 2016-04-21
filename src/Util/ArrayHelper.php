@@ -54,16 +54,11 @@ class ArrayHelper
                 if (is_int($k)) {
                     $res[] = $v;
                 } else {
-                    $res[$k] = static::checkMerge($v, $k, $res) ? static::merge($res[$k], $v) : $v;
+                    $res[$k] = is_array($v) && isset($res[$k]) && is_array($res[$k]) ? static::merge($res[$k], $v) : $v;
                 }
             }
         }
         return $res;
-    }
-
-    private static function checkMerge($v, string $k, $res): bool
-    {
-        return is_array($v) && isset($res[$k]) && is_array($res[$k]);
     }
 
     /**
