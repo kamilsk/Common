@@ -7,7 +7,7 @@ namespace OctoLab\Common\Monolog\Service;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class Component
+class ComponentBuilder
 {
     /** @var string[] */
     private static $dict = [
@@ -29,15 +29,15 @@ class Component
     private $namespace;
     /** @var null|string */
     private $suffix;
-    /** @var array */
+    /** @var string[] */
     private $dependencies = [];
 
     /**
      * @param string $class
      *
-     * @return Component
+     * @return ComponentBuilder
      */
-    public function setClass(string $class): Component
+    public function setClass(string $class): ComponentBuilder
     {
         $this->class = $class;
         return $this;
@@ -46,9 +46,9 @@ class Component
     /**
      * @param string $namespace
      *
-     * @return Component
+     * @return ComponentBuilder
      */
-    public function setNamespace(string $namespace): Component
+    public function setNamespace(string $namespace): ComponentBuilder
     {
         $this->namespace = $namespace;
         return $this;
@@ -57,21 +57,29 @@ class Component
     /**
      * @param string $suffix
      *
-     * @return Component
+     * @return ComponentBuilder
      */
-    public function setSuffix(string $suffix): Component
+    public function setSuffix(string $suffix): ComponentBuilder
     {
         $this->suffix = $suffix;
         return $this;
     }
 
     /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return $this->dependencies;
+    }
+
+    /**
      * @param string $key
      * @param string $method
      *
-     * @return Component
+     * @return ComponentBuilder
      */
-    public function addDependency(string $key, string $method): Component
+    public function addDependency(string $key, string $method): ComponentBuilder
     {
         $this->dependencies[$key] = $method;
         return $this;

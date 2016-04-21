@@ -13,12 +13,12 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
 {
     /** @var string */
     private $defaultChannel;
-    /** @var string */
-    private $defaultName;
     /** @var ComponentFactory */
     private $factory;
     /** @var string[] channel ids cache */
     private $keys;
+    /** @var array */
+    private $storage;
 
     /**
      * @param array $config
@@ -32,16 +32,13 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
         if (empty($config['channels']) || !is_array($config['channels'])) {
             throw new \InvalidArgumentException();
         }
-        $this->factory = $factory;
-        $this->defaultName = $defaultName;
         $this->defaultChannel = $config['default_channel'] ?? key($config['channels']);
-        foreach ($config['channels'] as $id => $channelConfig) {
-            $this->keys[$id] = true;
-            if (!isset($channelConfig['arguments'])) {
-                $name = $channelConfig['name'] ?? $defaultName;
-                $config['channels'][$id]['arguments'] = [$name];
-            }
-        }
+        $this->factory = $factory;
+        $this->storage = [];
+        $this
+            ->enrich($config['channels'], $defaultName)
+            ->store($config)
+        ;
     }
 
     /**
@@ -182,23 +179,105 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
     }
 
     /**
+     * @param array $channelConfigs
+     * @param string $defaultName
+     *
+     * @return Locator
+     */
+    private function enrich(array &$channelConfigs, string $defaultName): Locator
+    {
+        foreach ($channelConfigs as $channelId => $channelConfig) {
+            $this->keys[$channelId] = true;
+            if (!isset($channelConfig['arguments'])) {
+                $channelConfigs[$channelId]['arguments'] = [$channelConfig['name'] ?? $defaultName];
+            }
+        }
+        return $this;
+    }
+
+    /**
      * @param string $id
      *
      * @return mixed
+     *
+     * @throws \OutOfRangeException
      */
     private function getComponent(string $id)
     {
-        //
+        if (!isset($this->storage[$id])) {
+            throw new \OutOfRangeException(sprintf('Component with ID "%s" not found.', $id));
+        }
+        if (is_array($this->storage[$id])) {
+            $component = $this->factory->build($this->storage[$id]);
+            $this->resolveComponentDependencies($id, $component);
+            $this->storage[$id] = $component;
+        }
+        return $this->storage[$id];
+    }
+
+    /**
+     * @param mixed $component
+     * @param string $id
+     *
+     * @throws \OutOfRangeException
+     */
+    private function resolveComponentDependencies($component, string $id)
+    {
+        foreach ($this->storage[$id]['calls'] as list($method, $args)) {
+            foreach ($args as $i => &$arg) {
+                if (strpos($arg, '@') === 0) {
+                    $arg = $this->getComponent(substr($arg, 1));
+                }
+            }
+            unset($arg);
+            $component->{$method}(...$args);
+        }
     }
 
     /**
      * @param string $key
-     * @param string $id
+     * @param string $componentId
      *
      * @return string
      */
-    private function resolveStorageId(string $key, string $id): string
+    private function resolveStorageId(string $key, string $componentId): string
     {
-        return sprintf('%s.%s', rtrim($key, 's'), $id);
+        return sprintf('%s.%s', rtrim($key, 's'), $componentId);
+    }
+
+    /**
+     * @param array $config
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function store(array $config)
+    {
+        foreach (array_intersect($this->factory->getAvailableComponentKeys(), array_keys($config)) as $key) {
+            foreach ($config[$key] as $componentId => $componentConfig) {
+                $id = $this->resolveStorageId($key, $componentId);
+                $this->storage[$id] = array_merge(['arguments' => [], 'calls' => [], '_key' => $key], $componentConfig);
+                $this->storeComponentDependencies($id, $componentConfig, $key);
+            }
+        }
+    }
+
+    /**
+     * @param string $id
+     * @param array $componentConfig
+     * @param string $key
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function storeComponentDependencies(string $id, array $componentConfig, string $key)
+    {
+        foreach ($this->factory->getDependencies($key) as $dependencyKey => $componentMethod) {
+            $componentConfig[$dependencyKey] = (array)($componentConfig[$dependencyKey] ?? []);
+            foreach ($componentConfig[$dependencyKey] as $componentId) {
+                $this->storage[$id]['calls'][] = [
+                    $componentMethod,
+                    ['@' . $this->resolveStorageId($dependencyKey, $componentId)],
+                ];
+            }
+        }
     }
 }

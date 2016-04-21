@@ -5,8 +5,8 @@
 ### Added
 - classes
   - `Monolog\Service\Locator`
+  - `Monolog\Service\ComponentBuilder`
   - `Monolog\Service\ComponentFactory`
-  - `Monolog\Service\Component`
 - methods
   - `Util\Json::new()`
 
