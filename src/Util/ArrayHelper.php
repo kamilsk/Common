@@ -20,8 +20,7 @@ class ArrayHelper
     public static function findByPath(array $scope, string $path)
     {
         if (mb_strpos($path, ':')) {
-            $chain = explode(':', $path);
-            foreach ($chain as $i => $key) {
+            foreach (explode(':', $path) as $i => $key) {
                 if (!isset($scope[$key])) {
                     return null;
                 }
@@ -55,11 +54,16 @@ class ArrayHelper
                 if (is_int($k)) {
                     $res[] = $v;
                 } else {
-                    $res[$k] = is_array($v) && isset($res[$k]) && is_array($res[$k]) ? static::merge($res[$k], $v) : $v;
+                    $res[$k] = static::checkMerge($v, $k, $res) ? static::merge($res[$k], $v) : $v;
                 }
             }
         }
         return $res;
+    }
+
+    private static function checkMerge($v, string $k, $res): bool
+    {
+        return is_array($v) && isset($res[$k]) && is_array($res[$k]);
     }
 
     /**

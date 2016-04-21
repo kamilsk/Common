@@ -18,7 +18,7 @@ class Json
      */
     public static function new(bool $assoc = false, int $options = 0, int $depth = 512): Json
     {
-        return new static($assoc, $options, $depth);
+        return new self($assoc, $options, $depth);
     }
 
     /** @var bool */
@@ -35,7 +35,7 @@ class Json
      *
      * @api
      */
-    public function __construct(bool $assoc = false, int $options = 0, int $depth = 512)
+    public function __construct(bool $assoc, int $options, int $depth)
     {
         $this->assoc = $assoc;
         $this->options = $options;

@@ -20,15 +20,6 @@ class JsonTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     */
-    public function construct()
-    {
-        $json = new Json(true, JSON_UNESCAPED_UNICODE);
-        self::assertNotEquals(json_encode(['a' => 'б']), $json->encode(['a' => 'б']));
-    }
-
-    /**
-     * @test
      * @dataProvider jsonProvider
      *
      * @param Json $json
@@ -94,12 +85,12 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array<int,Json[]>
+     * @return array
      */
-    public function jsonProvider()
+    public function jsonProvider(): array
     {
         return [
-            [new Json()],
+            [new Json(false, 0, 512)],
         ];
     }
 }

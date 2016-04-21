@@ -7,7 +7,7 @@ namespace OctoLab\Common\Util;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-final class Call
+class Call
 {
     /**
      * @param callable $callable
@@ -30,11 +30,11 @@ final class Call
      * @param string $exceptionClass
      * @param callable|null $catcher
      *
-     * @return $this
+     * @return Call
      *
      * @api
      */
-    public function rescue(string $exceptionClass = \Exception::class, callable $catcher = null)
+    public function rescue(string $exceptionClass = \Exception::class, callable $catcher = null): Call
     {
         $this->catchers[$exceptionClass][] = $catcher !== null
             ? $catcher
@@ -49,11 +49,11 @@ final class Call
      * @param int $times to repeat
      * @param int $timeout in milliseconds between repeats
      *
-     * @return $this
+     * @return Call
      *
      * @api
      */
-    public function retry(int $times = 1, int $timeout = 0)
+    public function retry(int $times = 1, int $timeout = 0): Call
     {
         if ($this->current !== null) {
             $this->catchers[$this->current][] = function (...$args) use ($times, $timeout) {

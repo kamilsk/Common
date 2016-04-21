@@ -14,21 +14,13 @@ class CallTest extends TestCase
     /**
      * @test
      */
-    public function begin()
-    {
-        self::assertInstanceOf(Call::class, Call::begin([$this, 'begin']));
-    }
-
-    /**
-     * @test
-     */
     public function rescue()
     {
-        $sugar = Call::begin(function ($message, $code = 0) {
+        $sugar = Call::begin(function (string $message, int $code = 0) {
             throw new \Exception($message, $code);
         });
         try {
-            $sugar->rescue()->end('Handled exception!');
+            $sugar->rescue()->end('Exception is suppressed!');
             self::assertTrue(true);
         } catch (\Exception $e) {
             self::assertTrue(false);
@@ -41,12 +33,12 @@ class CallTest extends TestCase
     public function retry()
     {
         $times = 0;
-        $sugar = Call::begin(function ($message, $code = 0) use (&$times) {
+        $sugar = Call::begin(function (string $message, int $code = 0) use (&$times) {
             $times++;
             throw new \Exception($message, $code);
         });
         try {
-            $sugar->rescue()->retry(3)->end('Handled exception three times!');
+            $sugar->rescue()->retry(3)->end('Exception is suppressed three times!');
             self::assertEquals(3, $times);
         } catch (\Exception $e) {
             self::assertTrue(false);
@@ -58,11 +50,11 @@ class CallTest extends TestCase
      */
     public function end()
     {
-        $sugar = Call::begin(function ($message, $code = 0) {
+        $sugar = Call::begin(function (string $message, int $code = 0) {
             throw new \RuntimeException($message, $code);
         });
         try {
-            $sugar->end('Unhandled exception.');
+            $sugar->end('Exception is not suppressed.');
             self::assertTrue(false);
         } catch (\RuntimeException $e) {
             self::assertTrue(true);
@@ -74,7 +66,7 @@ class CallTest extends TestCase
      */
     public function cases()
     {
-        $exceptionGenerator = function ($code) {
+        $exceptionGenerator = function (int $code) {
             switch ($code) {
                 case 1:
                     throw new \RuntimeException();
@@ -96,11 +88,11 @@ class CallTest extends TestCase
             ob_start();
             Call::begin($exceptionGenerator)
                 ->rescue(\LogicException::class, function () {
-                    echo 'Success!';
+                    echo 'Caught!';
                 })
                 ->end(2)
             ;
-            self::assertContains('Success!', ob_get_clean());
+            self::assertContains('Caught!', ob_get_clean());
         } catch (\LogicException $e) {
             self::assertTrue(false);
         }

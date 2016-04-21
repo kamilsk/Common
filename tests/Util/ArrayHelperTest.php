@@ -25,13 +25,12 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider arrayProvider
      *
-     * @param array $a
-     * @param array $b
      * @param array $expected
+     * @param array[] ...$arrays
      */
-    public function merge(array $a, array $b, array $expected)
+    public function merge(array $expected, array ...$arrays)
     {
-        self::assertEquals($expected, ArrayHelper::merge($a, $b));
+        self::assertEquals($expected, ArrayHelper::merge(...$arrays));
     }
 
     /**
@@ -56,25 +55,25 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array<int,array[]>
+     * @return array
      */
-    public function arrayProvider()
+    public function arrayProvider(): array
     {
         return [
             [
+                [1, 2, 3, 4, 5],
                 [1, 2],
                 [3, 4, 5],
-                [1, 2, 3, 4, 5],
             ],
             [
+                ['a' => 'b', 'c' => 'd', 'e' => 'f'],
                 ['a' => 'g', 'c' => 'd'],
                 ['a' => 'b', 'e' => 'f'],
-                ['a' => 'b', 'c' => 'd', 'e' => 'f'],
             ],
             [
+                ['a' => [1, 'b' => 'c', 2, 3, 4, 5]],
                 ['a' => [1, 'b' => 'd', 2]],
                 ['a' => [3, 4, 'b' => 'c', 5]],
-                ['a' => [1, 'b' => 'c', 2, 3, 4, 5]],
             ],
         ];
     }
