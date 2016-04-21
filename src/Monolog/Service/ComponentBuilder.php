@@ -33,6 +33,26 @@ class ComponentBuilder
     private $dependencies = [];
 
     /**
+     * @param string $key
+     * @param string $method
+     *
+     * @return ComponentBuilder
+     */
+    public function addDependency(string $key, string $method): ComponentBuilder
+    {
+        $this->dependencies[$key] = $method;
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return $this->dependencies;
+    }
+
+    /**
      * @param string $class
      *
      * @return ComponentBuilder
@@ -66,22 +86,58 @@ class ComponentBuilder
     }
 
     /**
-     * @return string[]
+     * @param null|string $class
+     * @param null|string $type
+     * @param array $args
+     *
+     * @return mixed
+     *
+     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
-    public function getDependencies(): array
+    public function make(string $class = null, string $type = null, array $args = [])
     {
-        return $this->dependencies;
+        $class = $class ?? $this->class ?? $this->resolveClassName($type);
+        $reflection = new \ReflectionClass($class);
+        $args = $this->resolveConstructorArguments($reflection, $args);
+        return $reflection->newInstanceArgs($args);
     }
 
     /**
-     * @param string $key
-     * @param string $method
+     * @param null|string $type
      *
-     * @return ComponentBuilder
+     * @return string
+     *
+     * @throws \InvalidArgumentException
      */
-    public function addDependency(string $key, string $method): ComponentBuilder
+    private function resolveClassName(string $type = null): string
     {
-        $this->dependencies[$key] = $method;
-        return $this;
+        if ($type === null) {
+            throw new \InvalidArgumentException('Component type is not provided.');
+        }
+        if (isset(self::$dict[$type])) {
+            $class = self::$dict[$type];
+        } else {
+            $class = implode('', explode(' ', ucwords(str_replace('_', ' ', $type))));
+        }
+        return $this->namespace . '\\' . $class . $this->suffix;
+    }
+
+    /**
+     * @param \ReflectionClass $reflection
+     * @param array $args
+     *
+     * @return array
+     */
+    private function resolveConstructorArguments(\ReflectionClass $reflection, array $args): array
+    {
+        if ($args === [] || is_int(key($args))) {
+            return $args;
+        }
+        $params = [];
+        foreach ($reflection->getConstructor()->getParameters() as $param) {
+            $params[$param->getName()] = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
+        }
+        return array_merge($params, array_intersect_key($args, $params));
     }
 }

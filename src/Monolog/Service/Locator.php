@@ -201,6 +201,7 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
      * @return mixed
      *
      * @throws \OutOfRangeException
+     * @throws \InvalidArgumentException
      */
     private function getComponent(string $id)
     {
@@ -256,19 +257,19 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
             foreach ($config[$key] as $componentId => $componentConfig) {
                 $id = $this->resolveStorageId($key, $componentId);
                 $this->storage[$id] = array_merge(['arguments' => [], 'calls' => [], '_key' => $key], $componentConfig);
-                $this->storeComponentDependencies($id, $componentConfig, $key);
+                $this->storeComponentDependencies($key, $componentConfig, $id);
             }
         }
     }
 
     /**
-     * @param string $id
-     * @param array $componentConfig
      * @param string $key
+     * @param array $componentConfig
+     * @param string $id
      *
      * @throws \InvalidArgumentException
      */
-    private function storeComponentDependencies(string $id, array $componentConfig, string $key)
+    private function storeComponentDependencies(string $key, array $componentConfig, string $id)
     {
         foreach ($this->factory->getDependencies($key) as $dependencyKey => $componentMethod) {
             $componentConfig[$dependencyKey] = (array)($componentConfig[$dependencyKey] ?? []);

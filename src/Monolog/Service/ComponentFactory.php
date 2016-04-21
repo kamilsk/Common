@@ -62,6 +62,8 @@ class ComponentFactory
      * @param array $config
      *
      * @return mixed
+     *
+     * @throws \InvalidArgumentException
      */
     public function build(array $config)
     {
@@ -72,6 +74,11 @@ class ComponentFactory
             '_key' => null,
         ];
         $config = ArrayHelper::merge($default, $config);
+        $componentBuilder = $this->components[$config['_key']] ?? null;
+        if ($componentBuilder === null) {
+            throw new \InvalidArgumentException('Invalid "_key" in configuration.');
+        }
+        return $componentBuilder->make($config['class'], $config['type'], $config['arguments']);
     }
 
     /**
