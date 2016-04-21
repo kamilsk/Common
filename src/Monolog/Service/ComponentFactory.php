@@ -82,6 +82,14 @@ class ComponentFactory
     }
 
     /**
+     * @return string[]
+     */
+    public function getAvailableComponentKeys(): array
+    {
+        return array_keys($this->components);
+    }
+
+    /**
      * @param string $key
      *
      * @return string[]
@@ -94,13 +102,5 @@ class ComponentFactory
             throw new \InvalidArgumentException(sprintf('No component with key "%s" found.', $key));
         }
         return $this->components[$key]->getDependencies();
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getAvailableComponentKeys(): array
-    {
-        return array_keys($this->components);
     }
 }

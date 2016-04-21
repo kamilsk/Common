@@ -20,77 +20,80 @@ class JsonTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider jsonProvider
-     *
-     * @param Json $json
      */
-    public function decodeSuccess(Json $json)
+    public function decodeSuccess()
     {
+        $json = Json::new();
         self::assertEquals(json_decode(json_encode([])), $json->decode($json->encode([])));
     }
 
     /**
      * @test
-     * @dataProvider jsonProvider
-     *
-     * @param Json $json
      */
-    public function decodeFailure(Json $json)
+    public function decodeFailure()
     {
+        $json = Json::new();
         try {
             $json->decode($json->encode(['a' => ['b' => ['c' => false]]]), false, 2);
             self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
-            self::assertTrue(true);
+            self::assertEquals(JSON_ERROR_DEPTH, $e->getCode());
+        }
+        // JSON_ERROR_STATE_MISMATCH
+        try {
+            $json->decode('{"test": "success"}' . "\u{0000}");
+            self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
+        } catch (\InvalidArgumentException $e) {
+            self::assertEquals(JSON_ERROR_CTRL_CHAR, $e->getCode());
+        }
+        try {
+            $json->decode('{"invalid"}');
+            self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
+        } catch (\InvalidArgumentException $e) {
+            self::assertEquals(JSON_ERROR_SYNTAX, $e->getCode());
         }
     }
 
     /**
      * @test
-     * @dataProvider jsonProvider
-     *
-     * @param Json $json
      */
-    public function encodeSuccess(Json $json)
+    public function encodeSuccess()
     {
-        self::assertJsonStringEqualsJsonString(json_encode([]), $json->encode([]));
+        self::assertJsonStringEqualsJsonString(json_encode([]), Json::new()->encode([]));
     }
 
     /**
      * @test
-     * @dataProvider jsonProvider
-     *
-     * @param Json $json
      */
-    public function encodeFailure(Json $json)
+    public function encodeFailure()
     {
+        $json = Json::new();
         try {
             $json->encode("\xB1\x31");
             self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
-            self::assertTrue(true);
+            self::assertEquals(JSON_ERROR_UTF8, $e->getCode());
         }
         try {
-            $json->encode(curl_init());
-            self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
+            $a = new \stdClass();
+            $b = new \stdClass();
+            $a->link = $b;
+            $b->link = $a;
+            $json->encode($a);
         } catch (\InvalidArgumentException $e) {
-            self::assertTrue(true);
+            self::assertEquals(JSON_ERROR_RECURSION, $e->getCode());
         }
         try {
             $json->encode(NAN);
             self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
-            self::assertTrue(true);
+            self::assertEquals(JSON_ERROR_INF_OR_NAN, $e->getCode());
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonProvider(): array
-    {
-        return [
-            [new Json(false, 0, 512)],
-        ];
+        try {
+            $json->encode(curl_init());
+            self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
+        } catch (\InvalidArgumentException $e) {
+            self::assertEquals(JSON_ERROR_UNSUPPORTED_TYPE, $e->getCode());
+        }
     }
 }

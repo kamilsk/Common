@@ -30,7 +30,7 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
     public function __construct(array $config, ComponentFactory $factory, string $defaultName = 'app')
     {
         if (empty($config['channels']) || !is_array($config['channels'])) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException('Channels not found.');
         }
         $this->defaultChannel = $config['default_channel'] ?? key($config['channels']);
         $this->factory = $factory;
@@ -217,12 +217,12 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
     }
 
     /**
-     * @param mixed $component
      * @param string $id
+     * @param mixed $component
      *
      * @throws \OutOfRangeException
      */
-    private function resolveComponentDependencies($component, string $id)
+    private function resolveComponentDependencies(string $id, $component)
     {
         foreach ($this->storage[$id]['calls'] as list($method, $args)) {
             foreach ($args as $i => &$arg) {
