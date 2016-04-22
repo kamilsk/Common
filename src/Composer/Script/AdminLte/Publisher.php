@@ -12,6 +12,8 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class Publisher
 {
+    const KEY = 'admin-lte';
+
     /**
      * @param Event $event
      *
@@ -20,28 +22,52 @@ class Publisher
      * @throws \Symfony\Component\Filesystem\Exception\IOException
      *
      * @api
-     *
-     * @quality:method [C]
      */
     public static function publish(Event $event)
     {
         $composer = $event->getComposer();
-        $extras = $composer->getPackage()->getExtra();
-        if (!isset($extras['admin-lte'])) {
-            throw new \InvalidArgumentException(
-                'The AdminLTE installer needs to be configured through the extra.admin-lte setting.'
-            );
-        }
-        $config = $extras['admin-lte'];
-        if (!isset($config['target'])) {
-            throw new \InvalidArgumentException('The extra.admin-lte must contains target path.');
-        }
+        $config = static::validate($composer->getPackage()->getExtra());
         $package = $composer->getRepositoryManager()->getLocalRepository()
             ->findPackage('almasaeed2010/adminlte', '~2.0');
         if ($package === null) {
             throw new \RuntimeException('The AdminLTE package not found.');
         }
+        (new Processor(new Filesystem(), $event->getIO()))->publish(
+            $config['target'],
+            $composer->getInstallationManager()->getInstallPath($package),
+            static::publication($config),
+            $config['symlink'],
+            $config['relative']
+        );
+    }
 
+    /**
+     * @param array $extra
+     *
+     * @return array
+     *
+     * @throws \InvalidArgumentException
+     */
+    private static function validate(array $extra): array
+    {
+        if (!isset($extra[self::KEY])) {
+            throw new \InvalidArgumentException(
+                'The AdminLTE installer needs to be configured through the extra.admin-lte setting.'
+            );
+        }
+        if (!isset($extra[self::KEY]['target'])) {
+            throw new \InvalidArgumentException('The extra.admin-lte must contains target path.');
+        }
+        return $extra[self::KEY] + ['symlink' => false, 'relative' => false];
+    }
+
+    /**
+     * @param array $config
+     *
+     * @return array
+     */
+    private static function publication(array $config): array
+    {
         $forPublishing = ['dist' => 'adminlte'];
         if (!empty($config['bootstrap'])) {
             $forPublishing['bootstrap'] = 'adminlte-bootstrap';
@@ -52,13 +78,6 @@ class Publisher
         if (!empty($config['demo'])) {
             $forPublishing[''] = 'adminlte-demo';
         }
-
-        (new Processor(new Filesystem(), $event->getIO()))->publish(
-            $config['target'],
-            $composer->getInstallationManager()->getInstallPath($package),
-            $forPublishing,
-            !empty($config['symlink']),
-            !empty($config['relative'])
-        );
+        return $forPublishing;
     }
 }

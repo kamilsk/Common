@@ -32,7 +32,7 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
         if (empty($config['channels']) || !is_array($config['channels'])) {
             throw new \InvalidArgumentException('Channels not found.');
         }
-        $this->defaultChannel = $config['default_channel'] ?? key($config['channels']);
+        $this->defaultChannel = (string)($config['default_channel'] ?? key($config['channels']));
         $this->factory = $factory;
         $this->storage = [];
         $this
@@ -47,10 +47,12 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
      * @return Logger
      *
      * @throws \OutOfRangeException
+     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      *
      * @api
      */
-    public function getChannel($id): Logger
+    public function getChannel(string $id): Logger
     {
         return $this->offsetGet($id);
     }
@@ -59,6 +61,8 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
      * @return Logger
      *
      * @throws \OutOfRangeException
+     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      *
      * @api
      */
@@ -81,6 +85,8 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
      * {@inheritdoc}
      *
      * @throws \OutOfRangeException
+     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      *
      * @api
      */
@@ -127,6 +133,8 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
      * {@inheritdoc}
      *
      * @throws \OutOfRangeException
+     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      *
      * @api
      */
@@ -202,6 +210,7 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     private function getComponent(string $id)
     {
@@ -221,6 +230,8 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
      * @param mixed $component
      *
      * @throws \OutOfRangeException
+     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     private function resolveComponentDependencies(string $id, $component)
     {

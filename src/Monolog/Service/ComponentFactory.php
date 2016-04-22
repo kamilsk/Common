@@ -64,6 +64,7 @@ class ComponentFactory
      * @return mixed
      *
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     public function build(array $config)
     {
