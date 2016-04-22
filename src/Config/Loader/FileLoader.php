@@ -40,35 +40,22 @@ class FileLoader extends AbstractFileLoader
      * @throws \Symfony\Component\Config\Exception\FileLoaderImportCircularReferenceException
      *
      * @api
-     *
-     * @quality:method [C]
      */
     public function load($resource, $type = null)
     {
-        $content = [];
         $path = (string)$this->locator->locate($resource);
         if (!$this->supports($resource)) {
             throw new \InvalidArgumentException(sprintf('File "%s" is not supported.', $resource));
         }
         $fileContent = $this->parser->parse(file_get_contents($path));
         if (!is_array($fileContent)) {
-            return $content;
+            return [];
         }
         $imports = (array)($fileContent['imports'] ?? []);
         unset($fileContent['imports']);
+        $content = $this->loadImports($path, $imports);
         $content[] = $fileContent;
-        $this->setCurrentDir(dirname($path));
-        foreach ($imports as $import) {
-            if (is_string($import)) {
-                $resource = $import;
-                $ignoreErrors = false;
-            } else {
-                $resource = $import['resource'];
-                $ignoreErrors = $import['ignore_errors'] ?? false;
-            }
-            $content[] = $this->import($resource, null, $ignoreErrors, $path);
-        }
-        $content = ArrayHelper::merge(...array_reverse($content));
+        $content = ArrayHelper::merge(...$content);
         return $content;
     }
 
@@ -83,5 +70,31 @@ class FileLoader extends AbstractFileLoader
     public function supports($resource, $type = null): bool
     {
         return $this->parser->supports(pathinfo($resource, PATHINFO_EXTENSION));
+    }
+
+    /**
+     * @param string $path
+     * @param array $imports
+     *
+     * @return array
+     *
+     * @throws \Symfony\Component\Config\Exception\FileLoaderImportCircularReferenceException
+     * @throws \Symfony\Component\Config\Exception\FileLoaderLoadException
+     */
+    private function loadImports(string $path, array $imports): array
+    {
+        $content = [];
+        $this->setCurrentDir(dirname($path));
+        foreach ($imports as $import) {
+            if (is_string($import)) {
+                $resource = $import;
+                $ignoreErrors = false;
+            } else {
+                $resource = $import['resource'];
+                $ignoreErrors = $import['ignore_errors'] ?? false;
+            }
+            $content[] = $this->import($resource, null, $ignoreErrors, $path);
+        }
+        return array_reverse($content);
     }
 }
