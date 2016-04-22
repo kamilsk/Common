@@ -50,26 +50,25 @@ class FileLoader extends AbstractFileLoader
         if (!$this->supports($resource)) {
             throw new \InvalidArgumentException(sprintf('File "%s" is not supported.', $resource));
         }
-        $fileContent = $this->loadFile($path);
+        $fileContent = $this->parser->parse(file_get_contents($path));
         if (!is_array($fileContent)) {
             return $content;
         }
+        $imports = (array)($fileContent['imports'] ?? []);
+        unset($fileContent['imports']);
         $content[] = $fileContent;
-        if (isset($fileContent['imports'])) {
-            $this->setCurrentDir(dirname($path));
-            foreach ($fileContent['imports'] as $import) {
-                if (is_string($import)) {
-                    $resource = $import;
-                    $ignoreErrors = false;
-                } else {
-                    $resource = $import['resource'];
-                    $ignoreErrors = isset($import['ignore_errors']) ? (bool)$import['ignore_errors'] : false;
-                }
-                $content[] = $this->import($resource, null, $ignoreErrors, $path);
+        $this->setCurrentDir(dirname($path));
+        foreach ($imports as $import) {
+            if (is_string($import)) {
+                $resource = $import;
+                $ignoreErrors = false;
+            } else {
+                $resource = $import['resource'];
+                $ignoreErrors = $import['ignore_errors'] ?? false;
             }
+            $content[] = $this->import($resource, null, $ignoreErrors, $path);
         }
-        $content = call_user_func_array([ArrayHelper::class, 'merge'], array_reverse($content));
-        unset($content['imports']);
+        $content = ArrayHelper::merge(...array_reverse($content));
         return $content;
     }
 
@@ -84,17 +83,5 @@ class FileLoader extends AbstractFileLoader
     public function supports($resource, $type = null): bool
     {
         return $this->parser->supports(pathinfo($resource, PATHINFO_EXTENSION));
-    }
-
-    /**
-     * @param string $file
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     */
-    private function loadFile(string $file)
-    {
-        return $this->parser->parse(file_get_contents($file));
     }
 }
