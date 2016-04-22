@@ -33,7 +33,7 @@ class ProcessorTest extends TestCase
      * @param bool $isSymlink
      * @param bool $isRelative
      */
-    public function publish($targetPath, $installPath, array $map, $isSymlink, $isRelative)
+    public function publish(string $targetPath, string $installPath, array $map, bool $isSymlink, bool $isRelative)
     {
         (new Processor(new Filesystem(), $this->io->reveal()))->publish(
             $targetPath,
@@ -76,9 +76,9 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array
      */
-    public function configurationProvider()
+    public function configurationProvider(): array
     {
         $root = rtrim(substr(__DIR__, 0, strrpos(__DIR__, 'tests')), '\\/') . '/tests/app';
         return [
@@ -121,7 +121,7 @@ class ProcessorTest extends TestCase
                 false,
                 false,
             ],
-            'symlink' => [
+            'is symlink' => [
                 $root . '/web/assets',
                 $root . '/vendor/adminlte',
                 [
@@ -130,7 +130,7 @@ class ProcessorTest extends TestCase
                 true,
                 false,
             ],
-            'relative' => [
+            'is relative' => [
                 $root . '/web/assets',
                 $root . '/vendor/adminlte',
                 [
