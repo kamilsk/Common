@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common\Composer\Script\AdminLte;
 
+use Composer\Package\PackageInterface;
 use Composer\Script\Event;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -25,40 +26,53 @@ class Publisher
      */
     public static function publish(Event $event)
     {
-        $composer = $event->getComposer();
-        $config = static::validate($composer->getPackage()->getExtra());
-        $package = $composer->getRepositoryManager()->getLocalRepository()
-            ->findPackage('almasaeed2010/adminlte', '~2.0');
-        if ($package === null) {
-            throw new \RuntimeException('The AdminLTE package not found.');
-        }
+        $config = static::getConfig($event);
+        $package = static::getPackage($event);
         (new Processor(new Filesystem(), $event->getIO()))->publish(
             $config['target'],
-            $composer->getInstallationManager()->getInstallPath($package),
-            static::publication($config),
+            $event->getComposer()->getInstallationManager()->getInstallPath($package),
+            static::getPublishingMap($config),
             $config['symlink'],
             $config['relative']
         );
     }
 
     /**
-     * @param array $extra
+     * @param Event $event
      *
      * @return array
      *
      * @throws \InvalidArgumentException
      */
-    private static function validate(array $extra): array
+    protected static function getConfig(Event $event): array
     {
-        if (!isset($extra[self::KEY])) {
+        $extra = $event->getComposer()->getPackage()->getExtra();
+        if (!isset($extra[static::KEY])) {
             throw new \InvalidArgumentException(
                 'The AdminLTE installer needs to be configured through the extra.admin-lte setting.'
             );
         }
-        if (!isset($extra[self::KEY]['target'])) {
+        if (!isset($extra[static::KEY]['target'])) {
             throw new \InvalidArgumentException('The extra.admin-lte must contains target path.');
         }
-        return $extra[self::KEY] + ['symlink' => false, 'relative' => false];
+        return $extra[static::KEY] + ['symlink' => false, 'relative' => false];
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return PackageInterface
+     *
+     * @throws \RuntimeException
+     */
+    protected static function getPackage(Event $event): PackageInterface
+    {
+        $package = $event->getComposer()->getRepositoryManager()->getLocalRepository()
+            ->findPackage('almasaeed2010/adminlte', '~2.0');
+        if ($package === null) {
+            throw new \RuntimeException('The AdminLTE package not found.');
+        }
+        return $package;
     }
 
     /**
@@ -66,7 +80,7 @@ class Publisher
      *
      * @return array
      */
-    private static function publication(array $config): array
+    protected static function getPublishingMap(array $config): array
     {
         $forPublishing = ['dist' => 'adminlte'];
         if (!empty($config['bootstrap'])) {

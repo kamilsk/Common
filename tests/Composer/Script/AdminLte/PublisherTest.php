@@ -34,9 +34,7 @@ class PublisherTest extends TestCase
     {
         parent::setUp();
         /**
-         * @var Composer $composer
          * @var RepositoryManager $repositoryManager
-         * @var WritableRepositoryInterface $localRepository
          */
         $this->event = $this->prophesize(Event::class);
         $this->composer = $this->prophesize(Composer::class);
@@ -95,7 +93,7 @@ class PublisherTest extends TestCase
      * @param string $exceptionClass
      * @param string $exceptionMessage
      */
-    public function publishFailure(array $extra, $exceptionClass, $exceptionMessage)
+    public function publishFailure(array $extra, string $exceptionClass, string $exceptionMessage)
     {
         $this->package->getExtra()->willReturn($extra);
         $this->setExpectedException($exceptionClass, $exceptionMessage);
@@ -103,9 +101,9 @@ class PublisherTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array
      */
-    public function invalidConfigurationProvider()
+    public function invalidConfigurationProvider(): array
     {
         return [
             'no extra' => [
