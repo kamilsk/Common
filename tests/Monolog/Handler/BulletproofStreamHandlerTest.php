@@ -14,12 +14,10 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @dataProvider loggerProvider
-     *
-     * @param Logger $logger
      */
-    public function writeToMovedLogFile(Logger $logger)
+    public function writeToMovedLogFile()
     {
+        $logger = $this->getLogger();
         $streamLocation = $this->getStreamLocation();
         $newStreamLocation = $this->getNewStreamLocation();
         $logger->pushHandler(new StreamHandler($streamLocation));
@@ -37,12 +35,10 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider loggerProvider
-     *
-     * @param Logger $logger
      */
-    public function bulletproofWriteToMovedLogFile(Logger $logger)
+    public function bulletproofWriteToMovedLogFile()
     {
+        $logger = $this->getLogger();
         $streamLocation = $this->getStreamLocation();
         $newStreamLocation = $this->getNewStreamLocation();
         $logger->pushHandler(new BulletproofStreamHandler($streamLocation));
@@ -61,12 +57,10 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider loggerProvider
-     *
-     * @param Logger $logger
      */
-    public function writeToRemovedLogFile(Logger $logger)
+    public function writeToRemovedLogFile()
     {
+        $logger = $this->getLogger();
         $streamLocation = $this->getStreamLocation();
         $logger->pushHandler(new StreamHandler($streamLocation));
         $logger->info('Start logging.');
@@ -79,12 +73,10 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider loggerProvider
-     *
-     * @param Logger $logger
      */
-    public function bulletproofWriteToRemovedLogFile(Logger $logger)
+    public function bulletproofWriteToRemovedLogFile()
     {
+        $logger = $this->getLogger();
         $streamLocation = $this->getStreamLocation();
         $logger->pushHandler(new BulletproofStreamHandler($streamLocation));
         $logger->info('Start logging.');
@@ -98,13 +90,11 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @return Logger
      */
-    public function loggerProvider(): array
+    private function getLogger(): Logger
     {
-        return [
-            [new Logger('test')],
-        ];
+        return new Logger('test');
     }
 
     /**

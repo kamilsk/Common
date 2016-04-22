@@ -9,13 +9,6 @@ namespace OctoLab\Common\Doctrine\Util;
  */
 class Limiter
 {
-    /** @var int */
-    private $limit;
-    /** @var int */
-    private $offset;
-    /** @var int */
-    private $total;
-
     /**
      * @param int $table1Count
      * @param int $table2Count
@@ -39,6 +32,13 @@ class Limiter
             'offset2' => $offset2,
         ];
     }
+
+    /** @var int */
+    private $limit;
+    /** @var int */
+    private $offset;
+    /** @var int */
+    private $total;
 
     /**
      * @param int $limit how many records to get (e.g. LIMIT part of SQL queries)
@@ -86,7 +86,7 @@ class Limiter
      */
     public function hasPortion(): bool
     {
-        return $this->total ? $this->offset < $this->total : (bool)$this->limit;
+        return $this->offset < $this->total;
     }
 
     /**

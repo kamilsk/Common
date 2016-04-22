@@ -21,8 +21,7 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
      */
     public function twoTablePagination(int $table1Count, int $table2Count, int $limit, int $offset, array $expected)
     {
-        $actual = Limiter::getTwoTablePagination($table1Count, $table2Count, $limit, $offset);
-        self::assertEquals($expected, $actual);
+        self::assertEquals($expected, Limiter::getTwoTablePagination($table1Count, $table2Count, $limit, $offset));
     }
 
     /**
@@ -43,6 +42,19 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
         self::assertEquals(100, $limiter->getLimit());
         $limiter = new Limiter(100, 20, 200);
         self::assertEquals(100, $limiter->getLimit());
+        $limiter = new Limiter(100, 20);
+        self::assertEquals(100, $limiter->getLimit());
+    }
+
+    /**
+     * @test
+     */
+    public function getOffset()
+    {
+        $limiter = new Limiter(100);
+        self::assertEquals(0, $limiter->getOffset());
+        $limiter = new Limiter(100, 100);
+        self::assertEquals(100, $limiter->getOffset());
     }
 
     /**
@@ -76,7 +88,7 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array[]
+     * @return array
      */
     public function tableDataProvider(): array
     {

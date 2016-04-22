@@ -93,7 +93,9 @@ abstract class FileBasedMigration extends AbstractMigration
      */
     final public function preUp(Schema $schema)
     {
-        $this->prepare(array_map([$this, 'getFullPath'], $this->getUpgradeMigrations()));
+        $this->prepare(array_map(function (string $value) : string {
+            return $this->getFullPath($value);
+        }, $this->getUpgradeMigrations()));
     }
 
     /**
@@ -113,7 +115,9 @@ abstract class FileBasedMigration extends AbstractMigration
      */
     final public function preDown(Schema $schema)
     {
-        $this->prepare(array_map([$this, 'getFullPath'], $this->getDowngradeMigrations()));
+        $this->prepare(array_map(function (string $migration) : string {
+            return $this->getFullPath($migration);
+        }, $this->getDowngradeMigrations()));
     }
 
     /**
@@ -137,9 +141,12 @@ abstract class FileBasedMigration extends AbstractMigration
     {
         return implode('/', array_merge(
             [$this->getBasePath()],
-            array_filter([$this->getMajorVersion(), $this->getMinorVersion(), $this->getPatch()], function ($value) {
-                return $value === '0' || (bool)$value;
-            }),
+            array_filter(
+                [$this->getMajorVersion(), $this->getMinorVersion(), $this->getPatch()],
+                function (string $value = null) : bool {
+                    return $value === '0' || (bool)$value;
+                }
+            ),
             [$migration]
         ));
     }
@@ -157,8 +164,7 @@ abstract class FileBasedMigration extends AbstractMigration
     private function prepare(array $files)
     {
         foreach ($files as $file) {
-            $queries = Parser::extractSql(file_get_contents($file));
-            foreach ($queries as $sql) {
+            foreach (Parser::extractSql(file_get_contents($file)) as $sql) {
                 $this->queries[] = $sql;
             }
         }

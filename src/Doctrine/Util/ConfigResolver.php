@@ -17,8 +17,6 @@ class ConfigResolver
      * @throws \Doctrine\DBAL\DBALException
      *
      * @api
-     *
-     * @quality:method [B]
      */
     public static function resolve(array $config)
     {

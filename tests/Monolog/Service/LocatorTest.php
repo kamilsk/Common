@@ -14,22 +14,6 @@ use OctoLab\Common\TestCase;
 class LocatorTest extends TestCase
 {
     /**
-     * @return Locator
-     */
-    public function getLocator(): Locator
-    {
-        return new Locator(
-            [
-                'channels' => [
-                    'app' => ['name' => 'APP'],
-                    'debug' => [],
-                ],
-            ],
-            ComponentFactory::withDefaults()
-        );
-    }
-
-    /**
      * @test
      */
     public function complex()
@@ -248,5 +232,21 @@ class LocatorTest extends TestCase
             reset($keys);
             $locator->rewind();
         }
+    }
+
+    /**
+     * @return Locator
+     */
+    private function getLocator(): Locator
+    {
+        return new Locator(
+            [
+                'channels' => [
+                    'app' => ['name' => 'APP'],
+                    'debug' => [],
+                ],
+            ],
+            ComponentFactory::withDefaults()
+        );
     }
 }

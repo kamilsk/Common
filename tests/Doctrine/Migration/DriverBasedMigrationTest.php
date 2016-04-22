@@ -21,15 +21,14 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
      *
      * @param DriverBasedMigration $migration
      * @param Schema $schema
-     * @param string $dbms
+     * @param array $expected
      */
-    public function up(DriverBasedMigration $migration, Schema $schema, $dbms)
+    public function up(DriverBasedMigration $migration, Schema $schema, array $expected)
     {
         $migration->preUp($schema);
-        $this->checkQueries($migration, $dbms, '[Up]');
         $migration->up($schema);
         $migration->postUp($schema);
-        self::assertEmpty($migration->getQueries());
+        self::assertEquals($expected['up'], $migration->getQueries());
     }
 
     /**
@@ -38,21 +37,20 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
      *
      * @param DriverBasedMigration $migration
      * @param Schema $schema
-     * @param string $dbms
+     * @param array $expected
      */
-    public function down(DriverBasedMigration $migration, Schema $schema, $dbms)
+    public function down(DriverBasedMigration $migration, Schema $schema, array $expected)
     {
         $migration->preDown($schema);
-        $this->checkQueries($migration, $dbms, '[Down]');
         $migration->down($schema);
         $migration->postDown($schema);
-        self::assertEmpty($migration->getQueries());
+        self::assertEquals($expected['down'], $migration->getQueries());
     }
 
     /**
-     * @return array[]
+     * @return array
      */
-    public function migrationProvider()
+    public function migrationProvider(): array
     {
         static $reflection, $property;
         if (!$reflection) {
@@ -60,27 +58,17 @@ class DriverBasedMigrationTest extends \PHPUnit_Framework_TestCase
             $property = $reflection->getProperty('connection');
             $property->setAccessible(true);
         }
-        return array_map(function (Driver $driver, $dbms) use ($reflection, $property) {
-            $migration = $reflection->newInstanceWithoutConstructor();
-            $property->setValue($migration, new Connection([], $driver));
-            return [$migration, new Schema(), $dbms];
-        }, [new PDOMySql\Driver(), new PDOPgSql\Driver()], ['MySQL', 'PostgreSQL']);
-    }
-
-    /**
-     * @param DriverBasedMigration $migration
-     * @param string $dbms
-     * @param string $direction
-     */
-    private function checkQueries(DriverBasedMigration $migration, $dbms, $direction)
-    {
-        $queries = $migration->getQueries();
-        self::assertNotEmpty($queries);
-        array_walk($queries, function ($value) use ($dbms) {
-            self::assertContains($dbms, $value);
-        });
-        array_walk($queries, function ($value) use ($direction) {
-            self::assertContains($direction, $value);
-        });
+        return array_map(
+            function (Driver $driver, array $expected) use ($reflection, $property) : array {
+                $migration = $reflection->newInstanceWithoutConstructor();
+                $property->setValue($migration, new Connection([], $driver));
+                return [$migration, new Schema(), $expected];
+            },
+            [new PDOMySql\Driver(), new PDOPgSql\Driver()],
+            [
+                ['up' => ['[MySQL][Up] test migration'], 'down' => ['[MySQL][Down] test migration']],
+                ['up' => ['[PostgreSQL][Up] test migration'], 'down' => ['[PostgreSQL][Down] test migration']],
+            ]
+        );
     }
 }

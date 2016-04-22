@@ -18,17 +18,6 @@ class IntegerMapTypeTest extends \PHPUnit_Framework_TestCase
      * @dataProvider typeAndPlatformProvider
      *
      * @param IntegerMapTypeMock $type
-     */
-    public function getValues(IntegerMapTypeMock $type)
-    {
-        self::assertNotEmpty($type->getValues());
-    }
-
-    /**
-     * @test
-     * @dataProvider typeAndPlatformProvider
-     *
-     * @param IntegerMapTypeMock $type
      * @param AbstractPlatform $platform
      */
     public function getSQLDeclaration(IntegerMapTypeMock $type, AbstractPlatform $platform)
@@ -68,11 +57,11 @@ class IntegerMapTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array[]
+     * @return array
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function typeAndPlatformProvider()
+    public function typeAndPlatformProvider(): array
     {
         if (!Type::hasType('integer_map')) {
             Type::addType('integer_map', IntegerMapTypeMock::class);

@@ -15,30 +15,9 @@
 - classes
   - `Util\CallableSugar` was renamed to `Util\Call` and not it not final
 - method signature
-  - `Config\Loader\Parser\ParserInterface::parse()`
-  - `Config\Loader\Parser\ParserInterface::supports()`
-  - `Doctrine\Migration\FileBasedMigration::getBasePath()` _return_ part
-  - `Doctrine\Migration\FileBasedMigration::getMajorVersion()` _return_ part
-  - `Doctrine\Migration\FileBasedMigration::getUpgradeMigrations()` _return_ part
-  - `Doctrine\Migration\FileBasedMigration::getDowngradeMigrations()` _return_ part
-  - `Doctrine\Migration\FileBasedMigration::getQueries()` _return_ part
-  - `Doctrine\Migration\FileBasedMigration::getFullPath()` _return_ part
-  - `Doctrine\Migration\DriverBasedMigration::getQueries()` _return_ part
-  - `Monolog\Handler\DesktopNotificationHandler::__construct()` scalar type declaration
-  - `Monolog\Processor\SignProcessor::__construct()` scalar type declaration
-  - `Monolog\Processor\SignProcessor::__invoke()` return type declaration
-  - `Monolog\Processor\TimeExecutionProcessor::__invoke()` return type declaration
-  - `Monolog\Util\Dumper::dumpToString()` return type declaration
-  - `Util\ArrayHelper::findByPath()` scalar type declaration
-  - `Util\ArrayHelper::merge()` scalar and return type declaration
-  - `Util\Call::begin()` return type declaration
-  - `Util\Call::rescue()` scalar and return type declaration
-  - `Util\Call::retry()` scalar and return type declaration
+  - all methods, where it is possible, changed scalar and return type declaration
   - `Util\Call::end()` _throws_ part (`Throwable` support now)
   - `Util\Json::__construct()` all arguments are required now, use `Util\Json::new()` instead
-  - `Util\Json::encode()` _throws_ part, scalar and return type declaration
-  - `Util\Json::decode()` _throws_ part, scalar and return type declaration
-  - `Util\System::*()` return type declaration
 - [git diff](/../../compare/master...3.x)
 
 ### Removed

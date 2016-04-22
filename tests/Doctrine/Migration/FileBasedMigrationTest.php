@@ -17,14 +17,14 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
      *
      * @param FileBasedMigration $migration
      * @param Schema $schema
+     * @param array $expected
      */
-    public function up(FileBasedMigration $migration, Schema $schema)
+    public function up(FileBasedMigration $migration, Schema $schema, array $expected)
     {
         $migration->preUp($schema);
-        self::assertNotEmpty($migration->getQueries());
         $migration->up($schema);
         $migration->postUp($schema);
-        self::assertEmpty($migration->getQueries());
+        self::assertEquals($expected['up'], $migration->getQueries());
     }
 
     /**
@@ -33,23 +33,30 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
      *
      * @param FileBasedMigration $migration
      * @param Schema $schema
+     * @param array $expected
      */
-    public function down(FileBasedMigration $migration, Schema $schema)
+    public function down(FileBasedMigration $migration, Schema $schema, array $expected)
     {
         $migration->preDown($schema);
-        self::assertNotEmpty($migration->getQueries());
         $migration->down($schema);
         $migration->postDown($schema);
-        self::assertEmpty($migration->getQueries());
+        self::assertEquals($expected['down'], $migration->getQueries());
     }
 
     /**
-     * @return array[]
+     * @return array
      */
-    public function migrationProvider()
+    public function migrationProvider(): array
     {
         return [
-            [(new \ReflectionClass(FileBasedMigrationMock::class))->newInstanceWithoutConstructor(), new Schema()],
+            [
+                (new \ReflectionClass(FileBasedMigrationMock::class))->newInstanceWithoutConstructor(),
+                new Schema(),
+                [
+                    'up' => ['CREATE TABLE test ( id INT, title VARCHAR(8) NOT NULL, PRIMARY KEY (id) )'],
+                    'down' => ['DROP TABLE test CASCADE'],
+                ],
+            ],
         ];
     }
 }

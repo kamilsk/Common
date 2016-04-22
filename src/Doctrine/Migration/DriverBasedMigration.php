@@ -109,7 +109,7 @@ abstract class DriverBasedMigration extends AbstractMigration
     {
         $method = $this->resolve($prefix, $postfix);
         if (method_exists($this, $method)) {
-            $this->run([$this, $method], $schema);
+            $this->{$method}($schema);
         }
     }
 
@@ -124,14 +124,5 @@ abstract class DriverBasedMigration extends AbstractMigration
         $driver = $this->connection->getDriver()->getName();
         $parts = explode(' ', ucwords(str_replace('_', ' ', $driver)));
         return $prefix . implode('', $parts) . $postfix;
-    }
-
-    /**
-     * @param callable $callback
-     * @param Schema $schema
-     */
-    private function run(callable $callback, Schema $schema)
-    {
-        $callback($schema);
     }
 }

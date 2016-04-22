@@ -19,24 +19,6 @@ class ConfigResolverTest extends \PHPUnit_Framework_TestCase
     public function resolve()
     {
         ConfigResolver::resolve([
-            'default_connection' => 'mysql',
-            'connections' => [
-                'mysql' => [
-                    'driver' => 'pdo_mysql',
-                    'host' => 'localhost',
-                    'port' => 3306,
-                    'dbname' => 'database',
-                    'user' => 'user',
-                    'password' => 'pass',
-                ],
-                'sqlite' => [
-                    'driver' => 'pdo_sqlite',
-                    'memory' => true,
-                    'dbname' => 'database',
-                    'user' => 'user',
-                    'password' => 'pass',
-                ],
-            ],
             'types' => [
                 'enum' => 'string',
                 'integer_map' => IntegerMapTypeMock::class,

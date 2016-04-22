@@ -57,7 +57,6 @@ class FileBasedMigrationMock extends FileBasedMigration
      */
     public function postUp(Schema $schema)
     {
-        $this->queries = [];
     }
 
     /**
@@ -65,6 +64,5 @@ class FileBasedMigrationMock extends FileBasedMigration
      */
     public function postDown(Schema $schema)
     {
-        $this->queries = [];
     }
 }

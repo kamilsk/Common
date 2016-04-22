@@ -27,7 +27,6 @@ final class DriverBasedMigrationMock extends DriverBasedMigration
 
     protected function postPdoPgsqlUp()
     {
-        $this->queries = [];
     }
 
     protected function prePdoPgsqlDown()
@@ -37,7 +36,6 @@ final class DriverBasedMigrationMock extends DriverBasedMigration
 
     protected function postPdoPgsqlDown()
     {
-        $this->queries = [];
     }
 
     protected function prePdoMysqlUp()
@@ -47,7 +45,6 @@ final class DriverBasedMigrationMock extends DriverBasedMigration
 
     protected function postPdoMysqlUp()
     {
-        $this->queries = [];
     }
 
     protected function prePdoMysqlDown()
@@ -57,6 +54,5 @@ final class DriverBasedMigrationMock extends DriverBasedMigration
 
     protected function postPdoMysqlDown()
     {
-        $this->queries = [];
     }
 }
