@@ -22,11 +22,10 @@ class ConfigResolver
      */
     public static function resolve(array $config)
     {
-        if (!empty($config['types'])) {
-            foreach ($config['types'] as $name => $class) {
-                if (!Type::hasType($name)) {
-                    Type::addType($name, Type::hasType($class) ? get_class(Type::getType($class)) : $class);
-                }
+        $types = (array)($config['types'] ?? []);
+        foreach ($types as $name => $class) {
+            if (!Type::hasType($name)) {
+                Type::addType($name, Type::hasType($class) ? get_class(Type::getType($class)) : $class);
             }
         }
     }
