@@ -25,7 +25,7 @@
 - classes
   - `Monolog\LoggerLocator`, use `Monolog\Service\Locator` instead
 
-## [2.3.x] - LTS - 2016-04-20
+## [2.3.0] - LTS - 2016-04-20
 ### Changed
 - PHP support is up to 5.6 version
 - [git diff](/../../compare/2.2.2...2.3.0)
