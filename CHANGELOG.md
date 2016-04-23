@@ -36,7 +36,7 @@
   - `Composer\Script\AdminLte\Processor`
   - `Composer\Script\AdminLte\Publisher`
   - `Monolog\Processor\SignProcessor`
-  - `Util\Call`
+  - `Util\CallableSugar`
 
 ### Changed
 - [git diff](/../../compare/2.1.5...2.2.2)
