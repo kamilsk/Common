@@ -4,7 +4,7 @@
 
 ## [Tips and Tricks](docs/TipsAndTricks.md)
 
-## [Documentation](http://kamilsk.github.io/Common/)
+## [Documentation](https://github.com/kamilsk/Common/wiki)
 
 ## Installation
 
