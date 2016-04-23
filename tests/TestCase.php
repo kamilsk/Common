@@ -15,7 +15,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    protected function getConfigPath($config = 'config', $extension = 'yml')
+    protected function getConfigPath(string $config = 'config', string $extension = 'yml'): string
     {
         return sprintf('%s/app/config/%s.%s', __DIR__, $config, $extension);
     }
