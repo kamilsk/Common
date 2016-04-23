@@ -31,18 +31,19 @@ class ClassAvailabilityTest extends ClassAvailability
     {
         static $excluded = [
             // deprecated
-            '\Composer\Package\LinkConstraint\EmptyConstraint' => true,
-            '\Composer\Package\LinkConstraint\LinkConstraintInterface' => true,
-            '\Composer\Package\LinkConstraint\MultiConstraint' => true,
-            '\Composer\Package\LinkConstraint\SpecificConstraint' => true,
-            '\Composer\Package\LinkConstraint\VersionConstraint' => true,
-            '\Composer\Semver\Constraint\AbstractConstraint' => true,
-            '\Composer\Util\SpdxLicense' => true,
+            'Composer\\Package\\LinkConstraint\\EmptyConstraint' => true,
+            'Composer\\Package\\LinkConstraint\\LinkConstraintInterface' => true,
+            'Composer\\Package\\LinkConstraint\\MultiConstraint' => true,
+            'Composer\\Package\\LinkConstraint\\SpecificConstraint' => true,
+            'Composer\\Package\\LinkConstraint\\VersionConstraint' => true,
+            'Composer\\Semver\\Constraint\\AbstractConstraint' => true,
+            'Composer\\Util\\SpdxLicense' => true,
             // no dependencies
-            '\Zend\EventManager\Filter\FilterIterator' => true,
+            'Zend\\EventManager\\Filter\\FilterIterator' => true,
             // https://github.com/composer/composer/issues/5239
-            'OctoLab\Common\Test\extends' => true,
+            'OctoLab\\Common\\Test\\extends' => true,
         ];
-        return !empty($excluded[$class]) || !empty($excluded['\\' . $class]);
+        return strpos($class, 'Symfony\\Component\\Console\\Event') === 0
+            || !empty($excluded[$class]);
     }
 }
