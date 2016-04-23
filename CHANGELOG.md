@@ -19,7 +19,7 @@
   - `Util\ArrayHelper::findByPath(string $path, array $scope)` arguments were swapped
   - `Util\Call::end()` _throws_ part (`Throwable` support now)
   - `Util\Json::__construct()` all arguments are required now, use `Util\Json::new()` instead
-- [git diff](/../../compare/master...3.x)
+- [git diff](/../../compare/2.3.0...3.0.0)
 
 ### Removed
 - classes
