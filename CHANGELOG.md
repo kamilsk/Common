@@ -7,6 +7,7 @@
   - `Monolog\Service\Locator`
   - `Monolog\Service\ComponentBuilder`
   - `Monolog\Service\ComponentFactory`
+  - `Test\ClassAvailability`
 - methods
   - `Util\Json::new()`
 
@@ -19,7 +20,7 @@
   - `Util\ArrayHelper::findByPath(string $path, array $scope)` arguments were swapped
   - `Util\Call::end()` _throws_ part (`Throwable` support now)
   - `Util\Json::__construct()` all arguments are required now, use `Util\Json::new()` instead
-- [git diff](/../../compare/2.3.0...3.0.1)
+- [git diff](/../../compare/2.3.0...3.0.2)
 
 ### Removed
 - classes

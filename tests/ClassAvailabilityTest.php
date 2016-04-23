@@ -4,27 +4,32 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common;
 
+use OctoLab\Common\Test\ClassAvailability;
+
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class ClassAvailabilityTest extends \PHPUnit_Framework_TestCase
+class ClassAvailabilityTest extends ClassAvailability
 {
     /**
-     * @test
+     * {@inheritdoc}
      */
-    final public function classmap()
+    protected function getClasses(): \Generator
     {
-        foreach ($this->getFilteredClasses() as $class) {
-            self::assertTrue(class_exists($class) || interface_exists($class) || trait_exists($class));
+        foreach (require dirname(__DIR__) . '/vendor/composer/autoload_classmap.php' as $class => $path) {
+            $signal = yield $class;
+            if (SIGSTOP === $signal) {
+                return;
+            }
         }
     }
 
     /**
-     * @return \Generator
+     * {@inheritdoc}
      */
-    protected function getFilteredClasses(): \Generator
+    protected function isFiltered(string $class): bool
     {
-        $excluded = [
+        static $excluded = [
             // deprecated
             '\Composer\Package\LinkConstraint\EmptyConstraint' => true,
             '\Composer\Package\LinkConstraint\LinkConstraintInterface' => true,
@@ -36,23 +41,6 @@ class ClassAvailabilityTest extends \PHPUnit_Framework_TestCase
             // parent class or interface not found
             '\Zend\EventManager\Filter\FilterIterator' => true,
         ];
-        foreach ($this->getClasses() as list($path, $class)) {
-            if (empty($excluded[$class]) && empty($excluded['\\' . $class])) {
-                $signal = yield $class;
-                if (SIGSTOP === $signal) {
-                    return;
-                }
-            }
-        }
-    }
-
-    /**
-     * @return \Generator
-     */
-    final protected function getClasses(): \Generator
-    {
-        foreach (require dirname(__DIR__) . '/vendor/composer/autoload_classmap.php' as $class => $path) {
-            yield [$path, $class];
-        }
+        return !empty($excluded[$class]) || !empty($excluded['\\' . $class]);
     }
 }
