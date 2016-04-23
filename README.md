@@ -2,9 +2,7 @@
 >
 > Based on [don’t repeat yourself](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) principle.
 
-## [Tips and Tricks](docs/TipsAndTricks.md)
-
-## [Documentation](http://kamilsk.github.io/Common/)
+## [Documentation](https://github.com/kamilsk/Common/wiki)
 
 ## Installation
 
@@ -27,7 +25,7 @@ $ git remote add mirror git@bitbucket.org:kamilsk/common.git
 ### Composer (production)
 
 ```bash
-$ composer require kamilsk/common:~3.0@dev
+$ composer require kamilsk/common:~3.0
 ```
 
 ## Pulse of repository

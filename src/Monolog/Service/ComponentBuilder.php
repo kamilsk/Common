@@ -90,7 +90,7 @@ class ComponentBuilder
      * @param null|string $type
      * @param array $args
      *
-     * @return mixed
+     * @return \Monolog\Logger|\Monolog\Handler\HandlerInterface|\Monolog\Formatter\FormatterInterface|callable
      *
      * @throws \InvalidArgumentException
      * @throws \ReflectionException

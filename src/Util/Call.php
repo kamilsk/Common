@@ -74,7 +74,7 @@ class Call
     }
 
     /**
-     * @param array ...$args
+     * @param mixed[] ...$args
      *
      * @return mixed
      *

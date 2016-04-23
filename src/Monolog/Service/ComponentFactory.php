@@ -35,7 +35,7 @@ class ComponentFactory
         );
     }
 
-    /** @var ComponentBuilder[] */
+    /** @var ComponentBuilder[]|array<string,ComponentBuilder> */
     private $components;
 
     /**
@@ -61,7 +61,7 @@ class ComponentFactory
     /**
      * @param array $config
      *
-     * @return mixed
+     * @return \Monolog\Logger|\Monolog\Handler\HandlerInterface|\Monolog\Formatter\FormatterInterface|callable
      *
      * @throws \InvalidArgumentException
      * @throws \ReflectionException

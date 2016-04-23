@@ -1,7 +1,7 @@
 [CHANGELOG](http://keepachangelog.com)
 ======================================
 
-## [3.x] - unreleased
+## [3.0.0] - 2016-04-23
 ### Added
 - classes
   - `Monolog\Service\Locator`

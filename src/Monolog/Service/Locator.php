@@ -232,6 +232,7 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
     /**
      * @param string $id
      * @param mixed $component
+     * \Monolog\Logger|\Monolog\Handler\HandlerInterface|\Monolog\Formatter\FormatterInterface|callable
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
