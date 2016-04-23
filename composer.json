@@ -19,12 +19,12 @@
     "symfony/yaml": "~3.0"
   },
   "suggest": {
-    "doctrine/migrations": "for use OctoLab\\Common\\Doctrine\\Migration (~1.0 is recommended)",
-    "jolicode/jolinotif": "optional for show desktop notification (~1.0 is recommended)",
-    "monolog/monolog": "for use OctoLab\\Common\\Monolog (~1.0 is recommended)",
-    "symfony/config": "for use OctoLab\\Common\\Config (~3.0 is recommended)",
-    "symfony/filesystem": "for use OctoLab\\Common\\Composer\\Script\\AdminLte (~3.0 is recommended)",
-    "symfony/yaml": "for use OctoLab\\Common\\Config (~3.0 is recommended)"
+    "doctrine/migrations": "for using OctoLab\\Common\\Doctrine\\Migration (~1.0 is recommended)",
+    "jolicode/jolinotif": "optional for showing desktop notification (~1.0 is recommended)",
+    "monolog/monolog": "for using OctoLab\\Common\\Monolog (~1.0 is recommended)",
+    "symfony/config": "for using OctoLab\\Common\\Config (~3.0 is recommended)",
+    "symfony/filesystem": "for using OctoLab\\Common\\Composer\\Script\\AdminLte (~3.0 is recommended)",
+    "symfony/yaml": "for using OctoLab\\Common\\Config (~3.0 is recommended)"
   },
   "autoload": {
     "psr-4": { "OctoLab\\Common\\": "src/" }

@@ -38,7 +38,7 @@ class ClassAvailabilityTest extends ClassAvailability
             '\Composer\Package\LinkConstraint\VersionConstraint' => true,
             '\Composer\Semver\Constraint\AbstractConstraint' => true,
             '\Composer\Util\SpdxLicense' => true,
-            // parent class or interface not found
+            // no dependencies
             '\Zend\EventManager\Filter\FilterIterator' => true,
         ];
         return !empty($excluded[$class]) || !empty($excluded['\\' . $class]);

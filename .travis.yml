@@ -14,7 +14,7 @@ before_install:
 - travis_retry composer self-update
 
 install:
-- composer install
+- composer install -o
 
 notifications:
   slack: octolab:1eMS7IqOArBipiu31jYVd0cN
