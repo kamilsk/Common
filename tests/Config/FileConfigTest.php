@@ -27,33 +27,32 @@ class FileConfigTest extends TestCase
      *
      * @param FileConfig $config
      * @param string $extension
+     * @param array $expected
      */
-    public function loadSuccess(FileConfig $config, $extension)
+    public function load(FileConfig $config, string $extension, array $expected)
     {
         $config->load($this->getConfigPath('config', $extension));
-        self::assertEquals(E_ALL, $config['app:constant']);
+        foreach ($expected as $key => $value) {
+            self::assertEquals($value, $config[$key]);
+        }
     }
 
     /**
-     * @test
-     * @dataProvider fileConfigProvider
-     * @expectedException \InvalidArgumentException
-     *
-     * @param FileConfig $config
+     * @return array
      */
-    public function loadFailure(FileConfig $config)
-    {
-        $config->load($this->getConfigPath('config', 'xml'));
-    }
-
-    /**
-     * @return array[]
-     */
-    public function fileConfigProvider()
+    public function fileConfigProvider(): array
     {
         return [
-            [new FileConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\JsonParser())), 'json'],
-            [new FileConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\YamlParser())), 'yml'],
+            [
+                new FileConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\JsonParser())),
+                'json',
+                ['app:constant' => E_ALL],
+            ],
+            [
+                new FileConfig(new Loader\FileLoader(new FileLocator(), new Loader\Parser\YamlParser())),
+                'yml',
+                ['app:constant' => E_ALL],
+            ],
         ];
     }
 }

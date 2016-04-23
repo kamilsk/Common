@@ -51,7 +51,6 @@ $ composer require kamilsk/common:~3.0@dev
 
 [![Code coverage](https://scrutinizer-ci.com/g/kamilsk/Common/badges/coverage.png?b=3.x)](https://scrutinizer-ci.com/g/kamilsk/Common/?branch=3.x)
 [![Scrutinizer code quality](https://scrutinizer-ci.com/g/kamilsk/Common/badges/quality-score.png?b=3.x)](https://scrutinizer-ci.com/g/kamilsk/Common/?branch=3.x)
-[![Code Climate code quality](https://codeclimate.com/github/kamilsk/Common/badges/gpa.svg)](https://codeclimate.com/github/kamilsk/Common)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/37088460-5995-43cd-9dcb-920ca502984d/big.png)](https://insight.sensiolabs.com/projects/37088460-5995-43cd-9dcb-920ca502984d)
 

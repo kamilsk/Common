@@ -44,6 +44,7 @@ class IntegerMapTypeTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider typeAndPlatformProvider
      * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Invalid type.
      *
      * @param IntegerMapTypeMock $type
      * @param AbstractPlatform $platform

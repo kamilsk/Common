@@ -109,6 +109,7 @@ class LocatorTest extends TestCase
     /**
      * @test
      * @expectedException \OutOfRangeException
+     * @expectedExceptionMessage Component with ID "channel.unknown" not found.
      */
     public function getChannelFailure()
     {
@@ -128,6 +129,7 @@ class LocatorTest extends TestCase
     /**
      * @test
      * @expectedException \OutOfRangeException
+     * @expectedExceptionMessage Component with ID "channel.unknown" not found.
      */
     public function getDefaultChannelFailure()
     {
@@ -166,6 +168,7 @@ class LocatorTest extends TestCase
     /**
      * @test
      * @expectedException \BadMethodCallException
+     * @expectedExceptionMessage Storage is read-only.
      */
     public function offsetSet()
     {
@@ -177,6 +180,7 @@ class LocatorTest extends TestCase
     /**
      * @test
      * @expectedException \BadMethodCallException
+     * @expectedExceptionMessage Storage is read-only.
      */
     public function offsetUnset()
     {
@@ -204,6 +208,7 @@ class LocatorTest extends TestCase
     /**
      * @test
      * @expectedException \OutOfRangeException
+     * @expectedExceptionMessage Current position of pointer is out of range.
      */
     public function currentFailure()
     {

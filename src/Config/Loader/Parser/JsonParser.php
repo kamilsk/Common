@@ -23,7 +23,7 @@ class JsonParser implements ParserInterface
      */
     public function __construct(bool $assoc = true, int $options = 0, int $depth = 512)
     {
-        $this->decoder = Json::new($assoc, $options, $depth);
+        $this->decoder = new Json($assoc, $options, $depth);
     }
 
     /**

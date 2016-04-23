@@ -41,11 +41,11 @@ class FileLoader extends AbstractFileLoader
      *
      * @api
      */
-    public function load($resource, $type = null)
+    public function load($resource, $type = null): array
     {
         $path = (string)$this->locator->locate($resource);
         if (!$this->supports($resource)) {
-            throw new \InvalidArgumentException(sprintf('File "%s" is not supported.', $resource));
+            throw new \InvalidArgumentException(sprintf('The file "%s" is not supported.', $resource));
         }
         $fileContent = $this->parser->parse(file_get_contents($path));
         if (!is_array($fileContent)) {

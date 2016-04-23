@@ -14,54 +14,42 @@ class JsonParserTest extends \PHPUnit_Framework_TestCase
      */
     public function construct()
     {
-        $parser = new JsonParser(false, 0, 512);
         $json = '{"а":"б"}';
-        self::assertEquals(json_decode($json), $parser->parse($json));
+        self::assertEquals(json_decode($json), (new JsonParser(false, 0, 512))->parse($json));
     }
 
     /**
      * @test
-     * @dataProvider parserProvider
-     *
-     * @param ParserInterface $parser
      */
-    public function parseSuccess(ParserInterface $parser)
+    public function parseSuccess()
     {
-        $result = $parser->parse('{"json": "valid"}');
-        self::assertArrayHasKey('json', $result);
+        self::assertArrayHasKey('json', $this->getParser()->parse('{"json": "valid"}'));
     }
 
     /**
      * @test
-     * @dataProvider parserProvider
      * @expectedException \Exception
-     *
-     * @param ParserInterface $parser
      */
-    public function parseFailure(ParserInterface $parser)
+    public function parseFailure()
     {
-        $parser->parse('{"json": invalid}');
+        $this->getParser()->parse('{"json": invalid}');
     }
 
     /**
      * @test
-     * @dataProvider parserProvider
-     *
-     * @param ParserInterface $parser
      */
-    public function supports(ParserInterface $parser)
+    public function supports()
     {
+        $parser = $this->getParser();
         self::assertTrue($parser->supports('json'));
         self::assertFalse($parser->supports('yml'));
     }
 
     /**
-     * @return array<int,JsonParser[]>
+     * @return JsonParser
      */
-    public function parserProvider()
+    private function getParser(): JsonParser
     {
-        return [
-            [new JsonParser()],
-        ];
+        return new JsonParser();
     }
 }

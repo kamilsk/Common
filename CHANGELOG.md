@@ -16,6 +16,7 @@
   - `Util\CallableSugar` was renamed to `Util\Call` and not it not final
 - method signature
   - all methods, where it is possible, changed scalar and return type declaration
+  - `Util\ArrayHelper::findByPath(string $path, array $scope)` arguments were swapped
   - `Util\Call::end()` _throws_ part (`Throwable` support now)
   - `Util\Json::__construct()` all arguments are required now, use `Util\Json::new()` instead
 - [git diff](/../../compare/master...3.x)

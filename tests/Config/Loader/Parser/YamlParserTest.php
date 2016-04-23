@@ -14,53 +14,41 @@ class YamlParserTest extends \PHPUnit_Framework_TestCase
      */
     public function construct()
     {
-        $parser = new YamlParser(true, true, true);
-        self::assertNotEmpty($parser->parse('yaml: valid'));
+        self::assertEquals((object)['yaml' => 'valid'], (new YamlParser(true, true, true))->parse('yaml: valid'));
     }
 
     /**
      * @test
-     * @dataProvider parserProvider
-     *
-     * @param ParserInterface $parser
      */
-    public function parseSuccess(ParserInterface $parser)
+    public function parseSuccess()
     {
-        $result = $parser->parse('yaml: valid');
-        self::assertArrayHasKey('yaml', $result);
+        self::assertArrayHasKey('yaml', $this->getParser()->parse('yaml: valid'));
     }
 
     /**
      * @test
-     * @dataProvider parserProvider
      * @expectedException \Exception
-     *
-     * @param ParserInterface $parser
      */
-    public function parseFailure(ParserInterface $parser)
+    public function parseFailure()
     {
-        $parser->parse('yaml: { invalid }: true');
+        $this->getParser()->parse('yaml: { invalid }: true');
     }
 
     /**
      * @test
-     * @dataProvider parserProvider
-     *
-     * @param ParserInterface $parser
      */
-    public function supports(ParserInterface $parser)
+    public function supports()
     {
+        $parser = $this->getParser();
         self::assertTrue($parser->supports('yml'));
         self::assertFalse($parser->supports('json'));
     }
 
     /**
-     * @return array<int,YamlParser[]>
+     * @return YamlParser
      */
-    public function parserProvider()
+    private function getParser(): YamlParser
     {
-        return [
-            [new YamlParser()],
-        ];
+        return new YamlParser();
     }
 }

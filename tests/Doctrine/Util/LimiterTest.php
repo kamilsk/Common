@@ -27,6 +27,7 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Values must be unsigned.
      */
     public function constructFailure()
     {

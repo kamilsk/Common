@@ -15,10 +15,10 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase
     public function findByPath()
     {
         $scope = ['array' => ['helper' => 'test']];
-        self::assertEquals('test', ArrayHelper::findByPath($scope, 'array:helper'));
-        self::assertNull(ArrayHelper::findByPath($scope, 'array:helper:test'));
-        self::assertEquals($scope['array'], ArrayHelper::findByPath($scope, 'array'));
-        self::assertNull(ArrayHelper::findByPath($scope, 'unknown'));
+        self::assertEquals('test', ArrayHelper::findByPath('array:helper', $scope));
+        self::assertNull(ArrayHelper::findByPath('array:helper:test', $scope));
+        self::assertEquals($scope['array'], ArrayHelper::findByPath('array', $scope));
+        self::assertNull(ArrayHelper::findByPath('unknown', $scope));
     }
 
     /**

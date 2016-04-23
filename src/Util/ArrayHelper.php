@@ -10,14 +10,14 @@ namespace OctoLab\Common\Util;
 class ArrayHelper
 {
     /**
-     * @param array $scope
      * @param string $path
+     * @param array $scope
      *
      * @return mixed null if not exists
      *
      * @api
      */
-    public static function findByPath(array $scope, string $path)
+    public static function findByPath(string $path, array $scope)
     {
         if (mb_strpos($path, ':')) {
             foreach (explode(':', $path) as $i => $key) {

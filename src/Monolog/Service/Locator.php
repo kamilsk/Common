@@ -76,7 +76,7 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @api
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->keys[$offset]);
     }
@@ -84,13 +84,15 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
     /**
      * {@inheritdoc}
      *
+     * @return Logger
+     *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
      * @throws \ReflectionException
      *
      * @api
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): Logger
     {
         return $this->getComponent($this->resolveStorageId('channels', $offset));
     }
@@ -124,7 +126,7 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @api
      */
-    public function count()
+    public function count(): int
     {
         return count($this->keys);
     }
@@ -132,13 +134,15 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
     /**
      * {@inheritdoc}
      *
+     * @return Logger
+     *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
      * @throws \ReflectionException
      *
      * @api
      */
-    public function current()
+    public function current(): Logger
     {
         if (null === ($id = key($this->keys))) {
             throw new \OutOfRangeException('Current position of pointer is out of range.');
@@ -171,7 +175,7 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @api
      */
-    public function valid()
+    public function valid(): bool
     {
         return (bool)current($this->keys);
     }

@@ -33,9 +33,9 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
      *
      * @api
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
-        return (bool)ArrayHelper::findByPath($this->config, $offset);
+        return ArrayHelper::findByPath($offset, $this->config) !== null;
     }
 
     /**
@@ -45,7 +45,7 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
      */
     public function offsetGet($offset)
     {
-        return ArrayHelper::findByPath($this->config, $offset);
+        return ArrayHelper::findByPath($offset, $this->config);
     }
 
     /**
@@ -77,7 +77,7 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
      *
      * @api
      */
-    public function count()
+    public function count(): int
     {
         return count($this->config);
     }
@@ -117,9 +117,9 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
      *
      * @api
      */
-    public function valid()
+    public function valid(): bool
     {
-        return empty($this->config) || key($this->config) !== null;
+        return key($this->config) !== null;
     }
 
     /**
@@ -147,9 +147,9 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
     /**
      * @param array $placeholders
      *
-     * @return $this
+     * @return SimpleConfig
      */
-    protected function transform(array $placeholders)
+    protected function transform(array $placeholders): SimpleConfig
     {
         if (isset($this->config['parameters'])) {
             ArrayHelper::transform($this->config['parameters'], $placeholders);

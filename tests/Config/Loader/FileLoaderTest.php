@@ -26,8 +26,9 @@ class FileLoaderTest extends TestCase
      * @dataProvider loaderProvider
      *
      * @param FileLoader $loader
+     * @param string $extension
      */
-    public function loadSuccess(FileLoader $loader)
+    public function loadSuccess(FileLoader $loader, string $extension)
     {
         $expected = [
             'parameters' => [
@@ -42,16 +43,6 @@ class FileLoaderTest extends TestCase
                 'base_parameter' => 'base parameter will not be overwritten',
             ],
         ];
-        switch (true) {
-            case $loader->supports('config.json'):
-                $extension = 'json';
-                break;
-            case $loader->supports('config.yml'):
-                $extension = 'yml';
-                break;
-            default:
-                throw new \RuntimeException(sprintf('Unsupported loader %s.', get_class($loader)));
-        }
         self::assertEquals($expected, $loader->load($this->getConfigPath('config', $extension)));
     }
 
@@ -60,32 +51,25 @@ class FileLoaderTest extends TestCase
      * @dataProvider loaderProvider
      *
      * @param FileLoader $loader
+     * @param string $extension
      */
-    public function loadFailure(FileLoader $loader)
+    public function loadFailure(FileLoader $loader, string $extension)
     {
         try {
             $loader->load('/unknown.file');
             self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
-            self::assertTrue(true);
+            self::assertContains('The file "/unknown.file" does not exist.', $e->getMessage());
         }
+        $file = $this->getConfigPath('others/unsupported', 'file');
         try {
-            $loader->load($this->getConfigPath('others/unsupported', 'xml'));
+            $loader->load($file);
             self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
-            self::assertTrue(true);
+            self::assertContains(sprintf('The file "%s" is not supported.', $file), $e->getMessage());
         }
         try {
-            switch (true) {
-                case $loader->supports($this->getConfigPath('others/invalid', 'json')):
-                    $loader->load($this->getConfigPath('others/invalid', 'json'));
-                    break;
-                case $loader->supports($this->getConfigPath('others/invalid', 'yml')):
-                    $loader->load($this->getConfigPath('others/invalid', 'yml'));
-                    break;
-                default:
-                    throw new \RuntimeException(sprintf('Unsupported loader %s.', get_class($loader)));
-            }
+            $loader->load($this->getConfigPath('others/invalid', $extension));
             self::fail(sprintf('%s exception expected.', \Exception::class));
         } catch (\Exception $e) {
             self::assertTrue(true);
@@ -97,11 +81,11 @@ class FileLoaderTest extends TestCase
      * @dataProvider loaderProvider
      *
      * @param FileLoader $loader
+     * @param string $extension
      */
-    public function supports(FileLoader $loader)
+    public function supports(FileLoader $loader, string $extension)
     {
-        self::assertTrue($loader->supports('config.json') || $loader->supports('config.yml'));
-        self::assertFalse($loader->supports('config.json') && $loader->supports('config.yml'));
+        self::assertTrue($loader->supports('config.' . $extension));
     }
 
     /**
@@ -114,9 +98,9 @@ class FileLoaderTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array
      */
-    public function loaderProvider()
+    public function loaderProvider(): array
     {
         return [
             [new FileLoader(new FileLocator(), new Parser\JsonParser()), 'json'],

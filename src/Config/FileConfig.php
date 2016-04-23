@@ -27,7 +27,7 @@ class FileConfig extends SimpleConfig
      * @param string $resource
      * @param array $placeholders
      *
-     * @return $this
+     * @return FileConfig
      *
      * @throws \InvalidArgumentException
      * @throws \Exception
@@ -36,7 +36,7 @@ class FileConfig extends SimpleConfig
      *
      * @api
      */
-    public function load(string $resource, array $placeholders = [])
+    public function load(string $resource, array $placeholders = []): FileConfig
     {
         $this->config = $this->fileLoader->load($resource);
         return $this->transform($placeholders);

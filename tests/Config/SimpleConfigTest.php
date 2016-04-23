@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace OctoLab\Common\Config;
 
 use OctoLab\Common\TestCase;
+use OctoLab\Common\Util\ArrayHelper;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
@@ -41,11 +42,16 @@ class SimpleConfigTest extends TestCase
      * @dataProvider simpleConfigProvider
      *
      * @param SimpleConfig $config
+     * @param array $expected
+     * @param array $paths
      */
-    public function offsetExists(SimpleConfig $config)
+    public function offsetExists(SimpleConfig $config, array $expected, array $paths)
     {
-        self::assertArrayHasKey('component', $config);
-        self::assertArrayNotHasKey('unknown', $config);
+        self::assertArrayHasKey(key($expected), $config);
+        foreach ($paths as $path) {
+            self::assertArrayHasKey($path, $config);
+        }
+        self::assertArrayNotHasKey('unknown:path', $config);
     }
 
     /**
@@ -53,43 +59,21 @@ class SimpleConfigTest extends TestCase
      * @dataProvider simpleConfigProvider
      *
      * @param SimpleConfig $config
+     * @param array $expected
+     * @param string[] $paths
      */
-    public function offsetExistsByPath(SimpleConfig $config)
+    public function offsetGet(SimpleConfig $config, array $expected, array $paths)
     {
-        self::assertArrayHasKey('component:parameter', $config);
-        self::assertArrayNotHasKey('component:unknown', $config);
-    }
-
-    /**
-     * @test
-     * @dataProvider simpleConfigProvider
-     *
-     * @param SimpleConfig $config
-     */
-    public function offsetGet(SimpleConfig $config)
-    {
-        $expected = [
-            'parameter' => 'base component\'s parameter will be overwritten by root config',
-            'base_parameter' => 'base parameter will not be overwritten',
-        ];
-        self::assertEquals($expected, $config['component']);
-    }
-
-    /**
-     * @test
-     * @dataProvider simpleConfigProvider
-     *
-     * @param SimpleConfig $config
-     */
-    public function offsetGetByPath(SimpleConfig $config)
-    {
-        self::assertEquals(E_ALL, $config['app:constant']);
+        foreach ($paths as $path) {
+            self::assertEquals(ArrayHelper::findByPath($path, $expected), $config[$path]);
+        }
     }
 
     /**
      * @test
      * @dataProvider simpleConfigProvider
      * @expectedException \BadMethodCallException
+     * @expectedExceptionMessage Configuration is read-only.
      *
      * @param SimpleConfig $config
      */
@@ -103,6 +87,7 @@ class SimpleConfigTest extends TestCase
      * @test
      * @dataProvider simpleConfigProvider
      * @expectedException \BadMethodCallException
+     * @expectedExceptionMessage Configuration is read-only.
      *
      * @param SimpleConfig $config
      */
@@ -117,10 +102,11 @@ class SimpleConfigTest extends TestCase
      * @dataProvider simpleConfigProvider
      *
      * @param SimpleConfig $config
+     * @param array $expected
      */
-    public function countTest(SimpleConfig $config)
+    public function countTest(SimpleConfig $config, array $expected)
     {
-        self::assertCount(array_slice(func_get_args(), 1, 1)[0], $config);
+        self::assertCount(count($expected), $config);
     }
 
     /**
@@ -128,10 +114,11 @@ class SimpleConfigTest extends TestCase
      * @dataProvider simpleConfigProvider
      *
      * @param SimpleConfig $config
+     * @param array $expected
      */
-    public function current(SimpleConfig $config)
+    public function current(SimpleConfig $config, array $expected)
     {
-        self::assertArrayHasKey('parameter', $config->current());
+        self::assertEquals(current($expected), $config->current());
     }
 
     /**
@@ -180,14 +167,14 @@ class SimpleConfigTest extends TestCase
      */
     public function rewind(SimpleConfig $config)
     {
-        $currentKey = $config->key();
-        self::assertTrue(is_scalar($currentKey));
+        $current = $config->key();
+        self::assertTrue(is_scalar($current));
         $config->next();
-        $nextKey = $config->key();
-        self::assertTrue(is_scalar($nextKey));
-        self::assertNotEquals($currentKey, $nextKey);
+        $next = $config->key();
+        self::assertTrue(is_scalar($next));
+        self::assertNotEquals($current, $next);
         $config->rewind();
-        self::assertEquals($currentKey, $config->key());
+        self::assertEquals($current, $config->key());
     }
 
     /**
@@ -195,31 +182,32 @@ class SimpleConfigTest extends TestCase
      * @dataProvider simpleConfigProvider
      *
      * @param SimpleConfig $config
+     * @param array $expected
      */
-    public function jsonSerialize(SimpleConfig $config)
+    public function jsonSerialize(SimpleConfig $config, array $expected)
     {
-        self::assertJsonStringEqualsJsonString(array_slice(func_get_args(), 2, 1)[0], json_encode($config));
+        self::assertJsonStringEqualsJsonString(json_encode($expected), json_encode($config));
     }
 
     /**
-     * @return array[]
+     * @return array
      */
-    public function simpleConfigProvider()
+    public function simpleConfigProvider(): array
     {
         return [
             [
                 new SimpleConfig(require $this->getConfigPath('config', 'php'), ['placeholder' => 'placeholder']),
-                2,
-                json_encode([
-                    'app' => [
-                        'placeholder_parameter' => 'placeholder',
-                        'constant' => E_ALL,
-                    ],
+                [
                     'component' => [
                         'parameter' => 'base component\'s parameter will be overwritten by root config',
                         'base_parameter' => 'base parameter will not be overwritten',
                     ],
-                ])
+                    'app' => [
+                        'placeholder_parameter' => 'placeholder',
+                        'constant' => E_ALL,
+                    ],
+                ],
+                ['component', 'app:constant'],
             ],
         ];
     }
