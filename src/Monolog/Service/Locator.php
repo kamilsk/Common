@@ -35,10 +35,8 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
         $this->defaultChannel = (string)($config['default_channel'] ?? key($config['channels']));
         $this->factory = $factory;
         $this->storage = [];
-        $this
-            ->enrich($config['channels'], $defaultName)
-            ->store($config)
-        ;
+        $this->enrich($config['channels'], $defaultName);
+        $this->store($config);
     }
 
     /**
