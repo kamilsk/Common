@@ -1,6 +1,8 @@
 [CHANGELOG](http://keepachangelog.com)
 ======================================
 
+# Version 3
+
 ## [3.0.x] - 2016-04-23
 ### Added
 - classes
@@ -25,6 +27,8 @@
 ### Removed
 - classes
   - `Monolog\LoggerLocator`, use `Monolog\Service\Locator` instead
+
+# Version 2
 
 ## [2.3.0] - LTS - 2016-04-20
 ### Changed
@@ -141,6 +145,8 @@ formatters:
   `Config\FileConfig::load()` and `Config\SimpleConfig::__construct()`
   - `Config\Loader\FileLoader::getContent()`, use `Config\Loader\FileLoader::load()` and save output
   - `Util\Math::getTwoTablePagination()`, use static `Doctrine\Util\Limiter::getTwoTablePagination()` instead
+
+# Version 1
 
 ## [1.2] - 2016-03-06
 ### Changed
