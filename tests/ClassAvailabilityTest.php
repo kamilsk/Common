@@ -40,6 +40,8 @@ class ClassAvailabilityTest extends ClassAvailability
             '\Composer\Util\SpdxLicense' => true,
             // no dependencies
             '\Zend\EventManager\Filter\FilterIterator' => true,
+            // https://github.com/composer/composer/issues/5239
+            'OctoLab\Common\Test\extends' => true,
         ];
         return !empty($excluded[$class]) || !empty($excluded['\\' . $class]);
     }
