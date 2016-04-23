@@ -1,7 +1,7 @@
 [CHANGELOG](http://keepachangelog.com)
 ======================================
 
-## [3.0.0] - 2016-04-23
+## [3.0.x] - 2016-04-23
 ### Added
 - classes
   - `Monolog\Service\Locator`
@@ -19,7 +19,7 @@
   - `Util\ArrayHelper::findByPath(string $path, array $scope)` arguments were swapped
   - `Util\Call::end()` _throws_ part (`Throwable` support now)
   - `Util\Json::__construct()` all arguments are required now, use `Util\Json::new()` instead
-- [git diff](/../../compare/2.3.0...3.0.0)
+- [git diff](/../../compare/2.3.0...3.0.1)
 
 ### Removed
 - classes

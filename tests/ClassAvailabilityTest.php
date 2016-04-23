@@ -12,19 +12,18 @@ class ClassAvailabilityTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function classmap()
+    final public function classmap()
     {
-        foreach ($this->getClasses() as $class) {
+        foreach ($this->getFilteredClasses() as $class) {
             self::assertTrue(class_exists($class) || interface_exists($class) || trait_exists($class));
         }
     }
 
     /**
-     * @return string[]
+     * @return \Generator
      */
-    protected function getClasses(): array
+    protected function getFilteredClasses(): \Generator
     {
-        $classes = [];
         $excluded = [
             // deprecated
             '\Composer\Package\LinkConstraint\EmptyConstraint' => true,
@@ -37,11 +36,23 @@ class ClassAvailabilityTest extends \PHPUnit_Framework_TestCase
             // parent class or interface not found
             '\Zend\EventManager\Filter\FilterIterator' => true,
         ];
-        foreach (require dirname(__DIR__) . '/vendor/composer/autoload_classmap.php' as $class => $path) {
+        foreach ($this->getClasses() as list($path, $class)) {
             if (empty($excluded[$class]) && empty($excluded['\\' . $class])) {
-                $classes[] = $class;
+                $signal = yield $class;
+                if (SIGSTOP === $signal) {
+                    return;
+                }
             }
         }
-        return $classes;
+    }
+
+    /**
+     * @return \Generator
+     */
+    final protected function getClasses(): \Generator
+    {
+        foreach (require dirname(__DIR__) . '/vendor/composer/autoload_classmap.php' as $class => $path) {
+            yield [$path, $class];
+        }
     }
 }
