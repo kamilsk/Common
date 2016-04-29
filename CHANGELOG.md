@@ -3,6 +3,10 @@
 
 # Version 3
 
+## [3.1.0] - Unreleased
+### Changed
+- [git diff](/../../compare/3.0.4...3.x)
+
 ## [3.0.x] - 2016-04-23
 ### Added
 - classes
