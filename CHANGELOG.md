@@ -15,7 +15,7 @@
   - `Util\CallableSugar`
 
 ### Changed
-- [git diff](/../../compare/2.1.6...2.2.3)
+- [git diff](/../../compare/2.1.6...2.2.1)
 
 ## [2.1] - 2016-03-17
 ### Added
