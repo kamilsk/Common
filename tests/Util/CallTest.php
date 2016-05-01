@@ -14,6 +14,23 @@ class CallTest extends TestCase
     /**
      * @test
      */
+    public function go()
+    {
+        list($result, $err) = Call::go(function () {
+            throw new \Exception();
+        });
+        self::assertNull($result);
+        self::assertInstanceOf(\Exception::class, $err);
+        list($result, $err) = Call::go(function () {
+            return 1;
+        });
+        self::assertEquals(1, $result);
+        self::assertNull($err);
+    }
+
+    /**
+     * @test
+     */
     public function rescue()
     {
         $sugar = Call::begin(function (string $message, int $code = 0) {

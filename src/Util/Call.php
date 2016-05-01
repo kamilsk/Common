@@ -19,6 +19,20 @@ class Call
         return new static($callable);
     }
 
+    /**
+     * @param callable $callable
+     *
+     * @return array
+     */
+    public static function go(callable $callable): array
+    {
+        try {
+            return [$callable(), null];
+        } catch (\Throwable $e) {
+            return [null, $e];
+        }
+    }
+
     /** @var array<string,callable[]> */
     private $catchers = [];
     /** @var string */
