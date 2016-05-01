@@ -54,8 +54,11 @@ class FileLoader extends AbstractFileLoader
         }
         $content[] = $fileContent;
         if (isset($fileContent['imports'])) {
-            $this->setCurrentDir(dirname($path));
+            $currentDir = dirname($path);
             foreach ($fileContent['imports'] as $import) {
+                // [issue #47](https://github.com/kamilsk/Common/issues/47)
+                // restore current directory if we go out from import
+                $this->setCurrentDir($currentDir);
                 if (is_string($import)) {
                     $resource = $import;
                     $ignoreErrors = false;
