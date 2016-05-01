@@ -26,7 +26,7 @@
   - `Util\ArrayHelper::findByPath(string $path, array $scope)` arguments were swapped
   - `Util\Call::end()` _throws_ part (`Throwable` support now)
   - `Util\Json::__construct()` all arguments are required now, use `Util\Json::new()` instead
-- [git diff](/../../compare/2.3.0...3.0.4)
+- [git diff](/../../compare/2.3.1...3.0.5)
 
 ### Removed
 - classes
@@ -34,10 +34,10 @@
 
 # Version 2
 
-## [2.3.0] - LTS - 2016-04-20
+## [2.3.x] - LTS - 2016-04-20
 ### Changed
 - PHP support is up to 5.6 version
-- [git diff](/../../compare/2.2.2...2.3.0)
+- [git diff](/../../compare/2.2.1...2.3.1)
 
 ## [2.2] - 2016-04-12
 ### Added
@@ -48,7 +48,7 @@
   - `Util\CallableSugar`
 
 ### Changed
-- [git diff](/../../compare/2.1.5...2.2.2)
+- [git diff](/../../compare/2.1.6...2.2.1)
 
 ## [2.1] - 2016-03-17
 ### Added
@@ -64,7 +64,7 @@
   - `Monolog\LoggerLocator` now implements `Countable` and `Iterator`
 - methods
   - `Monolog\LoggerLocator::keys()` now internal and will be isolated in future version
-- [git diff](/../../compare/2.0.2...2.1.5)
+- [git diff](/../../compare/2.0.2...2.1.6)
 
 ### Fixed
 - bug [#34](/../../issues/34)

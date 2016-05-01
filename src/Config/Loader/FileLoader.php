@@ -84,8 +84,11 @@ class FileLoader extends AbstractFileLoader
     private function loadImports(string $path, array $imports): array
     {
         $content = [];
-        $this->setCurrentDir(dirname($path));
+        $currentDir = dirname($path);
         foreach ($imports as $import) {
+            // [issue #47](https://github.com/kamilsk/Common/issues/47)
+            // restore current directory if we go out from import
+            $this->setCurrentDir($currentDir);
             if (is_string($import)) {
                 $resource = $import;
                 $ignoreErrors = false;
