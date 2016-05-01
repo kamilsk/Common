@@ -30,10 +30,10 @@
 
 # Version 2
 
-## [2.3.0] - LTS - 2016-04-20
+## [2.3.x] - LTS - 2016-04-20
 ### Changed
 - PHP support is up to 5.6 version
-- [git diff](/../../compare/2.2.3...2.3.0)
+- [git diff](/../../compare/2.2.1...2.3.1)
 
 ## [2.2] - 2016-04-12
 ### Added
@@ -44,7 +44,7 @@
   - `Util\CallableSugar`
 
 ### Changed
-- [git diff](/../../compare/2.1.6...2.2.3)
+- [git diff](/../../compare/2.1.6...2.2.1)
 
 ## [2.1] - 2016-03-17
 ### Added
