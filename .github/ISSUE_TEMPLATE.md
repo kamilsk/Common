@@ -5,7 +5,7 @@
 | Version?      | 2.2.x / 2.3.x / 3.x
 | What type?    | bug / docs / feature
 
-Output of `composer show | grep kamilsk/common` or `composer show kamilsk/common | egrep versions` is
+Output of `composer show | egrep kamilsk/common` or `composer show kamilsk/common | egrep versions` is
 
 ```
 # please provide output
