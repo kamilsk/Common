@@ -41,8 +41,8 @@ final class Ini
 
     /**
      * @param string $ini
-     * @param bool $processSections
-     * @param int $scannerMode
+     * @param bool|null $processSections
+     * @param int|null $scannerMode
      *
      * @return array
      *
@@ -52,14 +52,32 @@ final class Ini
      */
     public function parse(string $ini, bool $processSections = null, int $scannerMode = null): array
     {
+        list($content, $error) = $this->softParse($ini, $processSections, $scannerMode);
+        if ($error !== null) {
+            throw $error;
+        }
+        return $content;
+    }
+
+    /**
+     * @param string $ini
+     * @param bool|null $processSections
+     * @param int|null $scannerMode
+     *
+     * @return array where first element is a result of parse_ini_string, second - \InvalidArgumentException or null
+     *
+     * @api
+     */
+    public function softParse(string $ini, bool $processSections = null, int $scannerMode = null): array
+    {
         $content = @parse_ini_string(
             $ini,
             $processSections ?? $this->processSections,
             $scannerMode ?? $this->scannerMode
         );
         if (false === $content) {
-            throw new \InvalidArgumentException(sprintf("Invalid ini string \n\n%s\n", $ini));
+            return [null, new \InvalidArgumentException(sprintf("Invalid ini string \n\n%s\n", $ini))];
         }
-        return $content;
+        return [$content, null];
     }
 }
