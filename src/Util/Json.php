@@ -7,7 +7,7 @@ namespace OctoLab\Common\Util;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class Json
+final class Json
 {
     /**
      * @param bool $assoc
@@ -15,6 +15,8 @@ class Json
      * @param int $depth
      *
      * @return Json
+     *
+     * @api
      */
     public static function new(bool $assoc = false, int $options = 0, int $depth = 512): Json
     {

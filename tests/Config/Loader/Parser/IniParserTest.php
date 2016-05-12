@@ -4,18 +4,20 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common\Config\Loader\Parser;
 
+use OctoLab\Common\TestCase;
+
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class JsonParserTest extends \PHPUnit_Framework_TestCase
+class IniParserTest extends TestCase
 {
     /**
      * @test
      */
     public function construct()
     {
-        $json = '{"а":"б"}';
-        self::assertEquals(json_decode($json), (new JsonParser(false))->parse($json));
+        $ini = 'ini=valid';
+        self::assertEquals(parse_ini_string($ini), (new IniParser(false))->parse('ini=valid'));
     }
 
     /**
@@ -23,7 +25,7 @@ class JsonParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parseSuccess()
     {
-        self::assertArrayHasKey('json', $this->getParser()->parse('{"json": "valid"}'));
+        self::assertArrayHasKey('ini', $this->getParser()->parse('ini=valid'));
     }
 
     /**
@@ -32,7 +34,7 @@ class JsonParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parseFailure()
     {
-        $this->getParser()->parse('{"json": invalid}');
+        $this->getParser()->parse('{ini=invalid}');
     }
 
     /**
@@ -41,15 +43,15 @@ class JsonParserTest extends \PHPUnit_Framework_TestCase
     public function supports()
     {
         $parser = $this->getParser();
-        self::assertTrue($parser->supports('json'));
+        self::assertTrue($parser->supports('ini'));
         self::assertFalse($parser->supports('yml'));
     }
 
     /**
-     * @return JsonParser
+     * @return IniParser
      */
-    private function getParser(): JsonParser
+    private function getParser(): IniParser
     {
-        return new JsonParser();
+        return new IniParser();
     }
 }

@@ -4,26 +4,23 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common\Config\Loader\Parser;
 
-use OctoLab\Common\Util\Json;
+use OctoLab\Common\Util\Ini;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class JsonParser implements ParserInterface
+class IniParser implements ParserInterface
 {
-    /** @var Json */
+    /** @var Ini */
     private $decoder;
 
     /**
-     * @param bool $assoc
-     * @param int $options
-     * @param int $depth
-     *
-     * @api
+     * @param bool $processSections
+     * @param int $scannerMode
      */
-    public function __construct(bool $assoc = true, int $options = 0, int $depth = 8)
+    public function __construct(bool $processSections = true, int $scannerMode = INI_SCANNER_NORMAL)
     {
-        $this->decoder = new Json($assoc, $options, $depth);
+        $this->decoder = new Ini($processSections, $scannerMode);
     }
 
     /**
@@ -33,7 +30,7 @@ class JsonParser implements ParserInterface
      */
     public function parse(string $content)
     {
-        return $this->decoder->decode($content);
+        return $this->decoder->parse($content);
     }
 
     /**
@@ -41,6 +38,6 @@ class JsonParser implements ParserInterface
      */
     public function supports(string $extension): bool
     {
-        return 'json' === strtolower($extension);
+        return 'ini' === strtolower($extension);
     }
 }

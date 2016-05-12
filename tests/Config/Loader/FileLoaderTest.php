@@ -105,6 +105,7 @@ class FileLoaderTest extends TestCase
         return [
             [new FileLoader(new FileLocator(), new Parser\JsonParser()), 'json'],
             [new FileLoader(new FileLocator(), new Parser\YamlParser()), 'yml'],
+            [new FileLoader(new FileLocator(), new Parser\IniParser()), 'ini'],
         ];
     }
 }
