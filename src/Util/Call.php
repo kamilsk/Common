@@ -99,8 +99,7 @@ class Call
     public function end(...$args)
     {
         try {
-            $callback = $this->wrapped;
-            return $callback(...$args);
+            return ($this->wrapped)(...$args);
         } catch (\Throwable $e) {
             $class = get_class($e);
             if (array_key_exists($class, $this->catchers)) {
