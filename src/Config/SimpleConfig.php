@@ -29,6 +29,18 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
     }
 
     /**
+     * @param string $offset
+     *
+     * @return mixed
+     *
+     * @api
+     */
+    public function __invoke(string $offset)
+    {
+        return ArrayHelper::findByPath($offset, $this->config);
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @api
@@ -95,11 +107,13 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
     /**
      * {@inheritdoc}
      *
+     * @return array
+     *
      * @api
      */
-    public function next()
+    public function jsonSerialize(): array
     {
-        next($this->config);
+        return $this->config;
     }
 
     /**
@@ -117,9 +131,9 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
      *
      * @api
      */
-    public function valid(): bool
+    public function next()
     {
-        return key($this->config) !== null;
+        next($this->config);
     }
 
     /**
@@ -135,25 +149,11 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
     /**
      * {@inheritdoc}
      *
-     * @return array
-     *
      * @api
      */
-    public function jsonSerialize(): array
+    public function valid(): bool
     {
-        return $this->config;
-    }
-
-    /**
-     * @param string $offset
-     *
-     * @return mixed
-     *
-     * @api
-     */
-    public function __invoke(string $offset)
-    {
-        return ArrayHelper::findByPath($offset, $this->config);
+        return key($this->config) !== null;
     }
 
     /**

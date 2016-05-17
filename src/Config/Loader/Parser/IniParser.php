@@ -9,10 +9,10 @@ use OctoLab\Common\Util\Ini;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class IniParser implements ParserInterface
+final class IniParser implements ParserInterface
 {
     /** @var Ini */
-    private $decoder;
+    private $serializer;
 
     /**
      * @param bool $processSections
@@ -20,7 +20,7 @@ class IniParser implements ParserInterface
      */
     public function __construct(bool $processSections = true, int $scannerMode = INI_SCANNER_NORMAL)
     {
-        $this->decoder = new Ini($processSections, $scannerMode);
+        $this->serializer = new Ini($processSections, $scannerMode);
     }
 
     /**
@@ -30,7 +30,7 @@ class IniParser implements ParserInterface
      */
     public function parse(string $content)
     {
-        return $this->decoder->parse($content);
+        return $this->serializer->parse($content);
     }
 
     /**

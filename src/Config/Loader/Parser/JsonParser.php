@@ -9,10 +9,10 @@ use OctoLab\Common\Util\Json;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class JsonParser implements ParserInterface
+final class JsonParser implements ParserInterface
 {
     /** @var Json */
-    private $decoder;
+    private $serializer;
 
     /**
      * @param bool $assoc
@@ -23,7 +23,7 @@ class JsonParser implements ParserInterface
      */
     public function __construct(bool $assoc = true, int $options = 0, int $depth = 8)
     {
-        $this->decoder = new Json($assoc, $options, $depth);
+        $this->serializer = new Json($assoc, $options, $depth);
     }
 
     /**
@@ -33,7 +33,7 @@ class JsonParser implements ParserInterface
      */
     public function parse(string $content)
     {
-        return $this->decoder->decode($content);
+        return $this->serializer->decode($content);
     }
 
     /**

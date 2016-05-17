@@ -11,7 +11,7 @@ use Symfony\Component\Config\Loader\FileLoader as AbstractFileLoader;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class FileLoader extends AbstractFileLoader
+final class FileLoader extends AbstractFileLoader
 {
     /** @var Parser\ParserInterface */
     private $parser;

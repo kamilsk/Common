@@ -9,23 +9,21 @@ use Symfony\Component\Yaml\Parser;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class YamlParser implements ParserInterface
+final class YamlParser implements ParserInterface
 {
-    /** @var Parser */
-    private $decoder;
     /** @var bool */
     private $exceptionOnInvalidType;
     /** @var bool */
     private $objectForMap;
     /** @var bool */
     private $objectSupport;
+    /** @var Parser */
+    private $serializer;
 
     /**
      * @param bool $exceptionOnInvalidType
      * @param bool $objectSupport
      * @param bool $objectForMap
-     *
-     * @see \Symfony\Component\Yaml\Parser::parse
      *
      * @api
      */
@@ -34,7 +32,7 @@ class YamlParser implements ParserInterface
         bool $objectSupport = false,
         bool $objectForMap = false
     ) {
-        $this->decoder = new Parser();
+        $this->serializer = new Parser();
         $this->exceptionOnInvalidType = $exceptionOnInvalidType;
         $this->objectForMap = $objectForMap;
         $this->objectSupport = $objectSupport;
@@ -47,7 +45,7 @@ class YamlParser implements ParserInterface
      */
     public function parse(string $content)
     {
-        return $this->decoder->parse(
+        return $this->serializer->parse(
             $content,
             $this->exceptionOnInvalidType,
             $this->objectSupport,

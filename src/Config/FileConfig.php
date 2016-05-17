@@ -7,7 +7,7 @@ namespace OctoLab\Common\Config;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class FileConfig extends SimpleConfig
+final class FileConfig extends SimpleConfig
 {
     /** @var Loader\FileLoader */
     private $fileLoader;
