@@ -77,7 +77,7 @@ class ArrayHelper
                 return;
             } elseif (preg_match('/^const\((.*)\)$/', $param, $matches)) {
                 $param = constant($matches[1]);
-            } elseif (preg_match_all('/%([^%]+)%/', $param, $matches)) {
+            } elseif (preg_match_all('/%(.+?)%/', $param, $matches)) {
                 array_walk($matches[0], $wrap);
                 $pattern = $matches[0];
                 $replacement = array_intersect_key($placeholders, array_flip($matches[1]));
