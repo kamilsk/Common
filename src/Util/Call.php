@@ -7,8 +7,23 @@ namespace OctoLab\Common\Util;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class Call
+final class Call
 {
+    /** @var array<string,callable[]> */
+    private $catchers = [];
+    /** @var string */
+    private $current;
+    /** @var callable */
+    private $wrapped;
+
+    /**
+     * @param callable $callable
+     */
+    private function __construct(callable $callable)
+    {
+        $this->wrapped = $callable;
+    }
+
     /**
      * @param callable $callable
      *
@@ -16,7 +31,7 @@ class Call
      */
     public static function begin(callable $callable): Call
     {
-        return new static($callable);
+        return new self($callable);
     }
 
     /**
@@ -32,13 +47,6 @@ class Call
             return [null, $e];
         }
     }
-
-    /** @var array<string,callable[]> */
-    private $catchers = [];
-    /** @var string */
-    private $current;
-    /** @var callable */
-    private $wrapped;
 
     /**
      * @param string $exceptionClass
@@ -112,13 +120,5 @@ class Call
                 throw $e;
             }
         }
-    }
-
-    /**
-     * @param callable $callable
-     */
-    protected function __construct(callable $callable)
-    {
-        $this->wrapped = $callable;
     }
 }

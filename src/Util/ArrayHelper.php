@@ -7,7 +7,7 @@ namespace OctoLab\Common\Util;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class ArrayHelper
+final class ArrayHelper
 {
     /**
      * @param string $path

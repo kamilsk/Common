@@ -7,7 +7,7 @@ namespace OctoLab\Common\Util;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class System
+final class System
 {
     /**
      * @return bool

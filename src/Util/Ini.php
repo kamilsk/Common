@@ -9,19 +9,6 @@ namespace OctoLab\Common\Util;
  */
 final class Ini
 {
-    /**
-     * @param bool $processSections
-     * @param int $scannerMode
-     *
-     * @return Ini
-     *
-     * @api
-     */
-    public static function new(bool $processSections = false, int $scannerMode = INI_SCANNER_NORMAL): Ini
-    {
-        return new self($processSections, $scannerMode);
-    }
-
     /** @var bool */
     private $processSections;
     /** @var int */
@@ -37,6 +24,19 @@ final class Ini
     {
         $this->processSections = $processSection;
         $this->scannerMode = $scannerMode;
+    }
+
+    /**
+     * @param bool $processSections
+     * @param int $scannerMode
+     *
+     * @return Ini
+     *
+     * @api
+     */
+    public static function new(bool $processSections = false, int $scannerMode = INI_SCANNER_NORMAL): Ini
+    {
+        return new self($processSections, $scannerMode);
     }
 
     /**

@@ -9,20 +9,6 @@ namespace OctoLab\Common\Util;
  */
 final class Json
 {
-    /**
-     * @param bool $assoc
-     * @param int $options
-     * @param int $depth
-     *
-     * @return Json
-     *
-     * @api
-     */
-    public static function new(bool $assoc = false, int $options = 0, int $depth = 512): Json
-    {
-        return new self($assoc, $options, $depth);
-    }
-
     /** @var bool */
     private $assoc;
     /** @var int */
@@ -42,6 +28,20 @@ final class Json
         $this->assoc = $assoc;
         $this->options = $options;
         $this->depth = $depth;
+    }
+
+    /**
+     * @param bool $assoc
+     * @param int $options
+     * @param int $depth
+     *
+     * @return Json
+     *
+     * @api
+     */
+    public static function new(bool $assoc = false, int $options = 0, int $depth = 512): Json
+    {
+        return new self($assoc, $options, $depth);
     }
 
     /**
