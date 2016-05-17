@@ -13,7 +13,7 @@
   "require-dev": {
     "composer/composer": "~1.0",
     "doctrine/migrations": "~1.0",
-    "jolicode/jolinotif": "~1.0",
+    "jolicode/jolinotif": "^1.0.5",
     "monolog/monolog": "~1.0",
     "symfony/config": "~3.0",
     "symfony/yaml": "~3.0"

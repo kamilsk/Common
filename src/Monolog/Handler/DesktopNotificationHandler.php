@@ -42,7 +42,7 @@ class DesktopNotificationHandler extends AbstractProcessingHandler
     {
         $this->notification
             ->setTitle(sprintf('[%s] %s', Logger::getLevelName($this->level), $this->name))
-            ->setBody(addslashes($record['formatted']))
+            ->setBody($record['formatted'])
         ;
         $this->notifier && $this->notifier->send($this->notification);
     }
