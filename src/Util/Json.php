@@ -117,7 +117,7 @@ final class Json
     }
 
     /**
-     * @return \InvalidArgumentException
+     * @return \InvalidArgumentException|null
      */
     private function getError()
     {

@@ -11,6 +11,23 @@ use OctoLab\Common\Test\ClassAvailability;
  */
 class ClassAvailabilityTest extends ClassAvailability
 {
+    const EXCLUDED = [
+        // deprecated
+        'Composer\\Package\\LinkConstraint\\EmptyConstraint' => true,
+        'Composer\\Package\\LinkConstraint\\LinkConstraintInterface' => true,
+        'Composer\\Package\\LinkConstraint\\MultiConstraint' => true,
+        'Composer\\Package\\LinkConstraint\\SpecificConstraint' => true,
+        'Composer\\Package\\LinkConstraint\\VersionConstraint' => true,
+        'Composer\\Semver\\Constraint\\AbstractConstraint' => true,
+        'Composer\\Util\\SpdxLicense' => true,
+        // no dependencies
+        'Symfony\\Component\\Console\\Event\\ConsoleCommandEvent' => true,
+        'Symfony\\Component\\Console\\Event\\ConsoleEvent' => true,
+        'Symfony\\Component\\Console\\Event\\ConsoleExceptionEvent' => true,
+        'Symfony\\Component\\Console\\Event\\ConsoleTerminateEvent' => true,
+        'Zend\\EventManager\\Filter\\FilterIterator' => true,
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -29,21 +46,6 @@ class ClassAvailabilityTest extends ClassAvailability
      */
     protected function isFiltered(string $class): bool
     {
-        static $excluded = [
-            // deprecated
-            'Composer\\Package\\LinkConstraint\\EmptyConstraint' => true,
-            'Composer\\Package\\LinkConstraint\\LinkConstraintInterface' => true,
-            'Composer\\Package\\LinkConstraint\\MultiConstraint' => true,
-            'Composer\\Package\\LinkConstraint\\SpecificConstraint' => true,
-            'Composer\\Package\\LinkConstraint\\VersionConstraint' => true,
-            'Composer\\Semver\\Constraint\\AbstractConstraint' => true,
-            'Composer\\Util\\SpdxLicense' => true,
-            // no dependencies
-            'Zend\\EventManager\\Filter\\FilterIterator' => true,
-            // https://github.com/composer/composer/issues/5239
-            'OctoLab\\Common\\Test\\extends' => true,
-        ];
-        return strpos($class, 'Symfony\\Component\\Console\\Event') === 0
-            || !empty($excluded[$class]);
+        return array_key_exists($class, self::EXCLUDED);
     }
 }
