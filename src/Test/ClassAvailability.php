@@ -25,6 +25,13 @@ abstract class ClassAvailability extends \PHPUnit_Framework_TestCase
     abstract protected function getClasses(): \Generator;
 
     /**
+     * @param string $class
+     *
+     * @return bool
+     */
+    abstract protected function isFiltered(string $class): bool;
+
+    /**
      * @return \Generator
      */
     final protected function getFilteredClasses(): \Generator
@@ -38,11 +45,4 @@ abstract class ClassAvailability extends \PHPUnit_Framework_TestCase
             }
         }
     }
-
-    /**
-     * @param string $class
-     *
-     * @return bool
-     */
-    abstract protected function isFiltered(string $class): bool;
 }
