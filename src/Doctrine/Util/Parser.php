@@ -25,9 +25,7 @@ class Parser
         $text = preg_replace('/\/\*[^*]*(\*)?[^*]*\*\//um', '', $text);
         // flatten and filter
         $text = preg_replace('/\n/', ' ', $text);
-        while (preg_match('/\s{2,}/', $text)) {
-            $text = preg_replace('/\s{2,}/', ' ', $text);
-        }
+        $text = preg_replace('/\s{2,}/', ' ', $text);
         $text = trim($text, '; ');
         return $text === '' ? [] : preg_split('/\s*;\s*/', $text);
     }
