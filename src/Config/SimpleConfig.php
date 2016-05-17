@@ -145,6 +145,18 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
     }
 
     /**
+     * @param string $offset
+     *
+     * @return mixed
+     *
+     * @api
+     */
+    public function __invoke(string $offset)
+    {
+        return ArrayHelper::findByPath($offset, $this->config);
+    }
+
+    /**
      * @param array $placeholders
      *
      * @return SimpleConfig

@@ -190,6 +190,21 @@ class SimpleConfigTest extends TestCase
     }
 
     /**
+     * @test
+     * @dataProvider simpleConfigProvider
+     *
+     * @param SimpleConfig $config
+     * @param array $expected
+     * @param string[] $paths
+     */
+    public function invoke(SimpleConfig $config, array $expected, array $paths)
+    {
+        foreach ($paths as $path) {
+            self::assertEquals(ArrayHelper::findByPath($path, $expected), $config($path));
+        }
+    }
+
+    /**
      * @return array
      */
     public function simpleConfigProvider(): array

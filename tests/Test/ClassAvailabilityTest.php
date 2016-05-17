@@ -45,7 +45,7 @@ class ClassAvailabilityTest extends TestCase
         return new class extends ClassAvailability
         {
             /**
-             * @inheritDoc
+             * {@inheritdoc}
              */
             protected function getClasses(): \Generator
             {
@@ -59,7 +59,7 @@ class ClassAvailabilityTest extends TestCase
             }
 
             /**
-             * @inheritDoc
+             * {@inheritdoc}
              */
             protected function isFiltered(string $class): bool
             {
