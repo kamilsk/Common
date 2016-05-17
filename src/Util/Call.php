@@ -49,6 +49,33 @@ final class Call
     }
 
     /**
+     * @param mixed[] ...$args
+     *
+     * @return mixed
+     *
+     * @throws \Throwable
+     *
+     * @api
+     */
+    public function end(...$args)
+    {
+        try {
+            return ($this->wrapped)(...$args);
+        } catch (\Throwable $e) {
+            $class = get_class($e);
+            if (array_key_exists($class, $this->catchers)) {
+                $latest = null;
+                foreach ($this->catchers[$class] as $catcher) {
+                    $latest = $catcher(...$args);
+                }
+                return $latest;
+            } else {
+                throw $e;
+            }
+        }
+    }
+
+    /**
      * @param string $exceptionClass
      * @param callable|null $catcher
      *
@@ -93,32 +120,5 @@ final class Call
             };
         }
         return $this;
-    }
-
-    /**
-     * @param mixed[] ...$args
-     *
-     * @return mixed
-     *
-     * @throws \Throwable
-     *
-     * @api
-     */
-    public function end(...$args)
-    {
-        try {
-            return ($this->wrapped)(...$args);
-        } catch (\Throwable $e) {
-            $class = get_class($e);
-            if (array_key_exists($class, $this->catchers)) {
-                $latest = null;
-                foreach ($this->catchers[$class] as $catcher) {
-                    $latest = $catcher(...$args);
-                }
-                return $latest;
-            } else {
-                throw $e;
-            }
-        }
     }
 }

@@ -45,50 +45,6 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
      *
      * @api
      */
-    public function offsetExists($offset): bool
-    {
-        return ArrayHelper::findByPath($offset, $this->config) !== null;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @api
-     */
-    public function offsetGet($offset)
-    {
-        return ArrayHelper::findByPath($offset, $this->config);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \BadMethodCallException
-     *
-     * @api
-     */
-    public function offsetSet($offset, $value)
-    {
-        throw new \BadMethodCallException('Configuration is read-only.');
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \BadMethodCallException
-     *
-     * @api
-     */
-    public function offsetUnset($offset)
-    {
-        throw new \BadMethodCallException('Configuration is read-only.');
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @api
-     */
     public function count(): int
     {
         return count($this->config);
@@ -134,6 +90,50 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
     public function next()
     {
         next($this->config);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     */
+    public function offsetExists($offset): bool
+    {
+        return ArrayHelper::findByPath($offset, $this->config) !== null;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     */
+    public function offsetGet($offset)
+    {
+        return ArrayHelper::findByPath($offset, $this->config);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \BadMethodCallException
+     *
+     * @api
+     */
+    public function offsetSet($offset, $value)
+    {
+        throw new \BadMethodCallException('Configuration is read-only.');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \BadMethodCallException
+     *
+     * @api
+     */
+    public function offsetUnset($offset)
+    {
+        throw new \BadMethodCallException('Configuration is read-only.');
     }
 
     /**

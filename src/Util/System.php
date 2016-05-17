@@ -18,7 +18,7 @@ final class System
     {
         return stripos(PHP_OS, 'LIN') === 0;
     }
-    
+
     /**
      * @return bool
      *

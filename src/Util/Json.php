@@ -12,9 +12,9 @@ final class Json
     /** @var bool */
     private $assoc;
     /** @var int */
-    private $options;
-    /** @var int */
     private $depth;
+    /** @var int */
+    private $options;
 
     /**
      * @param bool $assoc
