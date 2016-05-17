@@ -22,11 +22,12 @@ class DesktopNotificationHandler extends AbstractProcessingHandler
 
     /**
      * @param string $name
-     * @param int $level
+     * @param int|string $level
      * @param bool $bubble
      */
-    public function __construct(string $name, int $level = Logger::DEBUG, bool $bubble = true)
+    public function __construct(string $name, $level = Logger::DEBUG, bool $bubble = true)
     {
+        assert('is_int($level) || is_string($level)');
         parent::__construct($level, $bubble);
         $this->name = $name;
         $this->notifier = JoliNotif\NotifierFactory::create();

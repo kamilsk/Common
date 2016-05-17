@@ -17,9 +17,20 @@ class DesktopNotificationHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function write()
     {
-        $logger = new Logger('test');
-        $logger->pushHandler(new DesktopNotificationHandler($logger->getName()));
-        $logger->pushProcessor(new TimeExecutionProcessor());
+        $logger = new Logger('test', [new DesktopNotificationHandler('test')], [new TimeExecutionProcessor()]);
         self::assertTrue($logger->info('Test message'));
+    }
+
+    /**
+     * @test
+     */
+    public function issue49()
+    {
+        $logger = new Logger('test', [new DesktopNotificationHandler('test', 'error')]);
+        self::assertFalse($logger->info('Test message'));
+        self::assertTrue($logger->error('Test message'));
+        $logger = new Logger('test', [new DesktopNotificationHandler('test', Logger::ERROR)]);
+        self::assertFalse($logger->info('Test message'));
+        self::assertTrue($logger->error('Test message'));
     }
 }
