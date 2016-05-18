@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Type;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class ConfigResolver
+final class ConfigResolver
 {
     /**
      * @param array $config

@@ -24,33 +24,23 @@ abstract class DriverBasedMigration extends AbstractMigration
     protected $queries = [];
 
     /**
-     * @return string[]
-     *
-     * @api
-     */
-    public function getQueries(): array
-    {
-        return $this->queries;
-    }
-
-    /**
      * @param Schema $schema
      *
      * @api
      */
-    final public function preUp(Schema $schema)
-    {
-        $this->prepare('pre', 'Up', $schema);
-    }
-
-    /**
-     * @param Schema $schema
-     *
-     * @api
-     */
-    final public function up(Schema $schema)
+    final public function down(Schema $schema)
     {
         $this->routine();
+    }
+
+    /**
+     * @param Schema $schema
+     *
+     * @api
+     */
+    final public function postDown(Schema $schema)
+    {
+        $this->prepare('post', 'Down', $schema);
     }
 
     /**
@@ -78,9 +68,9 @@ abstract class DriverBasedMigration extends AbstractMigration
      *
      * @api
      */
-    final public function down(Schema $schema)
+    final public function preUp(Schema $schema)
     {
-        $this->routine();
+        $this->prepare('pre', 'Up', $schema);
     }
 
     /**
@@ -88,9 +78,19 @@ abstract class DriverBasedMigration extends AbstractMigration
      *
      * @api
      */
-    final public function postDown(Schema $schema)
+    final public function up(Schema $schema)
     {
-        $this->prepare('post', 'Down', $schema);
+        $this->routine();
+    }
+
+    /**
+     * @return string[]
+     *
+     * @api
+     */
+    public function getQueries(): array
+    {
+        return $this->queries;
     }
 
     protected function routine()

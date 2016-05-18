@@ -40,6 +40,13 @@ abstract class FileBasedMigration extends AbstractMigration
     abstract public function getBasePath(): string;
 
     /**
+     * @return string[]
+     *
+     * @api
+     */
+    abstract public function getDowngradeMigrations(): array;
+
+    /**
      * @return string
      *
      * @api
@@ -54,36 +61,25 @@ abstract class FileBasedMigration extends AbstractMigration
     abstract public function getUpgradeMigrations(): array;
 
     /**
-     * @return string[]
+     * @param Schema $schema
      *
      * @api
      */
-    abstract public function getDowngradeMigrations(): array;
-
-    /**
-     * @return null|string
-     */
-    public function getMinorVersion()
+    final public function down(Schema $schema)
     {
-        return null;
+        $this->routine();
     }
 
     /**
-     * @return null|string
-     */
-    public function getPatch()
-    {
-        return null;
-    }
-
-    /**
-     * @return string[]
+     * @param Schema $schema
      *
      * @api
      */
-    public function getQueries(): array
+    final public function preDown(Schema $schema)
     {
-        return $this->queries;
+        $this->prepare(array_map(function (string $migration) : string {
+            return $this->getFullPath($migration);
+        }, $this->getDowngradeMigrations()));
     }
 
     /**
@@ -109,28 +105,6 @@ abstract class FileBasedMigration extends AbstractMigration
     }
 
     /**
-     * @param Schema $schema
-     *
-     * @api
-     */
-    final public function preDown(Schema $schema)
-    {
-        $this->prepare(array_map(function (string $migration) : string {
-            return $this->getFullPath($migration);
-        }, $this->getDowngradeMigrations()));
-    }
-
-    /**
-     * @param Schema $schema
-     *
-     * @api
-     */
-    final public function down(Schema $schema)
-    {
-        $this->routine();
-    }
-
-    /**
      * @param string $migration
      *
      * @return string
@@ -143,12 +117,42 @@ abstract class FileBasedMigration extends AbstractMigration
             [$this->getBasePath()],
             array_filter(
                 [$this->getMajorVersion(), $this->getMinorVersion(), $this->getPatch()],
-                function (string $value = null) : bool {
+                function (string $value) : bool {
                     return $value === '0' || (bool)$value;
                 }
             ),
             [$migration]
         ));
+    }
+
+    /**
+     * @return string
+     *
+     * @api
+     */
+    public function getMinorVersion(): string
+    {
+        return '';
+    }
+
+    /**
+     * @return string
+     *
+     * @api
+     */
+    public function getPatch(): string
+    {
+        return '';
+    }
+
+    /**
+     * @return string[]
+     *
+     * @api
+     */
+    public function getQueries(): array
+    {
+        return $this->queries;
     }
 
     protected function routine()
