@@ -15,17 +15,22 @@
     "doctrine/migrations": "~1.0",
     "jolicode/jolinotif": "^1.0.5",
     "monolog/monolog": "~1.0",
+    "symfony/asset": "~3.0",
     "symfony/config": "~3.0",
+    "symfony/twig-bridge": "~3.0",
     "symfony/yaml": "~3.0"
   },
   "suggest": {
-    "doctrine/migrations": "To use the OctoLab\\Common\\Doctrine\\Migration (~1.0 is recommended)",
-    "jolicode/jolinotif": "Optional to use with Monolog for showing desktop notification (^1.0.5 is recommended)",
-    "monolog/monolog": "To use the OctoLab\\Common\\Monolog (~1.0 is recommended)",
-    "phpunit/phpunit": "Optional to use the OctoLab\\Common\\Test (~4.8 is recommended)",
-    "symfony/config": "To use the OctoLab\\Common\\Config (~3.0 is recommended)",
-    "symfony/filesystem": "To use the OctoLab\\Common\\Composer\\Script (~3.0 is recommended)",
-    "symfony/yaml": "Optional to use the OctoLab\\Common\\Config (~3.0 is recommended)"
+    "doctrine/dbal": "For using the Doctrine family classes (~2.2 is recommended)",
+    "doctrine/migrations": "For using the Doctrine migration classes (~1.0 is recommended)",
+    "jolicode/jolinotif": "For using the Monolog desktop notification handler (^1.0.5 is recommended)",
+    "monolog/monolog": "For using the Monolog family classes (~1.0 is recommended)",
+    "phpunit/phpunit": "For using the Test family classes (~4.8 is recommended)",
+    "symfony/asset": "For using the PublisherConfig to register asset function in Twig (~3.0 is recommended)",
+    "symfony/config": "For using the FileConfig (~3.0 is recommended)",
+    "symfony/filesystem": "For using the Composer scripts (~3.0 is recommended)",
+    "symfony/twig-bridge": "For using the PublisherConfig to register asset function in Twig (~3.0 is recommended)",
+    "symfony/yaml": "For using the FileConfig with YAML files (~3.0 is recommended)"
   },
   "autoload": {
     "files": ["src/functions.php"],

@@ -13,19 +13,20 @@ class ClassAvailabilityTest extends ClassAvailability
 {
     const EXCLUDED = [
         // deprecated
-        'Composer\\Package\\LinkConstraint\\EmptyConstraint' => true,
-        'Composer\\Package\\LinkConstraint\\LinkConstraintInterface' => true,
-        'Composer\\Package\\LinkConstraint\\MultiConstraint' => true,
-        'Composer\\Package\\LinkConstraint\\SpecificConstraint' => true,
-        'Composer\\Package\\LinkConstraint\\VersionConstraint' => true,
         'Composer\\Semver\\Constraint\\AbstractConstraint' => true,
         'Composer\\Util\\SpdxLicense' => true,
         // no dependencies
-        'Symfony\\Component\\Console\\Event\\ConsoleCommandEvent' => true,
-        'Symfony\\Component\\Console\\Event\\ConsoleEvent' => true,
-        'Symfony\\Component\\Console\\Event\\ConsoleExceptionEvent' => true,
-        'Symfony\\Component\\Console\\Event\\ConsoleTerminateEvent' => true,
+        'Symfony\\Bridge\\Twig\\DataCollector\\TwigDataCollector' => true,
+        'Symfony\\Bridge\\Twig\\TwigEngine' => true,
         'Zend\\EventManager\\Filter\\FilterIterator' => true,
+    ];
+    const GROUP_EXCLUDED = [
+        // deprecated
+        'Composer\\Package\\LinkConstraint' => true,
+        // no dependencies
+        'Symfony\\Bridge\\Twig\\Form' => true,
+        'Symfony\\Bridge\\Twig\\Translation' => true,
+        'Symfony\\Component\\Console\\Event' => true,
     ];
 
     /**
@@ -46,6 +47,11 @@ class ClassAvailabilityTest extends ClassAvailability
      */
     protected function isFiltered(string $class): bool
     {
-        return array_key_exists($class, self::EXCLUDED);
+        foreach (self::GROUP_EXCLUDED as $group => $isOn) {
+            if ($isOn && strpos($class, $group) === 0) {
+                return true;
+            }
+        }
+        return array_key_exists($class, self::EXCLUDED) && self::EXCLUDED[$class];
     }
 }

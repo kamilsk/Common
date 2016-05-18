@@ -48,6 +48,7 @@ final class ArrayHelper
      */
     public static function merge(array ...$args): array
     {
+        assert('count($args) > 0');
         $res = array_shift($args);
         foreach ($args as $next) {
             foreach ($next as $k => $v) {
