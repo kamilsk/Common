@@ -222,9 +222,28 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
             throw new \OutOfRangeException(sprintf('Component with ID "%s" not found.', $id));
         }
         if (is_array($this->storage[$id])) {
-            $component = $this->factory->build($this->storage[$id]);
+            $component = $this->factory->build($this->getComponentConfig($id));
             $this->resolveComponentDependencies($id, $component);
             $this->storage[$id] = $component;
+        }
+        return $this->storage[$id];
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return array
+     *
+     * @throws \OutOfRangeException
+     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
+     */
+    private function getComponentConfig(string $id): array
+    {
+        foreach ($this->storage[$id]['arguments'] as &$value) {
+            if (is_string($value) && strpos($value, '@') === 0) {
+                $value = $this->getComponent(substr($value, 1));
+            }
         }
         return $this->storage[$id];
     }

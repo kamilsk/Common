@@ -240,6 +240,31 @@ class LocatorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function issue51()
+    {
+        $locator = new Locator(
+            [
+                'channels' => [
+                    'db' => ['handlers' => ['queries']],
+                ],
+                'handlers' => [
+                    'queries' => [
+                        'type' => 'buffer',
+                        'arguments' => ['@handler.chrome', 10, 'info'],
+                    ],
+                    'chrome' => ['type' => 'chrome_php'],
+                ],
+            ],
+            ComponentFactory::withDefaults()
+        );
+        $channel = $locator->getDefaultChannel();
+        self::assertCount(1, $channel->getHandlers());
+        self::assertInstanceOf('Monolog\Handler\BufferHandler', $channel->getHandlers()[0]);
+    }
+
+    /**
      * @return Locator
      */
     private function getLocator(): Locator
