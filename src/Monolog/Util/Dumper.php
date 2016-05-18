@@ -7,7 +7,7 @@ namespace OctoLab\Common\Monolog\Util;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class Dumper
+final class Dumper
 {
     /**
      * @param mixed $value

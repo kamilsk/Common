@@ -7,7 +7,7 @@ namespace OctoLab\Common\Monolog\Processor;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class TimeExecutionProcessor
+final class TimeExecutionProcessor
 {
     /** @var float */
     private $started;

@@ -11,7 +11,7 @@ use Monolog\Logger;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class DesktopNotificationHandler extends AbstractProcessingHandler
+final class DesktopNotificationHandler extends AbstractProcessingHandler
 {
     /** @var string */
     private $name;
@@ -24,6 +24,8 @@ class DesktopNotificationHandler extends AbstractProcessingHandler
      * @param string $name
      * @param int|string $level
      * @param bool $bubble
+     *
+     * @api
      */
     public function __construct(string $name, $level = Logger::DEBUG, bool $bubble = true)
     {
@@ -38,13 +40,14 @@ class DesktopNotificationHandler extends AbstractProcessingHandler
      * @param array $record
      *
      * @throws \Joli\JoliNotif\Exception\InvalidNotificationException
+     *
+     * @api
      */
     protected function write(array $record)
     {
         $this->notification
             ->setTitle(sprintf('[%s] %s', Logger::getLevelName($this->level), $this->name))
-            ->setBody($record['formatted'])
-        ;
+            ->setBody($record['formatted']);
         $this->notifier && $this->notifier->send($this->notification);
     }
 }

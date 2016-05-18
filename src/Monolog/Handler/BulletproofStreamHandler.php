@@ -11,10 +11,12 @@ use Monolog\Handler\StreamHandler;
  *
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class BulletproofStreamHandler extends StreamHandler
+final class BulletproofStreamHandler extends StreamHandler
 {
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     protected function write(array $record)
     {

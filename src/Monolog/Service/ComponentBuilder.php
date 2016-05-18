@@ -7,7 +7,7 @@ namespace OctoLab\Common\Monolog\Service;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class ComponentBuilder
+final class ComponentBuilder
 {
     /** @var string[] */
     private static $dict = [
@@ -25,18 +25,20 @@ class ComponentBuilder
 
     /** @var null|string */
     private $class;
+    /** @var string[] */
+    private $dependencies = [];
     /** @var null|string */
     private $namespace;
     /** @var null|string */
     private $suffix;
-    /** @var string[] */
-    private $dependencies = [];
 
     /**
      * @param string $key
      * @param string $method
      *
      * @return ComponentBuilder
+     *
+     * @api
      */
     public function addDependency(string $key, string $method): ComponentBuilder
     {
@@ -46,43 +48,12 @@ class ComponentBuilder
 
     /**
      * @return string[]
+     *
+     * @api
      */
     public function getDependencies(): array
     {
         return $this->dependencies;
-    }
-
-    /**
-     * @param string $class
-     *
-     * @return ComponentBuilder
-     */
-    public function setClass(string $class): ComponentBuilder
-    {
-        $this->class = $class;
-        return $this;
-    }
-
-    /**
-     * @param string $namespace
-     *
-     * @return ComponentBuilder
-     */
-    public function setNamespace(string $namespace): ComponentBuilder
-    {
-        $this->namespace = $namespace;
-        return $this;
-    }
-
-    /**
-     * @param string $suffix
-     *
-     * @return ComponentBuilder
-     */
-    public function setSuffix(string $suffix): ComponentBuilder
-    {
-        $this->suffix = $suffix;
-        return $this;
     }
 
     /**
@@ -94,6 +65,8 @@ class ComponentBuilder
      *
      * @throws \InvalidArgumentException
      * @throws \ReflectionException
+     *
+     * @api
      */
     public function make(string $class = null, string $type = null, array $args = [])
     {
@@ -103,6 +76,45 @@ class ComponentBuilder
             $args = $this->resolveConstructorArguments($args, $reflection);
         }
         return $reflection->newInstanceArgs($args);
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return ComponentBuilder
+     *
+     * @api
+     */
+    public function setClass(string $class): ComponentBuilder
+    {
+        $this->class = $class;
+        return $this;
+    }
+
+    /**
+     * @param string $namespace
+     *
+     * @return ComponentBuilder
+     *
+     * @api
+     */
+    public function setNamespace(string $namespace): ComponentBuilder
+    {
+        $this->namespace = $namespace;
+        return $this;
+    }
+
+    /**
+     * @param string $suffix
+     *
+     * @return ComponentBuilder
+     *
+     * @api
+     */
+    public function setSuffix(string $suffix): ComponentBuilder
+    {
+        $this->suffix = $suffix;
+        return $this;
     }
 
     /**

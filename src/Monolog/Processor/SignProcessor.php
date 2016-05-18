@@ -7,7 +7,7 @@ namespace OctoLab\Common\Monolog\Processor;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class SignProcessor
+final class SignProcessor
 {
     /** @var string */
     private $sign;

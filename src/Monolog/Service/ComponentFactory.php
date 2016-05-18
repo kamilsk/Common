@@ -9,10 +9,37 @@ use OctoLab\Common\Util\ArrayHelper;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class ComponentFactory
+final class ComponentFactory
 {
+    /** @var ComponentBuilder[]|array<string,ComponentBuilder> */
+    private $components;
+
+    /**
+     * @param ComponentBuilder $channelBuilder
+     * @param ComponentBuilder $handlerBuilder
+     * @param ComponentBuilder $formatterBuilder
+     * @param ComponentBuilder $processorBuilder
+     *
+     * @api
+     */
+    public function __construct(
+        ComponentBuilder $channelBuilder,
+        ComponentBuilder $handlerBuilder,
+        ComponentBuilder $formatterBuilder,
+        ComponentBuilder $processorBuilder
+    ) {
+        $this->components = [
+            'channels' => $channelBuilder,
+            'handlers' => $handlerBuilder,
+            'formatters' => $formatterBuilder,
+            'processors' => $processorBuilder,
+        ];
+    }
+
     /**
      * @return ComponentFactory
+     *
+     * @api
      */
     public static function withDefaults(): ComponentFactory
     {
@@ -35,29 +62,6 @@ class ComponentFactory
         );
     }
 
-    /** @var ComponentBuilder[]|array<string,ComponentBuilder> */
-    private $components;
-
-    /**
-     * @param ComponentBuilder $channel
-     * @param ComponentBuilder $handler
-     * @param ComponentBuilder $formatter
-     * @param ComponentBuilder $processor
-     */
-    public function __construct(
-        ComponentBuilder $channel,
-        ComponentBuilder $handler,
-        ComponentBuilder $formatter,
-        ComponentBuilder $processor
-    ) {
-        $this->components = [
-            'channels' => $channel,
-            'handlers' => $handler,
-            'formatters' => $formatter,
-            'processors' => $processor,
-        ];
-    }
-
     /**
      * @param array $config
      *
@@ -65,6 +69,8 @@ class ComponentFactory
      *
      * @throws \InvalidArgumentException
      * @throws \ReflectionException
+     *
+     * @api
      */
     public function build(array $config)
     {
@@ -84,6 +90,8 @@ class ComponentFactory
 
     /**
      * @return string[]
+     *
+     * @api
      */
     public function getAvailableComponentKeys(): array
     {
@@ -96,6 +104,8 @@ class ComponentFactory
      * @return string[]
      *
      * @throws \InvalidArgumentException
+     *
+     * @api
      */
     public function getDependencies(string $key): array
     {

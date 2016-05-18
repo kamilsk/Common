@@ -9,7 +9,7 @@ use Monolog\Logger;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class Locator implements \ArrayAccess, \Countable, \Iterator
+final class Locator implements \ArrayAccess, \Countable, \Iterator
 {
     /** @var string */
     private $defaultChannel;
@@ -26,6 +26,8 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
      * @param string $defaultName
      *
      * @throws \InvalidArgumentException
+     *
+     * @api
      */
     public function __construct(array $config, ComponentFactory $factory, string $defaultName = 'app')
     {
@@ -37,6 +39,35 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
         $this->storage = [];
         $this->enrich($config['channels'], $defaultName);
         $this->store($config);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     */
+    public function count(): int
+    {
+        return count($this->keys);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return Logger
+     *
+     * @throws \OutOfRangeException
+     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
+     *
+     * @api
+     */
+    public function current(): Logger
+    {
+        if (null === ($id = key($this->keys))) {
+            throw new \OutOfRangeException('Current position of pointer is out of range.');
+        }
+        return $this->offsetGet($id);
     }
 
     /**
@@ -67,6 +98,26 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
     public function getDefaultChannel(): Logger
     {
         return $this->offsetGet($this->defaultChannel);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     */
+    public function key()
+    {
+        return key($this->keys);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     */
+    public function next()
+    {
+        next($this->keys);
     }
 
     /**
@@ -124,48 +175,9 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @api
      */
-    public function count(): int
+    public function rewind()
     {
-        return count($this->keys);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return Logger
-     *
-     * @throws \OutOfRangeException
-     * @throws \InvalidArgumentException
-     * @throws \ReflectionException
-     *
-     * @api
-     */
-    public function current(): Logger
-    {
-        if (null === ($id = key($this->keys))) {
-            throw new \OutOfRangeException('Current position of pointer is out of range.');
-        }
-        return $this->offsetGet($id);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @api
-     */
-    public function next()
-    {
-        next($this->keys);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @api
-     */
-    public function key()
-    {
-        return key($this->keys);
+        reset($this->keys);
     }
 
     /**
@@ -176,16 +188,6 @@ class Locator implements \ArrayAccess, \Countable, \Iterator
     public function valid(): bool
     {
         return (bool)current($this->keys);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @api
-     */
-    public function rewind()
-    {
-        reset($this->keys);
     }
 
     /**
