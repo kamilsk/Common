@@ -28,6 +28,8 @@ final class Call
      * @param callable $callable
      *
      * @return Call
+     *
+     * @api
      */
     public static function begin(callable $callable): Call
     {
@@ -38,6 +40,8 @@ final class Call
      * @param callable $callable
      *
      * @return array
+     *
+     * @api
      */
     public static function go(callable $callable): array
     {

@@ -13,6 +13,8 @@ interface ParserInterface
      * @return mixed
      *
      * @throws \Exception
+     *
+     * @api
      */
     public function parse(string $content);
 
@@ -20,6 +22,8 @@ interface ParserInterface
      * @param string $extension
      *
      * @return bool
+     *
+     * @api
      */
     public function supports(string $extension): bool;
 }

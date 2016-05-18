@@ -11,6 +11,8 @@ abstract class ClassAvailability extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     *
+     * @api
      */
     final public function checkAvailability()
     {
@@ -21,6 +23,8 @@ abstract class ClassAvailability extends \PHPUnit_Framework_TestCase
 
     /**
      * @return \Generator
+     *
+     * @api
      */
     abstract protected function getClasses(): \Generator;
 
@@ -28,11 +32,15 @@ abstract class ClassAvailability extends \PHPUnit_Framework_TestCase
      * @param string $class
      *
      * @return bool
+     *
+     * @api
      */
     abstract protected function isFiltered(string $class): bool;
 
     /**
      * @return \Generator
+     *
+     * @api
      */
     final protected function getFilteredClasses(): \Generator
     {

@@ -17,6 +17,8 @@ final class IniParser implements ParserInterface
     /**
      * @param bool $processSections
      * @param int $scannerMode
+     *
+     * @api
      */
     public function __construct(bool $processSections = true, int $scannerMode = INI_SCANNER_NORMAL)
     {
@@ -25,8 +27,6 @@ final class IniParser implements ParserInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException
      */
     public function parse(string $content)
     {

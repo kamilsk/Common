@@ -28,8 +28,6 @@ final class JsonParser implements ParserInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException
      */
     public function parse(string $content)
     {

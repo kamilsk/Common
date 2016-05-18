@@ -40,8 +40,6 @@ final class YamlParser implements ParserInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \Symfony\Component\Yaml\Exception\ParseException
      */
     public function parse(string $content)
     {

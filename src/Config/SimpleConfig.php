@@ -160,6 +160,8 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
      * @param array $placeholders
      *
      * @return SimpleConfig
+     *
+     * @api
      */
     protected function transform(array $placeholders): SimpleConfig
     {
