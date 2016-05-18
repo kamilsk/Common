@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace OctoLab\Common\Composer\Script\AdminLte;
+namespace OctoLab\Common\Composer\Script;
 
 use Composer\IO\IOInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -11,7 +11,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-class Processor
+final class Processor
 {
     /** @var Filesystem */
     private $filesystem;
@@ -57,7 +57,7 @@ class Processor
                     : $sourceDir;
                 $this->publishSymlink($from, $originDir, $targetDir, $sourceDir);
             } else {
-                $this->io->write(sprintf('Installing AdminLTE %s assets as <comment>hard copies</comment>.', $from));
+                $this->io->write(sprintf('Installing assets %s as <comment>hard copies</comment>.', $from));
                 $this->hardCopy($sourceDir, $targetDir);
             }
         }
@@ -74,15 +74,15 @@ class Processor
      */
     private function publishSymlink(string $from, string $originDir, string $targetDir, string $sourceDir)
     {
-        $this->io->write(sprintf('Trying to install AdminLTE %s assets as symbolic links.', $from));
+        $this->io->write(sprintf('Trying to install assets %s as symbolic links.', $from));
         try {
             $this->filesystem->symlink($originDir, $targetDir);
-            $this->io->write(sprintf('The AdminLTE %s assets were installed using symbolic links.', $from));
+            $this->io->write(sprintf('Assets %s were installed using symbolic links.', $from));
         } catch (IOException $e) {
             $this->hardCopy($sourceDir, $targetDir);
             $this->io->write(sprintf(
                 'It looks like your system doesn\'t support symbolic links,
-                        so the AdminLTE %s assets were installed by copying them.',
+                 so assets %s were installed by copying them.',
                 $from
             ));
         }

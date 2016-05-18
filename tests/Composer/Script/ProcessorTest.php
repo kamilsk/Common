@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace OctoLab\Common\Composer\Script\AdminLte;
+namespace OctoLab\Common\Composer\Script;
 
 use Composer\IO\IOInterface;
 use OctoLab\Common\TestCase;
@@ -57,6 +57,7 @@ class ProcessorTest extends TestCase
         $targetDir = realpath($root . '/web') . '/assets/adminlte';
         $sourceDir = realpath($root . '/vendor/adminlte/dist');
 
+        /** @var \Symfony\Component\Filesystem\Filesystem $filesystem */
         $filesystem = $this->prophesize(Filesystem::class);
         $filesystem->mkdir($root . '/web/assets', 0777)->willReturn(null);
         $filesystem->remove($targetDir)->willReturn(null);
