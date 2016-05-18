@@ -27,6 +27,7 @@
     "symfony/yaml": "for using OctoLab\\Common\\Config (~3.0 is recommended)"
   },
   "autoload": {
+    "files": ["src/functions.php"],
     "psr-4": { "OctoLab\\Common\\": "src/" }
   },
   "autoload-dev": {

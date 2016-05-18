@@ -6,6 +6,7 @@ namespace OctoLab\Common\Doctrine\Migration;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use function OctoLab\Common\camelize;
 
 /**
  * Driver based migrations.
@@ -32,7 +33,7 @@ abstract class DriverBasedMigration extends AbstractMigration
      */
     public static function normalizeDriverName(string $driverName): string
     {
-        return implode('', explode(' ', ucwords(str_replace('_', ' ', $driverName))));
+        return camelize($driverName);
     }
 
     /**

@@ -45,6 +45,7 @@ final class DesktopNotificationHandler extends AbstractProcessingHandler
      */
     protected function write(array $record)
     {
+        assert('array_key_exists(\'formatted\', $record)');
         $this->notification
             ->setTitle(sprintf('[%s] %s', Logger::getLevelName($this->level), $this->name))
             ->setBody($record['formatted']);

@@ -267,8 +267,8 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
             || $component instanceof \Monolog\Formatter\FormatterInterface
             || is_callable($component)');
         foreach ($this->storage[$id]['calls'] as list($method, $args)) {
-            foreach ($args as $i => &$arg) {
-                if (strpos($arg, '@') === 0) {
+            foreach ($args as &$arg) {
+                if (is_string($arg) && strpos($arg, '@') === 0) {
                     $arg = $this->getComponent(substr($arg, 1));
                 }
             }

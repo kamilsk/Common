@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common\Monolog\Service;
 
+use function OctoLab\Common\camelize;
+
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
@@ -129,11 +131,7 @@ final class ComponentBuilder
         if ($type === null) {
             throw new \InvalidArgumentException('Component type is not provided.');
         }
-        if (isset(self::$dict[$type])) {
-            $class = self::$dict[$type];
-        } else {
-            $class = implode('', explode(' ', ucwords(str_replace('_', ' ', $type))));
-        }
+        $class = self::$dict[$type] ?? camelize($type);
         return $this->namespace . '\\' . $class . $this->suffix;
     }
 
