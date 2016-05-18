@@ -34,6 +34,7 @@ final class DesktopNotificationHandler extends AbstractProcessingHandler
         $this->name = $name;
         $this->notifier = JoliNotif\NotifierFactory::create();
         $this->notification = new JoliNotif\Notification();
+        assert('$this->notifier !== null');
     }
 
     /**

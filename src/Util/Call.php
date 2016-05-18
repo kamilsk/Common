@@ -89,11 +89,9 @@ final class Call
      */
     public function rescue(string $exceptionClass = \Exception::class, callable $catcher = null): Call
     {
-        $this->catchers[$exceptionClass][] = $catcher !== null
-            ? $catcher
-            : function () {
-                // do nothing, it is rescue
-            };
+        $this->catchers[$exceptionClass][] = $catcher ?? function () {
+            // do nothing, it is rescue
+        };
         $this->current = $exceptionClass;
         return $this;
     }
@@ -108,6 +106,8 @@ final class Call
      */
     public function retry(int $times = 1, int $timeout = 0): Call
     {
+        assert('$times >= 1 && $timeout >= 0');
+        assert('$this->current !== null');
         if ($this->current !== null) {
             $this->catchers[$this->current][] = function (...$args) use ($times, $timeout) {
                 static $lTimes;

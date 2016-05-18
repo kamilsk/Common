@@ -6,6 +6,7 @@ namespace OctoLab\Common\Composer\Script\AdminLte;
 
 use Composer\Package\PackageInterface;
 use Composer\Script\Event;
+use OctoLab\Common\Composer\Script\PublisherConfig;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
@@ -15,7 +16,7 @@ final class Publisher extends \OctoLab\Common\Composer\Script\Publisher
     /**
      * {@inheritdoc}
      */
-    protected function getConfig(Event $event): array
+    protected function getConfig(Event $event): PublisherConfig
     {
         $extra = $event->getComposer()->getPackage()->getExtra();
         if (!isset($extra['admin-lte'])) {
@@ -23,10 +24,7 @@ final class Publisher extends \OctoLab\Common\Composer\Script\Publisher
                 'The AdminLTE installer needs to be configured through the extra.admin-lte setting.'
             );
         }
-        if (!isset($extra['admin-lte']['target'])) {
-            throw new \InvalidArgumentException('The extra.admin-lte must contains target path.');
-        }
-        return $extra['admin-lte'] + ['symlink' => false, 'relative' => false];
+        return new PublisherConfig('admin-lte', $extra['admin-lte']);
     }
 
     /**
@@ -45,7 +43,7 @@ final class Publisher extends \OctoLab\Common\Composer\Script\Publisher
     /**
      * {@inheritdoc}
      */
-    protected function getPublishingMap(array $config): array
+    protected function getPublishingMap(PublisherConfig $config): array
     {
         $forPublishing = ['dist' => 'adminlte'];
         if (!empty($config['bootstrap'])) {

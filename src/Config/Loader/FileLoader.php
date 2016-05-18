@@ -43,10 +43,12 @@ final class FileLoader extends AbstractFileLoader
      */
     public function load($resource, $type = null): array
     {
+        assert('is_string($resource) && ($type === null || is_string($type))');
         $path = (string)$this->locator->locate($resource);
         if (!$this->supports($resource)) {
             throw new \InvalidArgumentException(sprintf('The file "%s" is not supported.', $resource));
         }
+        assert('is_readable($path)');
         $fileContent = $this->parser->parse(file_get_contents($path));
         if (!is_array($fileContent)) {
             return [];
@@ -69,6 +71,7 @@ final class FileLoader extends AbstractFileLoader
      */
     public function supports($resource, $type = null): bool
     {
+        assert('is_string($resource) && ($type === null || is_string($type))');
         return $this->parser->supports(pathinfo($resource, PATHINFO_EXTENSION));
     }
 
@@ -93,6 +96,8 @@ final class FileLoader extends AbstractFileLoader
                 $resource = $import;
                 $ignoreErrors = false;
             } else {
+                // deprecated since 4.x version only string supported
+                assert('isset($import[\'resource\']) && is_string($import[\'resource\'])');
                 $resource = $import['resource'];
                 $ignoreErrors = $import['ignore_errors'] ?? false;
             }

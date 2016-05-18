@@ -44,18 +44,20 @@ final class Processor
      */
     public function publish(string $targetPath, string $installPath, array $map, bool $isSymlink, bool $isRelative)
     {
-        $targetPath = rtrim($targetPath, '/');
-        $installPath = rtrim($installPath, '/');
-        $this->filesystem->mkdir($targetPath, 0777);
+        $this->filesystem->mkdir($targetPath);
+        $targetPath = realpath($targetPath);
+        $installPath = realpath($installPath);
+        assert('is_dir($targetPath) && is_dir($installPath)');
         foreach ($map as $from => $to) {
-            $targetDir = realpath($targetPath) . '/' . $to;
-            $sourceDir = realpath($installPath) . '/' . $from;
+            $sourceDir = $installPath . '/' . $from;
+            $targetDir = $targetPath . '/' . $to;
+            assert('is_dir($sourceDir)');
             $this->filesystem->remove($targetDir);
             if ($isSymlink) {
                 $originDir = $isRelative
-                    ? $this->filesystem->makePathRelative($sourceDir, realpath($targetPath))
+                    ? $this->filesystem->makePathRelative($sourceDir, $targetPath)
                     : $sourceDir;
-                $this->publishSymlink($from, $originDir, $targetDir, $sourceDir);
+                $this->publishSymlink($sourceDir, $originDir, $targetDir, $from);
             } else {
                 $this->io->write(sprintf('Installing assets %s as <comment>hard copies</comment>.', $from));
                 $this->hardCopy($sourceDir, $targetDir);
@@ -64,15 +66,15 @@ final class Processor
     }
 
     /**
-     * @param string $from
+     * @param string $sourceDir
      * @param string $originDir
      * @param string $targetDir
-     * @param string $sourceDir
+     * @param string $from
      *
      * @throws IOException
      * @throws \InvalidArgumentException
      */
-    private function publishSymlink(string $from, string $originDir, string $targetDir, string $sourceDir)
+    private function publishSymlink(string $sourceDir, string $originDir, string $targetDir, string $from)
     {
         $this->io->write(sprintf('Trying to install assets %s as symbolic links.', $from));
         try {
@@ -97,7 +99,7 @@ final class Processor
      */
     private function hardCopy(string $originDir, string $targetDir)
     {
-        $this->filesystem->mkdir($targetDir, 0777);
+        $this->filesystem->mkdir($targetDir);
         $this->filesystem->mirror($originDir, $targetDir);
     }
 }

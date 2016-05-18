@@ -59,10 +59,10 @@ class ProcessorTest extends TestCase
 
         /** @var \Symfony\Component\Filesystem\Filesystem $filesystem */
         $filesystem = $this->prophesize(Filesystem::class);
-        $filesystem->mkdir($root . '/web/assets', 0777)->willReturn(null);
+        $filesystem->mkdir($root . '/web/assets')->willReturn(null);
         $filesystem->remove($targetDir)->willReturn(null);
         $filesystem->symlink($sourceDir, $targetDir)->willThrow(IOException::class);
-        $filesystem->mkdir($targetDir, 0777)->willReturn(null);
+        $filesystem->mkdir($targetDir)->willReturn(null);
         $filesystem->mirror($sourceDir, $targetDir)->willReturn(null);
 
         (new Processor($filesystem->reveal(), $this->io->reveal()))->publish(

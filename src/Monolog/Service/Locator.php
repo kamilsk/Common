@@ -8,6 +8,8 @@ use Monolog\Logger;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
+ *
+ * @quality:class [B]
  */
 final class Locator implements \ArrayAccess, \Countable, \Iterator
 {
@@ -195,6 +197,8 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      * @param string $defaultName
      *
      * @return Locator
+     *
+     * @deprecated since 4.x version arguments for channel is required
      */
     private function enrich(array &$channelConfigs, string $defaultName): Locator
     {
@@ -251,7 +255,6 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
     /**
      * @param string $id
      * @param mixed $component
-     * \Monolog\Logger|\Monolog\Handler\HandlerInterface|\Monolog\Formatter\FormatterInterface|callable
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
@@ -259,6 +262,10 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      */
     private function resolveComponentDependencies(string $id, $component)
     {
+        assert('$component instanceof \Monolog\Logger
+            || $component instanceof \Monolog\Handler\HandlerInterface
+            || $component instanceof \Monolog\Formatter\FormatterInterface
+            || is_callable($component)');
         foreach ($this->storage[$id]['calls'] as list($method, $args)) {
             foreach ($args as $i => &$arg) {
                 if (strpos($arg, '@') === 0) {
@@ -303,6 +310,8 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      * @param string $id
      *
      * @throws \InvalidArgumentException
+     *
+     * @deprecated since 4.x version calls are required for component
      */
     private function storeComponentDependencies(string $key, array $componentConfig, string $id)
     {

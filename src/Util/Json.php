@@ -25,6 +25,7 @@ final class Json
      */
     public function __construct(bool $assoc, int $options, int $depth)
     {
+        assert('$options >= 0 && $depth >= 0');
         $this->assoc = $assoc;
         $this->options = $options;
         $this->depth = $depth;
@@ -97,6 +98,7 @@ final class Json
      */
     public function softDecode(string $json, bool $assoc = null, int $depth = null, int $options = null): array
     {
+        assert('($depth === null || $depth >= 0) && ($options === null || $options >= 0)');
         $result = json_decode($json, $assoc ?? $this->assoc, $depth ?? $this->depth, $options ?? $this->options);
         return [$result, $this->getError()];
     }
@@ -112,6 +114,7 @@ final class Json
      */
     public function softEncode($value, int $options = null, int $depth = null): array
     {
+        assert('($depth === null || $depth >= 0) && ($options === null || $options >= 0)');
         $json = json_encode($value, $options ?? $this->options, $depth ?? $this->depth);
         return [$json, $this->getError()];
     }

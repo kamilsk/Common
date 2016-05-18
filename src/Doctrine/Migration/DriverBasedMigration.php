@@ -24,6 +24,18 @@ abstract class DriverBasedMigration extends AbstractMigration
     protected $queries = [];
 
     /**
+     * @param string $driverName
+     *
+     * @return string
+     *
+     * @api
+     */
+    public static function normalizeDriverName(string $driverName): string
+    {
+        return implode('', explode(' ', ucwords(str_replace('_', ' ', $driverName))));
+    }
+
+    /**
      * @param Schema $schema
      *
      * @api
@@ -121,8 +133,6 @@ abstract class DriverBasedMigration extends AbstractMigration
      */
     private function resolve(string $prefix, string $postfix): string
     {
-        $driver = $this->connection->getDriver()->getName();
-        $parts = explode(' ', ucwords(str_replace('_', ' ', $driver)));
-        return $prefix . implode('', $parts) . $postfix;
+        return $prefix . static::normalizeDriverName($this->connection->getDriver()->getName()) . $postfix;
     }
 }

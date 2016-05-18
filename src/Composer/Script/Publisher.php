@@ -28,24 +28,24 @@ abstract class Publisher
         $config = $publisher->getConfig($event);
         $package = $publisher->getPackage($event);
         (new Processor(new Filesystem(), $event->getIO()))->publish(
-            $config['target'],
+            $config->getTargetPath(),
             $event->getComposer()->getInstallationManager()->getInstallPath($package),
             $publisher->getPublishingMap($config),
-            $config['symlink'],
-            $config['relative']
+            $config->isSymlink(),
+            $config->isRelative()
         );
     }
 
     /**
      * @param Event $event
      *
-     * @return array
+     * @return PublisherConfig
      *
      * @throws \InvalidArgumentException
      *
      * @api
      */
-    abstract protected function getConfig(Event $event): array;
+    abstract protected function getConfig(Event $event): PublisherConfig;
 
     /**
      * @param Event $event
@@ -59,11 +59,11 @@ abstract class Publisher
     abstract protected function getPackage(Event $event): PackageInterface;
 
     /**
-     * @param array $config
+     * @param PublisherConfig $config
      *
      * @return array
      *
      * @api
      */
-    abstract protected function getPublishingMap(array $config): array;
+    abstract protected function getPublishingMap(PublisherConfig $config): array;
 }

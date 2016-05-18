@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common\Monolog\Service;
 
-use OctoLab\Common\Util\ArrayHelper;
-
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
@@ -80,10 +78,10 @@ final class ComponentFactory
             'arguments' => [],
             '_key' => null,
         ];
-        $config = ArrayHelper::merge($default, $config);
+        $config = array_merge($default, $config);
         $componentBuilder = $this->components[$config['_key']] ?? null;
         if ($componentBuilder === null) {
-            throw new \InvalidArgumentException('Invalid "_key" in configuration.');
+            throw new \InvalidArgumentException(sprintf('Invalid "_key:%s" in configuration.', $config['_key']));
         }
         return $componentBuilder->make($config['class'], $config['type'], $config['arguments']);
     }
@@ -110,7 +108,7 @@ final class ComponentFactory
     public function getDependencies(string $key): array
     {
         if (!isset($this->components[$key])) {
-            throw new \InvalidArgumentException(sprintf('No component with key "%s" found.', $key));
+            throw new \InvalidArgumentException(sprintf('Component with key "%s" not found.', $key));
         }
         return $this->components[$key]->getDependencies();
     }

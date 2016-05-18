@@ -47,6 +47,7 @@ final class Limiter
      */
     public static function getTwoTablePagination(int $table1Count, int $table2Count, int $limit, int $offset = 0): array
     {
+        assert('$table1Count >= 0 && $table2Count >= 0 && $limit >= 0 && $offset >= 0');
         $offset1 = min($offset, $table1Count);
         $limit1 = min($limit, $table1Count - $offset1);
         $offset2 = min($offset - $offset1, $table2Count);
@@ -96,6 +97,7 @@ final class Limiter
      */
     public function nextPortion(): Limiter
     {
+        assert('$this->limit > 0');
         if ($this->limit) {
             $this->offset = min($this->offset + $this->limit, $this->total);
             $this->limit = min($this->limit, $this->total - $this->offset);

@@ -48,7 +48,7 @@ class ComponentFactoryTest extends TestCase
             $componentFactory->build(['_key' => 'unknown']);
             self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
-            self::assertContains('Invalid "_key" in configuration.', $e->getMessage());
+            self::assertContains('Invalid "_key:unknown" in configuration.', $e->getMessage());
         }
     }
 
@@ -94,7 +94,7 @@ class ComponentFactoryTest extends TestCase
             $componentFactory->getDependencies('unknown');
             self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
-            self::assertContains('No component with key "unknown" found.', $e->getMessage());
+            self::assertContains('Component with key "unknown" not found.', $e->getMessage());
         }
     }
 }
