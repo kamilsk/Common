@@ -26,11 +26,14 @@ class IniTest extends TestCase
     public function parseFailure()
     {
         $ini = '{ini=invalid}';
+        error_reporting(($before = error_reporting()) & ~E_WARNING);
         try {
             Ini::new()->parse($ini);
             self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
             self::assertEquals(sprintf("Invalid ini string \n\n%s\n", $ini), $e->getMessage());
+        } finally {
+            error_reporting($before);
         }
     }
 

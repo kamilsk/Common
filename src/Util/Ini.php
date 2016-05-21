@@ -72,7 +72,7 @@ final class Ini
     public function softParse(string $ini, bool $processSections = null, int $scannerMode = null): array
     {
         assert('$scannerMode === null || $scannerMode >= 0');
-        $content = @parse_ini_string(
+        $content = parse_ini_string(
             $ini,
             $processSections ?? $this->processSections,
             $scannerMode ?? $this->scannerMode

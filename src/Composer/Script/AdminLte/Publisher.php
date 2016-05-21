@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common\Composer\Script\AdminLte;
 
-use Composer\Package\PackageInterface as ComposerPackageInterface;
 use Composer\Script\Event;
 use OctoLab\Common\Asset\AdminLtePackage;
 use OctoLab\Common\Composer\Script\ConfigInterface;
@@ -27,7 +26,7 @@ final class Publisher extends \OctoLab\Common\Composer\Script\Publisher
     /**
      * {@inheritdoc}
      */
-    protected function getComposerPackage(Event $event): ComposerPackageInterface
+    protected function getComposerPackage(Event $event): \Composer\Package\PackageInterface
     {
         $package = $event->getComposer()->getRepositoryManager()->getLocalRepository()
             ->findPackage('almasaeed2010/adminlte', '~2.0');
