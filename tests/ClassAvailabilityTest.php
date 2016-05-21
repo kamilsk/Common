@@ -16,17 +16,17 @@ class ClassAvailabilityTest extends ClassAvailability
         'Composer\\Semver\\Constraint\\AbstractConstraint' => true,
         'Composer\\Util\\SpdxLicense' => true,
         // no dependencies
-        'Symfony\\Bridge\\Twig\\DataCollector\\TwigDataCollector' => true,
-        'Symfony\\Bridge\\Twig\\TwigEngine' => true,
-        'Zend\\EventManager\\Filter\\FilterIterator' => true,
+        'Symfony\\Bridge\\Twig\\DataCollector\\TwigDataCollector' => ['symfony/http-kernel', 'symfony/http-foundation'],
+        'Symfony\\Bridge\\Twig\\TwigEngine' => ['symfony/templating'],
+        'Zend\\EventManager\\Filter\\FilterIterator' => ['zendframework/zend-stdlib'],
     ];
     const GROUP_EXCLUDED = [
         // deprecated
         'Composer\\Package\\LinkConstraint' => true,
         // no dependencies
-        'Symfony\\Bridge\\Twig\\Form' => true,
-        'Symfony\\Bridge\\Twig\\Translation' => true,
-        'Symfony\\Component\\Console\\Event' => true,
+        'Symfony\\Bridge\\Twig\\Form' => ['symfony/form'],
+        'Symfony\\Bridge\\Twig\\Translation' => ['symfony/translation'],
+        'Symfony\\Component\\Console\\Event' => ['symfony/event-dispatcher'],
     ];
 
     /**
