@@ -40,8 +40,6 @@ final class Processor
      * @throws \InvalidArgumentException
      *
      * @api
-     *
-     * @quality:method [B]
      */
     public function publish(string $packagePath, array $map, bool $isSymlink, bool $isRelative)
     {

@@ -245,11 +245,19 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
     private function getComponentConfig(string $id): array
     {
         foreach ($this->storage[$id]['arguments'] as &$value) {
-            if (is_string($value) && strpos($value, '@') === 0) {
-                $value = $this->getComponent(substr($value, 1));
-            }
+            $this->resolveComponent($value);
         }
         return $this->storage[$id];
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private function resolveComponent(&$value)
+    {
+        if (is_string($value) && strpos($value, '@') === 0) {
+            $value = $this->getComponent(substr($value, 1));
+        }
     }
 
     /**
@@ -268,11 +276,8 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
             || is_callable($component)');
         foreach ($this->storage[$id]['calls'] as list($method, $args)) {
             foreach ($args as &$arg) {
-                if (is_string($arg) && strpos($arg, '@') === 0) {
-                    $arg = $this->getComponent(substr($arg, 1));
-                }
+                $this->resolveComponent($arg);
             }
-            unset($arg);
             $component->{$method}(...$args);
         }
     }

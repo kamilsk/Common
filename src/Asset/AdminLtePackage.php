@@ -20,6 +20,8 @@ final class AdminLtePackage extends PathPackage
      * @param string $basePath
      * @param VersionStrategyInterface $versionStrategy
      * @param ContextInterface|null $context
+     *
+     * @api
      */
     public function __construct(
         string $basePath,
@@ -39,6 +41,8 @@ final class AdminLtePackage extends PathPackage
      * @return array
      *
      * @throws \InvalidArgumentException
+     *
+     * @api
      */
     public function getBootstrapMap(): array
     {
@@ -49,6 +53,8 @@ final class AdminLtePackage extends PathPackage
      * @return array
      *
      * @throws \InvalidArgumentException
+     *
+     * @api
      */
     public function getDemoMap(): array
     {
@@ -59,6 +65,8 @@ final class AdminLtePackage extends PathPackage
      * @return array
      *
      * @throws \InvalidArgumentException
+     *
+     * @api
      */
     public function getDistMap(): array
     {
@@ -69,6 +77,8 @@ final class AdminLtePackage extends PathPackage
      * @return array
      *
      * @throws \InvalidArgumentException
+     *
+     * @api
      */
     public function getPluginsMap(): array
     {
@@ -81,6 +91,10 @@ final class AdminLtePackage extends PathPackage
      * @return string
      *
      * @throws \InvalidArgumentException
+     *
+     * @api
+     *
+     * @quality:method [B]
      */
     public function getUrl($path): string
     {
