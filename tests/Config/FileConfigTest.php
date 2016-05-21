@@ -22,22 +22,6 @@ class FileConfigTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider fileConfigProvider
-     *
-     * @param FileConfig $config
-     * @param string $extension
-     * @param array $expected
-     */
-    public function load(FileConfig $config, string $extension, array $expected)
-    {
-        $config->load($this->getConfigPath('config', $extension));
-        foreach ($expected as $key => $value) {
-            self::assertEquals($value, $config[$key]);
-        }
-    }
-
-    /**
      * @return array
      */
     public function fileConfigProvider(): array
@@ -54,5 +38,21 @@ class FileConfigTest extends TestCase
                 ['app:constant' => E_ALL],
             ],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider fileConfigProvider
+     *
+     * @param FileConfig $config
+     * @param string $extension
+     * @param array $expected
+     */
+    public function load(FileConfig $config, string $extension, array $expected)
+    {
+        $config->load($this->getConfigPath('config', $extension));
+        foreach ($expected as $key => $value) {
+            self::assertEquals($value, $config[$key]);
+        }
     }
 }

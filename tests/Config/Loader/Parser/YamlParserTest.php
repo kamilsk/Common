@@ -19,19 +19,19 @@ class YamlParserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     */
-    public function parseSuccess()
-    {
-        self::assertArrayHasKey('yaml', $this->getParser()->parse('yaml: valid'));
-    }
-
-    /**
-     * @test
      * @expectedException \Exception
      */
     public function parseFailure()
     {
         $this->getParser()->parse('yaml: { invalid }: true');
+    }
+
+    /**
+     * @test
+     */
+    public function parseSuccess()
+    {
+        self::assertArrayHasKey('yaml', $this->getParser()->parse('yaml: valid'));
     }
 
     /**

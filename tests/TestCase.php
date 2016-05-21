@@ -19,4 +19,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     {
         return sprintf('%s/app/config/%s.%s', __DIR__, $config, $extension);
     }
+
+    /**
+     * @return string
+     */
+    protected function getAppDir(): string
+    {
+        return realpath(__DIR__ . '/app');
+    }
 }

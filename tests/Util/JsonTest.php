@@ -12,24 +12,6 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function new()
-    {
-        $json = Json::new(true, JSON_UNESCAPED_UNICODE);
-        self::assertNotEquals(json_encode(['a' => 'б']), $json->encode(['a' => 'б']));
-    }
-
-    /**
-     * @test
-     */
-    public function decodeSuccess()
-    {
-        $json = Json::new();
-        self::assertEquals(json_decode(json_encode([])), $json->decode($json->encode([])));
-    }
-
-    /**
-     * @test
-     */
     public function decodeFailure()
     {
         $json = Json::new();
@@ -57,9 +39,10 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function encodeSuccess()
+    public function decodeSuccess()
     {
-        self::assertJsonStringEqualsJsonString(json_encode([]), Json::new()->encode([]));
+        $json = Json::new();
+        self::assertEquals(json_decode(json_encode([])), $json->decode($json->encode([])));
     }
 
     /**
@@ -95,5 +78,22 @@ class JsonTest extends \PHPUnit_Framework_TestCase
         } catch (\InvalidArgumentException $e) {
             self::assertEquals(JSON_ERROR_UNSUPPORTED_TYPE, $e->getCode());
         }
+    }
+
+    /**
+     * @test
+     */
+    public function encodeSuccess()
+    {
+        self::assertJsonStringEqualsJsonString(json_encode([]), Json::new()->encode([]));
+    }
+
+    /**
+     * @test
+     */
+    public function new()
+    {
+        $json = Json::new(true, JSON_UNESCAPED_UNICODE);
+        self::assertNotEquals(json_encode(['a' => 'б']), $json->encode(['a' => 'б']));
     }
 }

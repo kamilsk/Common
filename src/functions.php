@@ -12,6 +12,6 @@ if (!function_exists('OctoLab\Common\camelize')) {
      */
     function camelize(string $word): string
     {
-        return implode('', explode(' ', ucwords(str_replace('_', ' ', $word))));
+        return str_replace(' ', '', ucwords(str_replace('_', ' ', $word)));
     }
 }

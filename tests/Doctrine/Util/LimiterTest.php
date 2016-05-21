@@ -11,21 +11,6 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @dataProvider tableDataProvider
-     *
-     * @param int $table1Count
-     * @param int $table2Count
-     * @param int $limit
-     * @param int $offset
-     * @param array $expected
-     */
-    public function twoTablePagination(int $table1Count, int $table2Count, int $limit, int $offset, array $expected)
-    {
-        self::assertEquals($expected, Limiter::getTwoTablePagination($table1Count, $table2Count, $limit, $offset));
-    }
-
-    /**
-     * @test
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Values must be unsigned.
      */
@@ -194,5 +179,20 @@ class LimiterTest extends \PHPUnit_Framework_TestCase
                 ],
             ],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider tableDataProvider
+     *
+     * @param int $table1Count
+     * @param int $table2Count
+     * @param int $limit
+     * @param int $offset
+     * @param array $expected
+     */
+    public function twoTablePagination(int $table1Count, int $table2Count, int $limit, int $offset, array $expected)
+    {
+        self::assertEquals($expected, Limiter::getTwoTablePagination($table1Count, $table2Count, $limit, $offset));
     }
 }

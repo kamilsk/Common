@@ -23,14 +23,6 @@ class IniTest extends TestCase
     /**
      * @test
      */
-    public function parseSuccess()
-    {
-        self::assertEquals(['ini' => 'valid'], Ini::new()->parse('ini=valid'));
-    }
-
-    /**
-     * @test
-     */
     public function parseFailure()
     {
         $ini = '{ini=invalid}';
@@ -40,5 +32,13 @@ class IniTest extends TestCase
         } catch (\InvalidArgumentException $e) {
             self::assertEquals(sprintf("Invalid ini string \n\n%s\n", $ini), $e->getMessage());
         }
+    }
+
+    /**
+     * @test
+     */
+    public function parseSuccess()
+    {
+        self::assertEquals(['ini' => 'valid'], Ini::new()->parse('ini=valid'));
     }
 }

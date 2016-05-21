@@ -22,19 +22,19 @@ class IniParserTest extends TestCase
 
     /**
      * @test
-     */
-    public function parseSuccess()
-    {
-        self::assertArrayHasKey('ini', $this->getParser()->parse('ini=valid'));
-    }
-
-    /**
-     * @test
      * @expectedException \InvalidArgumentException
      */
     public function parseFailure()
     {
         $this->getParser()->parse('{ini=invalid}');
+    }
+
+    /**
+     * @test
+     */
+    public function parseSuccess()
+    {
+        self::assertArrayHasKey('ini', $this->getParser()->parse('ini=valid'));
     }
 
     /**

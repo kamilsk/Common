@@ -14,6 +14,71 @@ class CallTest extends TestCase
     /**
      * @test
      */
+    public function cases()
+    {
+        $exceptionGenerator = function (int $code) {
+            switch ($code) {
+                case 1:
+                    throw new \RuntimeException();
+                case 2:
+                    throw new \LogicException();
+                default:
+                    echo 'Default!', PHP_EOL;
+                    throw new \Exception();
+            }
+        };
+        try {
+            Call::begin($exceptionGenerator)->end(1);
+            self::assertTrue(false);
+        } catch (\RuntimeException $e) {
+            self::assertTrue(true);
+        }
+        try {
+            ob_clean();
+            ob_start();
+            Call::begin($exceptionGenerator)
+                ->rescue(\LogicException::class, function () {
+                    echo 'Caught!';
+                })
+                ->end(2)
+            ;
+            self::assertContains('Caught!', ob_get_clean());
+        } catch (\LogicException $e) {
+            self::assertTrue(false);
+        }
+        try {
+            ob_clean();
+            ob_start();
+            Call::begin($exceptionGenerator)
+                ->rescue()
+                ->retry(2)
+                ->end(3)
+            ;
+            self::assertContains("Default!\nDefault!", ob_get_clean());
+        } catch (\Exception $e) {
+            self::assertTrue(false);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function end()
+    {
+        $sugar = Call::begin(function (string $message, int $code = 0) {
+            throw new \RuntimeException($message, $code);
+        });
+        try {
+            $sugar->end('Exception is not suppressed.');
+            self::assertTrue(false);
+        } catch (\RuntimeException $e) {
+            self::assertTrue(true);
+        }
+    }
+
+    /**
+     * @test
+     */
     public function go()
     {
         list($result, $err) = Call::go(function () {
@@ -57,71 +122,6 @@ class CallTest extends TestCase
         try {
             $sugar->rescue()->retry(3)->end('Exception is suppressed three times!');
             self::assertEquals(3, $times);
-        } catch (\Exception $e) {
-            self::assertTrue(false);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function end()
-    {
-        $sugar = Call::begin(function (string $message, int $code = 0) {
-            throw new \RuntimeException($message, $code);
-        });
-        try {
-            $sugar->end('Exception is not suppressed.');
-            self::assertTrue(false);
-        } catch (\RuntimeException $e) {
-            self::assertTrue(true);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function cases()
-    {
-        $exceptionGenerator = function (int $code) {
-            switch ($code) {
-                case 1:
-                    throw new \RuntimeException();
-                case 2:
-                    throw new \LogicException();
-                default:
-                    echo 'Default!', PHP_EOL;
-                    throw new \Exception();
-            }
-        };
-        try {
-            Call::begin($exceptionGenerator)->end(1);
-            self::assertTrue(false);
-        } catch (\RuntimeException $e) {
-            self::assertTrue(true);
-        }
-        try {
-            ob_clean();
-            ob_start();
-            Call::begin($exceptionGenerator)
-                ->rescue(\LogicException::class, function () {
-                    echo 'Caught!';
-                })
-                ->end(2)
-            ;
-            self::assertContains('Caught!', ob_get_clean());
-        } catch (\LogicException $e) {
-            self::assertTrue(false);
-        }
-        try {
-            ob_clean();
-            ob_start();
-            Call::begin($exceptionGenerator)
-                ->rescue()
-                ->retry(2)
-                ->end(3)
-            ;
-            self::assertContains("Default!\nDefault!", ob_get_clean());
         } catch (\Exception $e) {
             self::assertTrue(false);
         }

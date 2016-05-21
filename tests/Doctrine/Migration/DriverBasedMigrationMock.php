@@ -20,30 +20,19 @@ final class DriverBasedMigrationMock extends DriverBasedMigration
     {
     }
 
-    protected function prePdoPgsqlUp()
-    {
-        $this->queries[] = '[PostgreSQL][Up] test migration';
-    }
-
-    protected function postPdoPgsqlUp()
+    protected function postPdoMysqlDown()
     {
     }
 
-    protected function prePdoPgsqlDown()
+    protected function postPdoMysqlUp()
     {
-        $this->queries[] = '[PostgreSQL][Down] test migration';
     }
 
     protected function postPdoPgsqlDown()
     {
     }
 
-    protected function prePdoMysqlUp()
-    {
-        $this->queries[] = '[MySQL][Up] test migration';
-    }
-
-    protected function postPdoMysqlUp()
+    protected function postPdoPgsqlUp()
     {
     }
 
@@ -52,7 +41,18 @@ final class DriverBasedMigrationMock extends DriverBasedMigration
         $this->queries[] = '[MySQL][Down] test migration';
     }
 
-    protected function postPdoMysqlDown()
+    protected function prePdoMysqlUp()
     {
+        $this->queries[] = '[MySQL][Up] test migration';
+    }
+
+    protected function prePdoPgsqlDown()
+    {
+        $this->queries[] = '[PostgreSQL][Down] test migration';
+    }
+
+    protected function prePdoPgsqlUp()
+    {
+        $this->queries[] = '[PostgreSQL][Up] test migration';
     }
 }

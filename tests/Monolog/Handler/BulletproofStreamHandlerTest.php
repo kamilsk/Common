@@ -15,27 +15,6 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function writeToMovedLogFile()
-    {
-        $logger = $this->getLogger();
-        $streamLocation = $this->getStreamLocation();
-        $newStreamLocation = $this->getNewStreamLocation();
-        $logger->pushHandler(new StreamHandler($streamLocation));
-        $logger->info('Start logging.');
-        self::assertFileExists($streamLocation);
-        $this->mv($streamLocation, $newStreamLocation);
-        self::assertFileNotExists($streamLocation);
-        self::assertFileExists($newStreamLocation);
-        $logger->info('End logging.');
-        $content = file_get_contents($newStreamLocation);
-        self::assertContains('Start logging.', $content);
-        self::assertContains('End logging.', $content);
-        $this->rm($newStreamLocation);
-    }
-
-    /**
-     * @test
-     */
     public function bulletproofWriteToMovedLogFile()
     {
         $logger = $this->getLogger();
@@ -58,22 +37,6 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function writeToRemovedLogFile()
-    {
-        $logger = $this->getLogger();
-        $streamLocation = $this->getStreamLocation();
-        $logger->pushHandler(new StreamHandler($streamLocation));
-        $logger->info('Start logging.');
-        self::assertFileExists($streamLocation);
-        $this->rm($streamLocation);
-        self::assertFileNotExists($streamLocation);
-        $logger->info('End logging.');
-        self::assertFileNotExists($streamLocation);
-    }
-
-    /**
-     * @test
-     */
     public function bulletproofWriteToRemovedLogFile()
     {
         $logger = $this->getLogger();
@@ -90,19 +53,48 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function writeToMovedLogFile()
+    {
+        $logger = $this->getLogger();
+        $streamLocation = $this->getStreamLocation();
+        $newStreamLocation = $this->getNewStreamLocation();
+        $logger->pushHandler(new StreamHandler($streamLocation));
+        $logger->info('Start logging.');
+        self::assertFileExists($streamLocation);
+        $this->mv($streamLocation, $newStreamLocation);
+        self::assertFileNotExists($streamLocation);
+        self::assertFileExists($newStreamLocation);
+        $logger->info('End logging.');
+        $content = file_get_contents($newStreamLocation);
+        self::assertContains('Start logging.', $content);
+        self::assertContains('End logging.', $content);
+        $this->rm($newStreamLocation);
+    }
+
+    /**
+     * @test
+     */
+    public function writeToRemovedLogFile()
+    {
+        $logger = $this->getLogger();
+        $streamLocation = $this->getStreamLocation();
+        $logger->pushHandler(new StreamHandler($streamLocation));
+        $logger->info('Start logging.');
+        self::assertFileExists($streamLocation);
+        $this->rm($streamLocation);
+        self::assertFileNotExists($streamLocation);
+        $logger->info('End logging.');
+        self::assertFileNotExists($streamLocation);
+    }
+
+    /**
      * @return Logger
      */
     private function getLogger(): Logger
     {
         return new Logger('test');
-    }
-
-    /**
-     * @return string
-     */
-    private function getStreamLocation(): string
-    {
-        return __DIR__ . '/test.log';
     }
 
     /**
@@ -114,11 +106,11 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $file
+     * @return string
      */
-    private function rm(string $file)
+    private function getStreamLocation(): string
     {
-        shell_exec(sprintf('rm %s', escapeshellarg($file)));
+        return __DIR__ . '/test.log';
     }
 
     /**
@@ -128,5 +120,13 @@ class BulletproofStreamHandlerTest extends \PHPUnit_Framework_TestCase
     private function mv(string $file, string $location)
     {
         shell_exec(sprintf('mv %s %s', escapeshellarg($file), escapeshellarg($location)));
+    }
+
+    /**
+     * @param string $file
+     */
+    private function rm(string $file)
+    {
+        shell_exec(sprintf('rm %s', escapeshellarg($file)));
     }
 }

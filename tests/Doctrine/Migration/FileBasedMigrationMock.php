@@ -22,6 +22,14 @@ class FileBasedMigrationMock extends FileBasedMigration
     /**
      * {@inheritdoc}
      */
+    public function getDowngradeMigrations(): array
+    {
+        return ['ISSUE-29/downgrade.sql'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getMajorVersion(): string
     {
         return '2';
@@ -36,19 +44,9 @@ class FileBasedMigrationMock extends FileBasedMigration
     }
 
     /**
-     * {@inheritdoc}
+     * @param Schema $schema
      */
-    public function getDowngradeMigrations(): array
-    {
-        return ['ISSUE-29/downgrade.sql'];
-    }
-
-    /**
-     * @param string $sql
-     * @param array $params
-     * @param array $types
-     */
-    protected function addSql($sql, array $params = [], array $types = [])
+    public function postDown(Schema $schema)
     {
     }
 
@@ -60,9 +58,11 @@ class FileBasedMigrationMock extends FileBasedMigration
     }
 
     /**
-     * @param Schema $schema
+     * @param string $sql
+     * @param array $params
+     * @param array $types
      */
-    public function postDown(Schema $schema)
+    protected function addSql($sql, array $params = [], array $types = [])
     {
     }
 }

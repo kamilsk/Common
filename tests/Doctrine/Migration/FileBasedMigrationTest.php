@@ -19,22 +19,6 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
      * @param Schema $schema
      * @param array $expected
      */
-    public function up(FileBasedMigration $migration, Schema $schema, array $expected)
-    {
-        $migration->preUp($schema);
-        $migration->up($schema);
-        $migration->postUp($schema);
-        self::assertEquals($expected['up'], $migration->getQueries());
-    }
-
-    /**
-     * @test
-     * @dataProvider migrationProvider
-     *
-     * @param FileBasedMigration $migration
-     * @param Schema $schema
-     * @param array $expected
-     */
     public function down(FileBasedMigration $migration, Schema $schema, array $expected)
     {
         $migration->preDown($schema);
@@ -58,5 +42,21 @@ class FileBasedMigrationTest extends \PHPUnit_Framework_TestCase
                 ],
             ],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider migrationProvider
+     *
+     * @param FileBasedMigration $migration
+     * @param Schema $schema
+     * @param array $expected
+     */
+    public function up(FileBasedMigration $migration, Schema $schema, array $expected)
+    {
+        $migration->preUp($schema);
+        $migration->up($schema);
+        $migration->postUp($schema);
+        self::assertEquals($expected['up'], $migration->getQueries());
     }
 }

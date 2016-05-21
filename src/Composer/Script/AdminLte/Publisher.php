@@ -4,9 +4,12 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common\Composer\Script\AdminLte;
 
-use Composer\Package\PackageInterface;
+use Composer\Package\PackageInterface as ComposerPackageInterface;
 use Composer\Script\Event;
-use OctoLab\Common\Composer\Script\PublisherConfig;
+use OctoLab\Common\Asset\AdminLtePackage;
+use OctoLab\Common\Composer\Script\ConfigInterface;
+use Symfony\Component\Asset\PackageInterface as AssetPackageInterface;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
@@ -16,21 +19,15 @@ final class Publisher extends \OctoLab\Common\Composer\Script\Publisher
     /**
      * {@inheritdoc}
      */
-    protected function getConfig(Event $event): PublisherConfig
+    protected function getAssetPackage(ConfigInterface $config): AssetPackageInterface
     {
-        $extra = $event->getComposer()->getPackage()->getExtra();
-        if (!isset($extra['admin-lte'])) {
-            throw new \InvalidArgumentException(
-                'The AdminLTE installer needs to be configured through the extra.admin-lte setting.'
-            );
-        }
-        return new PublisherConfig('admin-lte', $extra['admin-lte']);
+        return new AdminLtePackage($config->getTargetPath(), new EmptyVersionStrategy());
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getPackage(Event $event): PackageInterface
+    protected function getComposerPackage(Event $event): ComposerPackageInterface
     {
         $package = $event->getComposer()->getRepositoryManager()->getLocalRepository()
             ->findPackage('almasaeed2010/adminlte', '~2.0');
@@ -43,17 +40,38 @@ final class Publisher extends \OctoLab\Common\Composer\Script\Publisher
     /**
      * {@inheritdoc}
      */
-    protected function getPublishingMap(PublisherConfig $config): array
+    protected function getConfig(Event $event): ConfigInterface
     {
-        $forPublishing = ['dist' => 'adminlte'];
-        if (!empty($config['bootstrap'])) {
-            $forPublishing['bootstrap'] = 'adminlte-bootstrap';
+        $extra = $event->getComposer()->getPackage()->getExtra();
+        if (!isset($extra['admin-lte'])) {
+            throw new \InvalidArgumentException(
+                'The AdminLTE installer needs to be configured through the extra.admin-lte setting.'
+            );
         }
-        if (!empty($config['plugins'])) {
-            $forPublishing['plugins'] = 'adminlte-plugins';
+        return new Config($extra['admin-lte']);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function getPublishingMap(AssetPackageInterface $package, ConfigInterface $config): array
+    {
+        /**
+         * internals!
+         * @var Config $config
+         * @var AdminLtePackage $package
+         */
+        $forPublishing = $package->getDistMap();
+        if ($config->isBootstrapEnabled()) {
+            $forPublishing += $package->getBootstrapMap();
         }
-        if (!empty($config['demo'])) {
-            $forPublishing[''] = 'adminlte-demo';
+        if ($config->isDemoEnabled()) {
+            $forPublishing += $package->getDemoMap();
+        }
+        if ($config->isPluginsEnabled()) {
+            $forPublishing += $package->getPluginsMap();
         }
         return $forPublishing;
     }

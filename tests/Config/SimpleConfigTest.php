@@ -43,6 +43,81 @@ class SimpleConfigTest extends TestCase
      *
      * @param SimpleConfig $config
      * @param array $expected
+     */
+    public function countTest(SimpleConfig $config, array $expected)
+    {
+        self::assertCount(count($expected), $config);
+    }
+
+    /**
+     * @test
+     * @dataProvider simpleConfigProvider
+     *
+     * @param SimpleConfig $config
+     * @param array $expected
+     */
+    public function current(SimpleConfig $config, array $expected)
+    {
+        self::assertEquals(current($expected), $config->current());
+    }
+
+    /**
+     * @test
+     * @dataProvider simpleConfigProvider
+     *
+     * @param SimpleConfig $config
+     * @param array $expected
+     * @param string[] $paths
+     */
+    public function invoke(SimpleConfig $config, array $expected, array $paths)
+    {
+        foreach ($paths as $path) {
+            self::assertEquals(ArrayHelper::findByPath($path, $expected), $config($path));
+        }
+    }
+
+    /**
+     * @test
+     * @dataProvider simpleConfigProvider
+     *
+     * @param SimpleConfig $config
+     * @param array $expected
+     */
+    public function jsonSerialize(SimpleConfig $config, array $expected)
+    {
+        self::assertJsonStringEqualsJsonString(json_encode($expected), json_encode($config));
+    }
+
+    /**
+     * @test
+     * @dataProvider simpleConfigProvider
+     *
+     * @param SimpleConfig $config
+     */
+    public function key(SimpleConfig $config)
+    {
+        self::assertTrue(is_scalar($config->key()));
+    }
+
+    /**
+     * @test
+     * @dataProvider simpleConfigProvider
+     *
+     * @param SimpleConfig $config
+     */
+    public function next(SimpleConfig $config)
+    {
+        $current = $config->current();
+        $config->next();
+        self::assertNotEquals($current, $config->current());
+    }
+
+    /**
+     * @test
+     * @dataProvider simpleConfigProvider
+     *
+     * @param SimpleConfig $config
+     * @param array $expected
      * @param array $paths
      */
     public function offsetExists(SimpleConfig $config, array $expected, array $paths)
@@ -102,68 +177,6 @@ class SimpleConfigTest extends TestCase
      * @dataProvider simpleConfigProvider
      *
      * @param SimpleConfig $config
-     * @param array $expected
-     */
-    public function countTest(SimpleConfig $config, array $expected)
-    {
-        self::assertCount(count($expected), $config);
-    }
-
-    /**
-     * @test
-     * @dataProvider simpleConfigProvider
-     *
-     * @param SimpleConfig $config
-     * @param array $expected
-     */
-    public function current(SimpleConfig $config, array $expected)
-    {
-        self::assertEquals(current($expected), $config->current());
-    }
-
-    /**
-     * @test
-     * @dataProvider simpleConfigProvider
-     *
-     * @param SimpleConfig $config
-     */
-    public function next(SimpleConfig $config)
-    {
-        $current = $config->current();
-        $config->next();
-        self::assertNotEquals($current, $config->current());
-    }
-
-    /**
-     * @test
-     * @dataProvider simpleConfigProvider
-     *
-     * @param SimpleConfig $config
-     */
-    public function key(SimpleConfig $config)
-    {
-        self::assertTrue(is_scalar($config->key()));
-    }
-
-    /**
-     * @test
-     * @dataProvider simpleConfigProvider
-     *
-     * @param SimpleConfig $config
-     */
-    public function valid(SimpleConfig $config)
-    {
-        self::assertTrue($config->valid());
-        while ($config->valid()) {
-            $config->next();
-        }
-    }
-
-    /**
-     * @test
-     * @dataProvider simpleConfigProvider
-     *
-     * @param SimpleConfig $config
      */
     public function rewind(SimpleConfig $config)
     {
@@ -175,33 +188,6 @@ class SimpleConfigTest extends TestCase
         self::assertNotEquals($current, $next);
         $config->rewind();
         self::assertEquals($current, $config->key());
-    }
-
-    /**
-     * @test
-     * @dataProvider simpleConfigProvider
-     *
-     * @param SimpleConfig $config
-     * @param array $expected
-     */
-    public function jsonSerialize(SimpleConfig $config, array $expected)
-    {
-        self::assertJsonStringEqualsJsonString(json_encode($expected), json_encode($config));
-    }
-
-    /**
-     * @test
-     * @dataProvider simpleConfigProvider
-     *
-     * @param SimpleConfig $config
-     * @param array $expected
-     * @param string[] $paths
-     */
-    public function invoke(SimpleConfig $config, array $expected, array $paths)
-    {
-        foreach ($paths as $path) {
-            self::assertEquals(ArrayHelper::findByPath($path, $expected), $config($path));
-        }
     }
 
     /**
@@ -225,5 +211,19 @@ class SimpleConfigTest extends TestCase
                 ['component', 'app:constant'],
             ],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider simpleConfigProvider
+     *
+     * @param SimpleConfig $config
+     */
+    public function valid(SimpleConfig $config)
+    {
+        self::assertTrue($config->valid());
+        while ($config->valid()) {
+            $config->next();
+        }
     }
 }

@@ -26,10 +26,10 @@
     "jolicode/jolinotif": "For using the Monolog desktop notification handler (^1.0.5 is recommended)",
     "monolog/monolog": "For using the Monolog family classes (~1.0 is recommended)",
     "phpunit/phpunit": "For using the Test family classes (~4.8 is recommended)",
-    "symfony/asset": "For using the PublisherConfig to register asset function in Twig (~3.0 is recommended)",
+    "symfony/asset": "For using the AdminLte package to register asset alias in Twig (~3.0 is recommended)",
     "symfony/config": "For using the FileConfig (~3.0 is recommended)",
     "symfony/filesystem": "For using the Composer scripts (~3.0 is recommended)",
-    "symfony/twig-bridge": "For using the PublisherConfig to register asset function in Twig (~3.0 is recommended)",
+    "symfony/twig-bridge": "For using the Twig AssetExtension to register AdminLte asset alias  (~3.0 is recommended)",
     "symfony/yaml": "For using the FileConfig with YAML files (~3.0 is recommended)"
   },
   "autoload": {

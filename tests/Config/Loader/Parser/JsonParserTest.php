@@ -20,19 +20,19 @@ class JsonParserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     */
-    public function parseSuccess()
-    {
-        self::assertArrayHasKey('json', $this->getParser()->parse('{"json": "valid"}'));
-    }
-
-    /**
-     * @test
      * @expectedException \InvalidArgumentException
      */
     public function parseFailure()
     {
         $this->getParser()->parse('{"json": invalid}');
+    }
+
+    /**
+     * @test
+     */
+    public function parseSuccess()
+    {
+        self::assertArrayHasKey('json', $this->getParser()->parse('{"json": "valid"}'));
     }
 
     /**

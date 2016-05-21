@@ -23,27 +23,11 @@ class FileLoaderTest extends TestCase
 
     /**
      * @test
-     * @dataProvider loaderProvider
-     *
-     * @param FileLoader $loader
-     * @param string $extension
      */
-    public function loadSuccess(FileLoader $loader, string $extension)
+    public function issue30()
     {
-        $expected = [
-            'parameters' => [
-                'parameter' => 'will overwrite parameter',
-            ],
-            'app' => [
-                'placeholder_parameter' => '%placeholder%',
-                'constant' => 'const(E_ALL)',
-            ],
-            'component' => [
-                'parameter' => 'base component\'s parameter will be overwritten by root config',
-                'base_parameter' => 'base parameter will not be overwritten',
-            ],
-        ];
-        self::assertEquals($expected, $loader->load($this->getConfigPath('config', $extension)));
+        $loader = new FileLoader(new FileLocator(), new Parser\YamlParser());
+        self::assertEquals([], $loader->load($this->getConfigPath('others/empty')));
     }
 
     /**
@@ -83,18 +67,22 @@ class FileLoaderTest extends TestCase
      * @param FileLoader $loader
      * @param string $extension
      */
-    public function supports(FileLoader $loader, string $extension)
+    public function loadSuccess(FileLoader $loader, string $extension)
     {
-        self::assertTrue($loader->supports('config.' . $extension));
-    }
-
-    /**
-     * @test
-     */
-    public function issue30()
-    {
-        $loader = new FileLoader(new FileLocator(), new Parser\YamlParser());
-        self::assertEquals([], $loader->load($this->getConfigPath('others/empty')));
+        $expected = [
+            'parameters' => [
+                'parameter' => 'will overwrite parameter',
+            ],
+            'app' => [
+                'placeholder_parameter' => '%placeholder%',
+                'constant' => 'const(E_ALL)',
+            ],
+            'component' => [
+                'parameter' => 'base component\'s parameter will be overwritten by root config',
+                'base_parameter' => 'base parameter will not be overwritten',
+            ],
+        ];
+        self::assertEquals($expected, $loader->load($this->getConfigPath('config', $extension)));
     }
 
     /**
@@ -107,5 +95,17 @@ class FileLoaderTest extends TestCase
             [new FileLoader(new FileLocator(), new Parser\YamlParser()), 'yml'],
             [new FileLoader(new FileLocator(), new Parser\IniParser()), 'ini'],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider loaderProvider
+     *
+     * @param FileLoader $loader
+     * @param string $extension
+     */
+    public function supports(FileLoader $loader, string $extension)
+    {
+        self::assertTrue($loader->supports('config.' . $extension));
     }
 }

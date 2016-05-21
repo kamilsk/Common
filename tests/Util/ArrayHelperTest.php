@@ -10,6 +10,30 @@ namespace OctoLab\Common\Util;
 class ArrayHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @return array
+     */
+    public function arrayProvider(): array
+    {
+        return [
+            [
+                [1, 2, 3, 4, 5],
+                [1, 2],
+                [3, 4, 5],
+            ],
+            [
+                ['a' => 'b', 'c' => 'd', 'e' => 'f'],
+                ['a' => 'g', 'c' => 'd'],
+                ['a' => 'b', 'e' => 'f'],
+            ],
+            [
+                ['a' => [1, 'b' => 'c', 2, 3, 4, 5]],
+                ['a' => [1, 'b' => 'd', 2]],
+                ['a' => [3, 4, 'b' => 'c', 5]],
+            ],
+        ];
+    }
+
+    /**
      * @test
      */
     public function findByPath()
@@ -52,29 +76,5 @@ class ArrayHelperTest extends \PHPUnit_Framework_TestCase
         ];
         ArrayHelper::transform($target, ['placeholder' => 'transformed']);
         self::assertEquals($expected, $target);
-    }
-
-    /**
-     * @return array
-     */
-    public function arrayProvider(): array
-    {
-        return [
-            [
-                [1, 2, 3, 4, 5],
-                [1, 2],
-                [3, 4, 5],
-            ],
-            [
-                ['a' => 'b', 'c' => 'd', 'e' => 'f'],
-                ['a' => 'g', 'c' => 'd'],
-                ['a' => 'b', 'e' => 'f'],
-            ],
-            [
-                ['a' => [1, 'b' => 'c', 2, 3, 4, 5]],
-                ['a' => [1, 'b' => 'd', 2]],
-                ['a' => [3, 4, 'b' => 'c', 5]],
-            ],
-        ];
     }
 }

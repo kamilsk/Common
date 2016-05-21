@@ -4,8 +4,9 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common\Composer\Script;
 
-use Composer\Package\PackageInterface;
+use Composer\Package\PackageInterface as ComposerPackageInterface;
 use Composer\Script\Event;
+use Symfony\Component\Asset\PackageInterface as AssetPackageInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -26,44 +27,54 @@ abstract class Publisher
     {
         $publisher = new static();
         $config = $publisher->getConfig($event);
-        $package = $publisher->getPackage($event);
+        $assetPackage = $publisher->getAssetPackage($config);
+        $composerPackage = $publisher->getComposerPackage($event);
         (new Processor(new Filesystem(), $event->getIO()))->publish(
-            $config->getTargetPath(),
-            $event->getComposer()->getInstallationManager()->getInstallPath($package),
-            $publisher->getPublishingMap($config),
+            $event->getComposer()->getInstallationManager()->getInstallPath($composerPackage),
+            $publisher->getPublishingMap($assetPackage, $config),
             $config->isSymlink(),
             $config->isRelative()
         );
     }
 
     /**
-     * @param Event $event
+     * @param ConfigInterface $config
      *
-     * @return PublisherConfig
-     *
-     * @throws \InvalidArgumentException
+     * @return AssetPackageInterface
      *
      * @api
      */
-    abstract protected function getConfig(Event $event): PublisherConfig;
+    abstract protected function getAssetPackage(ConfigInterface $config): AssetPackageInterface;
 
     /**
      * @param Event $event
      *
-     * @return PackageInterface
+     * @return ComposerPackageInterface
      *
      * @throws \RuntimeException
      *
      * @api
      */
-    abstract protected function getPackage(Event $event): PackageInterface;
+    abstract protected function getComposerPackage(Event $event): ComposerPackageInterface;
 
     /**
-     * @param PublisherConfig $config
+     * @param Event $event
+     *
+     * @return ConfigInterface
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @api
+     */
+    abstract protected function getConfig(Event $event): ConfigInterface;
+
+    /**
+     * @param AssetPackageInterface $package
+     * @param ConfigInterface $config
      *
      * @return array
      *
      * @api
      */
-    abstract protected function getPublishingMap(PublisherConfig $config): array;
+    abstract protected function getPublishingMap(AssetPackageInterface $package, ConfigInterface $config): array;
 }
