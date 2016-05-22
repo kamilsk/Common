@@ -59,11 +59,11 @@ final class Json
      */
     public function decode(string $json, bool $assoc = null, int $depth = null, int $options = null)
     {
-        list($result, $error) = $this->softDecode($json, $assoc, $depth, $options);
+        list($content, $error) = $this->softDecode($json, $assoc, $depth, $options);
         if ($error !== null) {
             throw $error;
         }
-        return $result;
+        return $content;
     }
 
     /**
@@ -99,8 +99,8 @@ final class Json
     public function softDecode(string $json, bool $assoc = null, int $depth = null, int $options = null): array
     {
         assert('($depth === null || $depth >= 0) && ($options === null || $options >= 0)');
-        $result = json_decode($json, $assoc ?? $this->assoc, $depth ?? $this->depth, $options ?? $this->options);
-        return [$result, $this->getError()];
+        $content = json_decode($json, $assoc ?? $this->assoc, $depth ?? $this->depth, $options ?? $this->options);
+        return [$content, $this->getError()];
     }
 
     /**

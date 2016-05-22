@@ -25,13 +25,13 @@ final class ComponentBuilder
         'php_console' => 'PHPConsole',
     ];
 
-    /** @var null|string */
+    /** @var string|null */
     private $class;
     /** @var string[] */
     private $dependencies = [];
-    /** @var null|string */
+    /** @var string|null */
     private $namespace;
-    /** @var null|string */
+    /** @var string|null */
     private $suffix;
 
     /**
@@ -59,8 +59,8 @@ final class ComponentBuilder
     }
 
     /**
-     * @param null|string $class
-     * @param null|string $type
+     * @param string|null $class
+     * @param string|null $type
      * @param array $args
      *
      * @return \Monolog\Logger|\Monolog\Handler\HandlerInterface|\Monolog\Formatter\FormatterInterface|callable
@@ -120,7 +120,7 @@ final class ComponentBuilder
     }
 
     /**
-     * @param null|string $type
+     * @param string|null $type
      *
      * @return string
      *

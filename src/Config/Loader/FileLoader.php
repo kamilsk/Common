@@ -30,7 +30,7 @@ final class FileLoader extends AbstractFileLoader
 
     /**
      * @param string $resource
-     * @param null|string $type
+     * @param string|null $type
      *
      * @return array
      *
@@ -63,7 +63,7 @@ final class FileLoader extends AbstractFileLoader
 
     /**
      * @param string $resource
-     * @param null|string $type
+     * @param string|null $type
      *
      * @return bool
      *

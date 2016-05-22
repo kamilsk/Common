@@ -23,25 +23,42 @@ class IniTest extends TestCase
     /**
      * @test
      */
+    public function parse()
+    {
+        self::assertEquals(['ini' => 'valid'], Ini::new()->parse('ini=valid'));
+    }
+
+    /**
+     * @test
+     */
     public function parseFailure()
     {
         $ini = '{ini=invalid}';
-        error_reporting(($before = error_reporting()) & ~E_WARNING);
         try {
             Ini::new()->parse($ini);
             self::fail(sprintf('%s exception expected.', \InvalidArgumentException::class));
         } catch (\InvalidArgumentException $e) {
             self::assertEquals(sprintf("Invalid ini string \n\n%s\n", $ini), $e->getMessage());
-        } finally {
-            error_reporting($before);
         }
     }
 
     /**
      * @test
      */
-    public function parseSuccess()
+    public function softParse()
     {
-        self::assertEquals(['ini' => 'valid'], Ini::new()->parse('ini=valid'));
+        $ini = 'ini=valid';
+        list($content,) = Ini::new()->softParse($ini);
+        self::assertEquals(parse_ini_string($ini), $content);
+    }
+
+    /**
+     * @test
+     */
+    public function softParseFailure()
+    {
+        $ini = '{ini=invalid}';
+        list(, $error) = Ini::new()->softParse($ini);
+        self::assertInstanceOf(\InvalidArgumentException::class, $error);
     }
 }

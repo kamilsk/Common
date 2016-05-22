@@ -72,11 +72,13 @@ final class Ini
     public function softParse(string $ini, bool $processSections = null, int $scannerMode = null): array
     {
         assert('$scannerMode === null || $scannerMode >= 0');
+        error_reporting(($before = error_reporting()) & ~E_WARNING);
         $content = parse_ini_string(
             $ini,
             $processSections ?? $this->processSections,
             $scannerMode ?? $this->scannerMode
         );
+        error_reporting($before);
         if ($content === false) {
             return [null, new \InvalidArgumentException(sprintf("Invalid ini string \n\n%s\n", $ini))];
         }

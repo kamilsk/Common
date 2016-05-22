@@ -12,6 +12,15 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function decode()
+    {
+        $json = Json::new();
+        self::assertEquals(json_decode(json_encode([])), $json->decode($json->encode([])));
+    }
+
+    /**
+     * @test
+     */
     public function decodeFailure()
     {
         $json = Json::new();
@@ -39,10 +48,9 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function decodeSuccess()
+    public function encode()
     {
-        $json = Json::new();
-        self::assertEquals(json_decode(json_encode([])), $json->decode($json->encode([])));
+        self::assertJsonStringEqualsJsonString(json_encode([]), Json::new()->encode([]));
     }
 
     /**
@@ -83,17 +91,46 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function encodeSuccess()
+    public function new()
     {
-        self::assertJsonStringEqualsJsonString(json_encode([]), Json::new()->encode([]));
+        $json = Json::new(true, JSON_UNESCAPED_UNICODE);
+        self::assertNotEquals(json_encode(['a' => 'б']), $json->encode(['a' => 'б']));
     }
 
     /**
      * @test
      */
-    public function new()
+    public function softDecode()
     {
-        $json = Json::new(true, JSON_UNESCAPED_UNICODE);
-        self::assertNotEquals(json_encode(['a' => 'б']), $json->encode(['a' => 'б']));
+        $json = json_encode([]);
+        list($content,) = Json::new()->softDecode($json);
+        self::assertEquals(json_decode($json), $content);
+    }
+
+    /**
+     * @test
+     */
+    public function softDecodeFailure()
+    {
+        list(, $error) = Json::new()->softDecode('{"invalid"}');
+        self::assertInstanceOf(\InvalidArgumentException::class, $error);
+    }
+
+    /**
+     * @test
+     */
+    public function softEncode()
+    {
+        list($json,) = Json::new()->softEncode([]);
+        self::assertJsonStringEqualsJsonString(json_encode([]), $json);
+    }
+
+    /**
+     * @test
+     */
+    public function softEncodeFailure()
+    {
+        list(, $error) = Json::new()->softEncode("\xB1\x31");
+        self::assertInstanceOf(\InvalidArgumentException::class, $error);
     }
 }
