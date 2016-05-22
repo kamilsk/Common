@@ -86,11 +86,11 @@ final class Call
         } catch (\Throwable $e) {
             $class = get_class($e);
             if (isset($this->catchers[$class])) {
-                return $this->catch($class, $args);
+                return $this->handle($class, $args);
             } else {
                 foreach ($this->parents as $parent => $check) {
                     if ($check && isset($this->catchers[$parent]) && is_subclass_of($e, $parent, false)) {
-                        return $this->catch($parent, $args);
+                        return $this->handle($parent, $args);
                     }
                 }
                 throw $e;
@@ -156,7 +156,7 @@ final class Call
      *
      * @return mixed
      */
-    private function catch(string $class, array $args)
+    private function handle(string $class, array $args)
     {
         $latest = null;
         foreach ($this->catchers[$class] as $catcher) {
