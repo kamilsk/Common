@@ -63,7 +63,11 @@ final class ComponentFactory
     /**
      * @param array $config
      *
-     * @return \Monolog\Logger|\Monolog\Handler\HandlerInterface|\Monolog\Formatter\FormatterInterface|callable
+     * @return object
+     * \Monolog\Logger
+     * \Monolog\Handler\HandlerInterface
+     * \Monolog\Formatter\FormatterInterface
+     * callable
      *
      * @throws \InvalidArgumentException
      * @throws \ReflectionException

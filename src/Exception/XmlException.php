@@ -16,7 +16,7 @@ final class XmlException extends \InvalidArgumentException
      * @param array $errors
      * @param string $message
      * @param int $code
-     * @param \Exception $previous
+     * @param \Exception|null $previous
      *
      * @throws \InvalidArgumentException
      *

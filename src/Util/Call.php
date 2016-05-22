@@ -10,11 +10,11 @@ namespace OctoLab\Common\Util;
 final class Call
 {
     /** @var array<string,callable[]> */
-    private $catchers = [];
+    private $catchers;
     /** @var string */
     private $current;
     /** @var array<string,bool> */
-    private $parents = [];
+    private $parents;
     /** @var callable */
     private $wrapped;
 
@@ -55,7 +55,7 @@ final class Call
     }
 
     /**
-     * @param mixed[] ...$args
+     * @param array ...$args
      *
      * @return mixed
      *
@@ -69,13 +69,15 @@ final class Call
     }
 
     /**
-     * @param mixed[] ...$args
+     * @param array ...$args
      *
      * @return mixed
      *
      * @throws \Throwable
      *
      * @api
+     *
+     * @quality:method [B]
      */
     public function end(...$args)
     {
@@ -86,9 +88,9 @@ final class Call
             if (isset($this->catchers[$class])) {
                 return $this->catch($class, $args);
             } else {
-                foreach ($this->parents as $class => $check) {
-                    if ($check && array_key_exists($class, $this->catchers) && is_subclass_of($e, $class, false)) {
-                        return $this->catch($class, $args);
+                foreach ($this->parents as $parent => $check) {
+                    if ($check && isset($this->catchers[$parent]) && is_subclass_of($e, $parent, false)) {
+                        return $this->catch($parent, $args);
                     }
                 }
                 throw $e;
@@ -109,8 +111,7 @@ final class Call
         string $exceptionClass = \Exception::class,
         callable $catcher = null,
         bool $checkSubclasses = false
-    ): Call
-    {
+    ): Call {
         $this->catchers[$exceptionClass][] = $catcher ?? function () {
             // do nothing, it is rescue
         };
@@ -155,7 +156,7 @@ final class Call
      *
      * @return mixed
      */
-    private function catch (string $class, array $args)
+    private function catch(string $class, array $args)
     {
         $latest = null;
         foreach ($this->catchers[$class] as $catcher) {

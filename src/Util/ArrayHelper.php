@@ -70,7 +70,7 @@ final class ArrayHelper
      */
     public static function transform(array &$target, array $placeholders)
     {
-        $wrap = function (string &$value) {
+        $wrap = function (string & $value) {
             $value = sprintf('/%s/', $value);
         };
         array_walk_recursive($target, function (&$param) use ($wrap, $placeholders) {

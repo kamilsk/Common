@@ -63,7 +63,11 @@ final class ComponentBuilder
      * @param string|null $type
      * @param array $args
      *
-     * @return \Monolog\Logger|\Monolog\Handler\HandlerInterface|\Monolog\Formatter\FormatterInterface|callable
+     * @return object
+     * \Monolog\Logger
+     * \Monolog\Handler\HandlerInterface
+     * \Monolog\Formatter\FormatterInterface
+     * callable
      *
      * @throws \InvalidArgumentException
      * @throws \ReflectionException
