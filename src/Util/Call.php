@@ -83,11 +83,11 @@ final class Call
             return ($this->wrapped)(...$args);
         } catch (\Throwable $e) {
             $class = get_class($e);
-            if (array_key_exists($class, $this->catchers)) {
+            if (isset($this->catchers[$class])) {
                 return $this->catch($class, $args);
             } else {
                 foreach ($this->parents as $class => $check) {
-                    if ($check && is_subclass_of($e, $class, false)) {
+                    if ($check && array_key_exists($class, $this->catchers) && is_subclass_of($e, $class, false)) {
                         return $this->catch($class, $args);
                     }
                 }
@@ -112,8 +112,8 @@ final class Call
     ): Call
     {
         $this->catchers[$exceptionClass][] = $catcher ?? function () {
-                // do nothing, it is rescue
-            };
+            // do nothing, it is rescue
+        };
         $this->parents[$exceptionClass] = $checkSubclasses;
         $this->current = $exceptionClass;
         return $this;
