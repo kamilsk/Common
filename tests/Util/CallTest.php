@@ -98,11 +98,11 @@ class CallTest extends TestCase
      */
     public function rescue()
     {
-        $sugar = Call::begin(function (string $message, int $code = 0) {
+        $callable = Call::begin(function (string $message, int $code = 0) {
             throw new \Exception($message, $code);
         });
         try {
-            $sugar->rescue()->end('Exception is suppressed!');
+            $callable->rescue()->end('Exception is suppressed!');
             self::assertTrue(true);
         } catch (\Exception $e) {
             self::assertTrue(false);
@@ -115,15 +115,32 @@ class CallTest extends TestCase
     public function retry()
     {
         $times = 0;
-        $sugar = Call::begin(function (string $message, int $code = 0) use (&$times) {
+        $callable = Call::begin(function (string $message, int $code = 0) use (&$times) {
             $times++;
             throw new \Exception($message, $code);
         });
         try {
-            $sugar->rescue()->retry(3)->end('Exception is suppressed three times!');
+            $callable->rescue()->retry(3)->end('Exception is suppressed three times!');
             self::assertEquals(3, $times);
         } catch (\Exception $e) {
             self::assertTrue(false);
         }
+    }
+
+    /**
+     * @test
+     */
+    public function issue68and69()
+    {
+        $callable = Call::begin(function () {
+            throw new \RuntimeException();
+        })->rescue(
+            \Exception::class,
+            function () : string {
+                return 'success';
+            },
+            true
+        );
+        self::assertEquals('success', $callable());
     }
 }

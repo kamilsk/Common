@@ -13,6 +13,8 @@ final class Call
     private $catchers = [];
     /** @var string */
     private $current;
+    /** @var array<string,bool> */
+    private $parents = [];
     /** @var callable */
     private $wrapped;
 
@@ -61,6 +63,20 @@ final class Call
      *
      * @api
      */
+    public function __invoke(...$args)
+    {
+        return $this->end(...$args);
+    }
+
+    /**
+     * @param mixed[] ...$args
+     *
+     * @return mixed
+     *
+     * @throws \Throwable
+     *
+     * @api
+     */
     public function end(...$args)
     {
         try {
@@ -68,12 +84,13 @@ final class Call
         } catch (\Throwable $e) {
             $class = get_class($e);
             if (array_key_exists($class, $this->catchers)) {
-                $latest = null;
-                foreach ($this->catchers[$class] as $catcher) {
-                    $latest = $catcher(...$args);
-                }
-                return $latest;
+                return $this->catch($class, $args);
             } else {
+                foreach ($this->parents as $class => $check) {
+                    if ($check && is_subclass_of($e, $class, false)) {
+                        return $this->catch($class, $args);
+                    }
+                }
                 throw $e;
             }
         }
@@ -82,16 +99,22 @@ final class Call
     /**
      * @param string $exceptionClass
      * @param callable|null $catcher
+     * @param bool $checkSubclasses
      *
      * @return Call
      *
      * @api
      */
-    public function rescue(string $exceptionClass = \Exception::class, callable $catcher = null): Call
+    public function rescue(
+        string $exceptionClass = \Exception::class,
+        callable $catcher = null,
+        bool $checkSubclasses = false
+    ): Call
     {
         $this->catchers[$exceptionClass][] = $catcher ?? function () {
-            // do nothing, it is rescue
-        };
+                // do nothing, it is rescue
+            };
+        $this->parents[$exceptionClass] = $checkSubclasses;
         $this->current = $exceptionClass;
         return $this;
     }
@@ -124,5 +147,20 @@ final class Call
             };
         }
         return $this;
+    }
+
+    /**
+     * @param string $class
+     * @param array $args
+     *
+     * @return mixed
+     */
+    private function catch (string $class, array $args)
+    {
+        $latest = null;
+        foreach ($this->catchers[$class] as $catcher) {
+            $latest = $catcher(...$args);
+        }
+        return $latest;
     }
 }
