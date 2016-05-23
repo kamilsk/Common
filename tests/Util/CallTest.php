@@ -65,12 +65,12 @@ class CallTest extends TestCase
      */
     public function end()
     {
-        $sugar = Call::begin(function (string $message, int $code = 0) {
-            throw new \RuntimeException($message, $code);
+        $sugar = Call::begin(function () {
+            throw new \RuntimeException();
         });
         try {
-            $sugar->end('Exception is not suppressed.');
-            self::assertTrue(false);
+            $sugar->end();
+            self::fail('Exception is not suppressed.');
         } catch (\RuntimeException $e) {
             self::assertTrue(true);
         }

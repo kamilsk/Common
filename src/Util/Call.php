@@ -23,6 +23,8 @@ final class Call
      */
     private function __construct(callable $callable)
     {
+        $this->catchers = [];
+        $this->parents = [];
         $this->wrapped = $callable;
     }
 
@@ -93,8 +95,8 @@ final class Call
                         return $this->handle($parent, $args);
                     }
                 }
-                throw $e;
             }
+            throw $e;
         }
     }
 
