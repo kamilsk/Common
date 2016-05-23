@@ -1,52 +1,62 @@
 {
-  "name": "kamilsk/common",
-  "type": "library",
-  "description": "Common codebase.",
-  "homepage": "https://github.com/kamilsk/Common",
-  "license": "MIT",
-  "authors": [
-    { "name": "Kamil Samigullin", "email": "kamil@samigullin.info", "role": "lead" }
-  ],
-  "require": {
-    "php": ">=7.0"
-  },
-  "require-dev": {
-    "composer/composer": "~1.0",
-    "doctrine/migrations": "~1.0",
-    "jolicode/jolinotif": "^1.0.5",
-    "monolog/monolog": "~1.0",
-    "symfony/asset": "~3.0",
-    "symfony/config": "~3.0",
-    "symfony/twig-bridge": "~3.0",
-    "symfony/yaml": "~3.0"
-  },
-  "suggest": {
-    "doctrine/dbal": "For using the Doctrine family classes (~2.2 is recommended)",
-    "doctrine/migrations": "For using the Doctrine migration classes (~1.0 is recommended)",
-    "jolicode/jolinotif": "For using the Monolog desktop notification handler (^1.0.5 is recommended)",
-    "monolog/monolog": "For using the Monolog family classes (~1.0 is recommended)",
-    "phpunit/phpunit": "For using the Test family classes (~4.8 is recommended)",
-    "symfony/asset": "For using the AdminLte package to register asset alias in Twig (~3.0 is recommended)",
-    "symfony/config": "For using the FileConfig (~3.0 is recommended)",
-    "symfony/filesystem": "For using the Composer scripts (~3.0 is recommended)",
-    "symfony/twig-bridge": "For using the Twig AssetExtension to register AdminLte asset alias (~3.0 is recommended)",
-    "symfony/yaml": "For using the FileConfig with YAML files (~3.0 is recommended)"
-  },
-  "autoload": {
-    "files": ["src/functions.php"],
-    "psr-4": { "OctoLab\\Common\\": "src/" }
-  },
-  "autoload-dev": {
-    "psr-4": { "OctoLab\\Common\\": "tests/" }
-  },
+  "name": "kamilsk/common", 
+  "license": "MIT", 
   "extra": {
     "branch-alias": {
-      "dev-master": "2.x-dev",
-      "dev-3.x": "3.x-dev"
+      "dev-3.x": "3.x-dev", 
+      "dev-master": "2.x-dev"
     }
-  },
+  }, 
+  "suggest": {
+    "doctrine/migrations": "For using the Doctrine migration classes (~1.0 is recommended)", 
+    "symfony/asset": "For using the AdminLte package to register asset alias in Twig (~3.0 is recommended)", 
+    "symfony/config": "For using the FileConfig (~3.0 is recommended)", 
+    "doctrine/dbal": "For using the Doctrine family classes (~2.2 is recommended)", 
+    "jolicode/jolinotif": "For using the Monolog desktop notification handler (^1.0.5 is recommended)", 
+    "symfony/filesystem": "For using the Composer scripts (~3.0 is recommended)", 
+    "symfony/yaml": "For using the FileConfig with YAML files (~3.0 is recommended)", 
+    "phpunit/phpunit": "For using the Test family classes (~4.8 is recommended)", 
+    "symfony/twig-bridge": "For using the Twig AssetExtension to register AdminLte asset alias (~3.0 is recommended)", 
+    "monolog/monolog": "For using the Monolog family classes (~1.0 is recommended)"
+  }, 
+  "require": {
+    "php": ">=7.0"
+  }, 
+  "autoload": {
+    "files": [
+      "src/functions.php"
+    ], 
+    "psr-4": {
+      "OctoLab\\Common\\": "src/"
+    }
+  }, 
+  "homepage": "https://github.com/kamilsk/Common", 
+  "autoload-dev": {
+    "psr-4": {
+      "OctoLab\\Common\\": "tests/"
+    }
+  }, 
+  "authors": [
+    {
+      "role": "lead", 
+      "name": "Kamil Samigullin", 
+      "email": "kamil@samigullin.info"
+    }
+  ], 
+  "require-dev": {
+    "doctrine/migrations": "~1.0", 
+    "composer/composer": "~1.0", 
+    "symfony/asset": "~3.0", 
+    "symfony/config": "~3.0", 
+    "monolog/monolog": "~1.0", 
+    "symfony/yaml": "~3.0", 
+    "symfony/twig-bridge": "~3.0", 
+    "jolicode/jolinotif": "^1.0.5"
+  }, 
+  "type": "library", 
   "support": {
-    "irc": "irc://irc.gitter.im/kamilsk/small-tools",
+    "irc": "irc://irc.gitter.im/kamilsk/small-tools", 
     "issues": "https://github.com/kamilsk/Common/issues"
-  }
+  }, 
+  "description": "Common codebase."
 }
