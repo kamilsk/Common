@@ -2,6 +2,10 @@
   "name": "kamilsk/common", 
   "license": "MIT", 
   "extra": {
+    "dev-files": [
+      "/dev-for-clear/*", 
+      "!dev-for-clear/subdir/miss.md"
+    ], 
     "branch-alias": {
       "dev-3.x": "3.x-dev", 
       "dev-master": "2.x-dev"
@@ -20,7 +24,7 @@
     "monolog/monolog": "For using the Monolog family classes (~1.0 is recommended)"
   }, 
   "require": {
-    "php": ">=7.0"
+    "php": "^7.0"
   }, 
   "autoload": {
     "files": [
