@@ -2,10 +2,6 @@
   "name": "kamilsk/common", 
   "license": "MIT", 
   "extra": {
-    "dev-files": [
-      "/dev-for-clear/*", 
-      "!dev-for-clear/subdir/miss.md"
-    ], 
     "branch-alias": {
       "dev-3.x": "3.x-dev", 
       "dev-master": "2.x-dev"
