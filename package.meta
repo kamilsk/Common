@@ -1,5 +1,8 @@
 # Format for [package metadata compiler](https://github.com/octolab/pmc)
 
+common:
+  symfony: &symfony ~3.0
+
 composer:
   name: kamilsk/common
   type: library
@@ -20,10 +23,10 @@ composer:
     doctrine/migrations:  ~1.0
     jolicode/jolinotif:   ^1.0.5
     monolog/monolog:      ~1.0
-    symfony/asset:        ~3.0
-    symfony/config:       ~3.0
-    symfony/twig-bridge:  ~3.0
-    symfony/yaml:         ~3.0
+    symfony/asset:        *symfony
+    symfony/config:       *symfony
+    symfony/twig-bridge:  *symfony
+    symfony/yaml:         *symfony
 
   suggest:
     doctrine/dbal:        For using the Doctrine family classes (~2.2 is recommended)
