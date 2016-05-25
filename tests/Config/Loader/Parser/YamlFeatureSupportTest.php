@@ -9,10 +9,50 @@ use OctoLab\Common\TestCase;
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  *
+ * @see http://symfony.com/doc/current/components/yaml/yaml_format.html
  * @see https://habrahabr.ru/post/270097/
+ * @see http://yaml.org
  */
 class YamlFeatureSupportTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function comment()
+    {
+        $yaml = <<<'YAML'
+# this is a comment for component block
+component:
+  key: value # this is a comment for key field
+YAML;
+        self::assertEquals(['component' => ['key' => 'value']], $this->getParser()->parse($yaml));
+    }
+
+    /**
+     * @test
+     */
+    public function inheritance()
+    {
+        $yaml = <<<'YAML'
+_basic: &basic
+  property1: 1
+  property2: 2
+
+inheritance:
+  first:
+    <<: *basic
+    property2: 1
+  # not supported - first: { <<: *basic, property2: 1 } 
+
+  second:
+    <<: *basic
+    property1: 2
+YAML;
+        $result = $this->getParser()->parse($yaml)['inheritance'];
+        self::assertEquals($result['first']['property1'], $result['first']['property2']);
+        self::assertEquals($result['second']['property1'], $result['second']['property2']);
+    }
+
     /**
      * @test
      */
@@ -36,6 +76,20 @@ YAML;
         $result = $this->getParser()->parse($yaml)['multilines'];
         self::assertEquals($result['first'], $result['second']);
         self::assertEquals($result['first'], $result['third'] . "\n");
+    }
+
+    /**
+     * @test
+     */
+    public function reference()
+    {
+        $yaml = <<<'YAML'
+reference:
+  first: &ref value
+  second: *ref
+YAML;
+        $result = $this->getParser()->parse($yaml)['reference'];
+        self::assertEquals($result['first'], $result['second']);
     }
 
     /**
@@ -101,45 +155,6 @@ YAML;
         $result = $this->getParser()->parse($yaml)['styles'];
         self::assertEquals($result['first'], $result['second']);
         // self::assertEquals($result['matrices']['first'], $result['matrices']['second']);
-    }
-
-    /**
-     * @test
-     */
-    public function inheritance()
-    {
-        $yaml = <<<'YAML'
-_basic: &basic
-  property1: 1
-  property2: 2
-
-inheritance:
-  first:
-    <<: *basic
-    property2: 1
-  # not supported - first: { <<: *basic, property2: 1 } 
-
-  second:
-    <<: *basic
-    property1: 2
-YAML;
-        $result = $this->getParser()->parse($yaml)['inheritance'];
-        self::assertEquals($result['first']['property1'], $result['first']['property2']);
-        self::assertEquals($result['second']['property1'], $result['second']['property2']);
-    }
-
-    /**
-     * @test
-     */
-    public function reference()
-    {
-        $yaml = <<<'YAML'
-reference:
-  first: &ref value
-  second: *ref
-YAML;
-        $result = $this->getParser()->parse($yaml)['reference'];
-        self::assertEquals($result['first'], $result['second']);
     }
 
     /**
