@@ -7,4 +7,4 @@ app:
   constant: const(E_ALL)
 
 component:
-  parameter: "base component's parameter will be overwritten by root config"
+  parameter: base component's parameter will be overwritten by root config
