@@ -1,4 +1,4 @@
-# Format for [package metadata compiler](https://github.com/octolab/pmc)
+# see [package metadata compiler](https://github.com/octolab/pmc)
 
 common:
   symfony: &symfony ~3.0

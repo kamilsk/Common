@@ -4,8 +4,69 @@
 # Version 3
 
 ## [3.1.0] - Unreleased
+### Added
+- development dependencies
+  - `composer/composer:~1.0` for testing Composer scripts
+  - `symfony/asset:~3.0` for using the AdminLte package to register asset alias in Twig
+  - `symfony/twig-bridge:~3.0` for using the Twig AssetExtension to register AdminLte asset alias
+- classes
+  - final `Asset\AdminLtePackage`
+  - final `Composer\Script\AdminLte\Config`
+  - final `Composer\Script\Processor`
+  - abstract `Composer\Script\Publisher`
+  - final `Config\Loader\Parser\IniParser`
+  - final `Exception\XmlException`
+  - final `Twig\Extension\AssetExtension`
+  - final `Util\Ini`
+  - final `Util\Xml`
+- interfaces
+  - `Composer\Script\ConfigInterface`
+- methods
+  - `Util\Call::go` to prevent trowing exception
+  - `Util\Json::softEncode` and `Util\Json::softDecode` without throwing exception but returning it as second value
+- functions
+  - `camelize`
+- zero cost assertions
+- support `@id` as reference to another component in `monolog` configuration
+
 ### Changed
+- development dependencies
+  - `jolicode/jolinotif` up to `^1.0.5`
+- classes
+  - finalized
+    - `Composer\Script\AdminLte\Publisher`
+    - `Config\FileConfig`
+    - `Config\Loader\FileLoader`
+    - `Config\Loader\Parser\JsonParser`
+    - `Config\Loader\Parser\YamlParser`
+    - `Doctrine\Util\ConfigResolver`
+    - `Doctrine\Util\Limiter`
+    - `Doctrine\Util\Parser`
+    - `Monolog\Handler\BulletproofStreamHandler`
+    - `Monolog\Handler\DesktopNotificationHandler`
+    - `Monolog\Processor\SignProcessor`
+    - `Monolog\Processor\TimeExecutionProcessor`
+    - `Monolog\Service\ComponentBuilder`
+    - `Monolog\Service\ComponentFactory`
+    - `Monolog\Service\Locator`
+    - `Monolog\Util\Dumper`
+    - `Util\ArrayHelper`
+    - `Util\Call`
+    - `Util\Json`
+    - `Util\System`
+  - `Config\SimpleConfig` now invokable and takes offset
+  - `Util\Call` now invokable and takes the same arguments that the `begin` callable
+  - `DesktopNotificationHandler` now takes string and int as `level` argument
+- methods
+  - `Util\Call::rescue` now takes `checkSubclasses` to check exception's parents
+- moving to [package.meta](https://github.com/octolab/pmc) to describe composer package
+- code optimizations (using greediness in regular expressions, removing while loops,
+using arbitrary expression dereferencing instead intermediate vars, etc.)
 - [git diff](/../../compare/3.0.5...3.x)
+
+### Removed
+- classes
+  - `Composer\Script\AdminLte\Processor`, use `Composer\Script\Processor` instead
 
 ## [3.0.x] - 2016-04-23
 ### Added
