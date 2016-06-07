@@ -68,6 +68,11 @@ $ composer require kamilsk/common:~3.0
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details.
 
+### [package.meta](https://github.com/octolab/pmc)
+
+We using `package.meta` to describe the package instead of `composer.json`.
+Thus, changes in `composer.json` file directly is not allowed.
+
 ## Security
 
 If you discover any security related issues, please email feedback@octolab.org instead of using the issue tracker.
