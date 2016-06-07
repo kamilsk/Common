@@ -65,7 +65,7 @@
 - moving to [package.meta](https://github.com/octolab/pmc) to describe composer package
 - code optimizations (using greediness in regular expressions, removing while loops,
 using arbitrary expression dereferencing instead intermediate vars, etc.)
-- [git diff](/../../compare/3.0.5...3.x)
+- [git diff](/../../compare/3.0.5...3.1.0)
 
 ### Removed
 - classes
