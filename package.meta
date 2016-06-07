@@ -54,6 +54,7 @@ composer:
     branch-alias:
       dev-master: 2.x-dev
       dev-3.x:    3.x-dev
+      dev-4.x:    4.x-dev
 
   support:
     irc:    irc://irc.gitter.im/kamilsk/small-tools
