@@ -60,7 +60,6 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      *
      * @api
      */
@@ -79,7 +78,6 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      *
      * @api
      */
@@ -93,7 +91,6 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      *
      * @api
      */
@@ -139,7 +136,6 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      *
      * @api
      */
@@ -218,7 +214,6 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      */
     private function getComponent(string $id)
     {
@@ -240,7 +235,6 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      */
     private function getComponentConfig(string $id): array
     {
@@ -252,6 +246,9 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * @param mixed $value
+     *
+     * @throws \OutOfRangeException
+     * @throws \InvalidArgumentException
      */
     private function resolveComponent(&$value)
     {
@@ -266,7 +263,6 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      */
     private function resolveComponentDependencies(string $id, $component)
     {

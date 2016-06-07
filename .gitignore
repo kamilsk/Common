@@ -1,4 +1,4 @@
-/tests/app/web/*
-!tests/app/web/.gitkeep
+/tests/fixtures/app/web/*
+!/tests/fixtures/app/web/.gitkeep
 /vendor/
 /composer.lock

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common\Composer\Script;
 
+use Composer\Package\PackageInterface;
 use Composer\Script\Event;
 use Symfony\Component\Asset\PackageInterface as AssetPackageInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -48,13 +49,13 @@ abstract class Publisher
     /**
      * @param Event $event
      *
-     * @return \Composer\Package\PackageInterface
+     * @return PackageInterface
      *
      * @throws \RuntimeException
      *
      * @api
      */
-    abstract protected function getComposerPackage(Event $event): \Composer\Package\PackageInterface;
+    abstract protected function getComposerPackage(Event $event): PackageInterface;
 
     /**
      * @param Event $event

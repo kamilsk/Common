@@ -70,7 +70,6 @@ final class ComponentFactory
      * callable
      *
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      *
      * @api
      */

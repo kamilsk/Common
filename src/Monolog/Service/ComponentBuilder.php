@@ -70,13 +70,13 @@ final class ComponentBuilder
      * callable
      *
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      *
      * @api
      */
     public function make(string $class = null, string $type = null, array $args = [])
     {
         $class = $class ?? $this->class ?? $this->resolveClassName($type);
+        assert('class_exists($class)');
         $reflection = new \ReflectionClass($class);
         if ($args !== [] && !is_int(key($args))) {
             $args = $this->resolveConstructorArguments($args, $reflection);

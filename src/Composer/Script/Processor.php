@@ -37,7 +37,6 @@ final class Processor
      * @param bool $isRelative
      *
      * @throws IOException
-     * @throws \InvalidArgumentException
      *
      * @api
      */
@@ -68,7 +67,6 @@ final class Processor
      * @param string $to
      *
      * @throws IOException
-     * @throws \InvalidArgumentException
      */
     private function publishSymlink(string $origin, string $from, string $to)
     {

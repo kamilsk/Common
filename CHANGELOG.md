@@ -11,6 +11,9 @@
   - `symfony/twig-bridge:~3.0` for using the Twig AssetExtension to register AdminLte asset alias
 - classes
   - final `Asset\AdminLtePackage`
+  - abstract `Common\Command\Command` (ported from `kamilsk/cilex-service-providers`)
+  - final `Command\Doctrine\CheckMigrationCommand` (ported from `kamilsk/cilex-service-providers`)
+  - final `Command\Doctrine\GenerateIndexNameCommand` (ported from `kamilsk/cilex-service-providers`)
   - final `Composer\Script\AdminLte\Config`
   - final `Composer\Script\Processor`
   - abstract `Composer\Script\Publisher`
