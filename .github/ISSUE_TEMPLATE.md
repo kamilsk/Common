@@ -2,7 +2,7 @@
 
 | Q             | A
 |:--------------|:--
-| Version?      | 2.2.x / 2.3.x / 3.x
+| Version?      | 2.3.x / 3.x / 4.x
 | What type?    | bug / docs / feature
 
 Output of `composer show | egrep kamilsk/common` or `composer show kamilsk/common | egrep versions` is

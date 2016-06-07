@@ -25,16 +25,18 @@ $ git remote add mirror git@bitbucket.org:kamilsk/common.git
 ### Composer (production)
 
 ```bash
-$ composer require kamilsk/common:~3.0
+$ composer require kamilsk/common:~3.1
 ```
 
 ## Pulse of repository
 
 | Version / PHP | 5.5 | 5.6 | 7.0 | HHVM | Support                                           |
 |:-------------:|:---:|:---:|:---:|:----:|:--------------------------------------------------|
-| 2.2.x         | +   | +   | +   | +    | Security support and bug fixing until 10 Jul 2016 |
 | 2.3.x LTS     | -   | +   | +   | +    | Security support and bug fixing until 31 Dec 2018 |
-| 3.x           | -   | -   | +   | -    | Active support and new features until 3 Dec 2017  |
+| 3.x           | -   | -   | +   | -    | Security support and bug fixing until 3 Dec 2017  |
+| 4.x LTS       | -   | -   | +   | -    | Active support and new features until 31 Dec 2018 |
+
+_Other versions are not supported._
 
 ### [Changelog](CHANGELOG.md)
 

@@ -2,7 +2,7 @@
 
 | Q             | A
 |:--------------|:--
-| Branch?       | 3.x for new features / master for fixes
+| Branch?       | 4.x for new features / master for fixes
 | Bug fix?      | yes/no
 | New feature?  | yes/no
 | BC breaks?    | yes/no
