@@ -3,7 +3,7 @@
 
 # Version 3
 
-## [3.1.0] - Unreleased
+## [3.1.0] - 2016-06-07
 ### Added
 - development dependencies
   - `composer/composer:~1.0` for testing Composer scripts
