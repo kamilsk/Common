@@ -3,7 +3,7 @@
 
 # Version 3
 
-## [3.1.0] - 2016-06-07
+## [3.1.x] - 2016-06-07
 ### Added
 - development dependencies
   - `composer/composer:~1.0` for testing Composer scripts
@@ -65,7 +65,7 @@
 - moving to [package.meta](https://github.com/octolab/pmc) to describe composer package
 - code optimizations (using greediness in regular expressions, removing while loops,
 using arbitrary expression dereferencing instead intermediate vars, etc.)
-- [git diff](/../../compare/3.0.5...3.1.0)
+- [git diff](/../../compare/3.0.5...3.1.1)
 
 ### Removed
 - classes
