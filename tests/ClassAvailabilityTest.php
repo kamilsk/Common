@@ -16,7 +16,7 @@ class ClassAvailabilityTest extends ClassAvailability
         'Composer\\Semver\\Constraint\\AbstractConstraint' => true,
         'Composer\\Util\\SpdxLicense' => true,
         // no dependencies
-        'Symfony\\Bridge\\Twig\\DataCollector\\TwigDataCollector' => ['symfony/http-kernel', 'symfony/http-foundation'],
+        'Symfony\\Bridge\\Twig\\DataCollector\\TwigDataCollector' => ['symfony/http-foundation', 'symfony/http-kernel'],
         'Symfony\\Bridge\\Twig\\TwigEngine' => ['symfony/templating'],
         'Zend\\EventManager\\Filter\\FilterIterator' => ['zendframework/zend-stdlib'],
     ];
@@ -24,7 +24,17 @@ class ClassAvailabilityTest extends ClassAvailability
         // deprecated
         'Composer\\Package\\LinkConstraint' => true,
         // no dependencies
-        'Symfony\\Bridge\\Twig\\Form' => ['symfony/form'],
+        'Symfony\\Bridge\\Twig\\Form' => [
+            'symfony/expression-language',
+            'symfony/form',
+            'symfony/http-foundation',
+            'symfony/http-kernel',
+            'symfony/routing',
+            'symfony/security',
+            'symfony/stopwatch',
+            'symfony/translation',
+            'symfony/var-dumper',
+        ],
         'Symfony\\Bridge\\Twig\\Translation' => ['symfony/translation'],
         'Symfony\\Component\\Console\\Event' => ['symfony/event-dispatcher'],
     ];
