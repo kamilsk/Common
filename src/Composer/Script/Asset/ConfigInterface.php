@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace OctoLab\Common\Composer\Script;
+namespace OctoLab\Common\Composer\Script\Asset;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>

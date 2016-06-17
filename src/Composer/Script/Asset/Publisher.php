@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace OctoLab\Common\Composer\Script;
+namespace OctoLab\Common\Composer\Script\Asset;
 
 use Composer\Package\PackageInterface;
 use Composer\Script\Event;

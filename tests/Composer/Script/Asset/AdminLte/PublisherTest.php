@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace OctoLab\Common\Composer\Script\AdminLte;
+namespace OctoLab\Common\Composer\Script\Asset\AdminLte;
 
 use Composer\Composer;
 use Composer\Installer\InstallationManager;

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace OctoLab\Common\Composer\Script\AdminLte;
+namespace OctoLab\Common\Composer\Script\Asset\AdminLte;
 
-use OctoLab\Common\Composer\Script\ConfigInterface;
+use OctoLab\Common\Composer\Script\Asset\ConfigInterface;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>

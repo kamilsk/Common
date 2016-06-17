@@ -2,18 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace OctoLab\Common\Composer\Script\AdminLte;
+namespace OctoLab\Common\Composer\Script\Asset\AdminLte;
 
 use Composer\Script\Event;
 use OctoLab\Common\Asset\AdminLtePackage;
-use OctoLab\Common\Composer\Script\ConfigInterface;
+use OctoLab\Common\Composer\Script\Asset\ConfigInterface;
 use Symfony\Component\Asset\PackageInterface as AssetPackageInterface;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
-final class Publisher extends \OctoLab\Common\Composer\Script\Publisher
+final class Publisher extends \OctoLab\Common\Composer\Script\Asset\Publisher
 {
     /**
      * {@inheritdoc}
