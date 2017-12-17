@@ -2,6 +2,9 @@
 >
 > Based on [don’t repeat yourself](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) principle.
 
+[![Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/octolab)
+[![License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](LICENSE)
+
 ## [Documentation](https://github.com/kamilsk/Common/wiki)
 
 ## Installation
@@ -45,7 +48,6 @@ _Other versions are not supported._
 [![Build status](https://travis-ci.org/kamilsk/Common.svg?branch=3.x)](https://travis-ci.org/kamilsk/Common)
 [![Tests status](http://php-eye.com/badge/kamilsk/common/tested.svg?branch=3.x-dev)](http://php-eye.com/package/kamilsk/common)
 [![Latest stable version](https://poser.pugx.org/kamilsk/common/v/stable.png)](https://packagist.org/packages/kamilsk/common)
-[![License](https://poser.pugx.org/kamilsk/common/license.png)](https://packagist.org/packages/kamilsk/common)
 
 ### Code quality
 
@@ -61,11 +63,6 @@ _Other versions are not supported._
 [![Daily downloads](https://poser.pugx.org/kamilsk/common/d/daily.png)](https://packagist.org/packages/kamilsk/common)
 [![Total references](https://www.versioneye.com/php/kamilsk:common/reference_badge.svg)](https://www.versioneye.com/php/kamilsk:common/references)
 
-### Feedback
-
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kamilsk/small-tools)
-[![@ikamilsk](https://img.shields.io/badge/author-%40ikamilsk-blue.svg)](https://twitter.com/ikamilsk)
-
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details.
@@ -79,6 +76,13 @@ Thus, changes in `composer.json` file directly is not allowed.
 
 If you discover any security related issues, please email feedback@octolab.org instead of using the issue tracker.
 
-## License
+## Feedback
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+[![@kamilsk](https://img.shields.io/badge/author-%40kamilsk-blue.svg)](https://twitter.com/ikamilsk)
+[![@octolab](https://img.shields.io/badge/sponsor-%40octolab-blue.svg)](https://twitter.com/octolab_inc)
+
+## Notes
+
+- made with ❤️ by [OctoLab](https://www.octolab.org/)
+
+[![Analytics](https://ga-beacon.appspot.com/UA-109817251-23/unsupported/Common/readme)](https://github.com/igrigorik/ga-beacon)
