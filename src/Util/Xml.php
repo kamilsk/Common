@@ -30,7 +30,7 @@ final class Xml
      */
     public function __construct(string $className, int $options, string $ns, bool $isPrefix)
     {
-        assert('class_exists($className)
+        \assert('class_exists($className)
             && (ltrim($className, "\\\") === \SimpleXMLElement::class
                 || is_subclass_of($className, \SimpleXMLElement::class, true))
             && $options >= 0');
@@ -107,8 +107,9 @@ final class Xml
         string $ns = null,
         bool $isPrefix = null
     ): array {
-        assert('$options === null || $options >= 0');
-        libxml_use_internal_errors(($before = libxml_use_internal_errors()) || true);
+        \assert('$options === null || $options >= 0');
+        $before = libxml_use_internal_errors();
+        libxml_use_internal_errors(true);
         libxml_clear_errors();
         $content = simplexml_load_string(
             $xml,

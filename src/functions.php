@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common;
 
-if (!function_exists('OctoLab\Common\camelize')) {
+if (!\function_exists('OctoLab\Common\camelize')) {
     /**
      * @param string $word
      *

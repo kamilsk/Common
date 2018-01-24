@@ -169,7 +169,7 @@ abstract class FileBasedMigration extends AbstractMigration
     {
         $this->queries = [];
         foreach ($files as $file) {
-            assert('is_readable($file)');
+            \assert('is_readable($file)');
             foreach (Parser::extractSql(file_get_contents($file)) as $sql) {
                 $this->queries[] = $sql;
             }

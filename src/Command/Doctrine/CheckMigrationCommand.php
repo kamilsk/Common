@@ -20,6 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class CheckMigrationCommand extends AbstractCommand
 {
+    /**
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     */
     protected function configure()
     {
         parent::configure();
@@ -36,9 +39,11 @@ final class CheckMigrationCommand extends AbstractCommand
      *
      * @return int
      *
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      * @throws \InvalidArgumentException
      * @throws \Doctrine\DBAL\Migrations\MigrationException
      * @throws \TypeError
+     * @throws \ReflectionException
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -115,6 +120,7 @@ final class CheckMigrationCommand extends AbstractCommand
      *
      * @throws \Doctrine\DBAL\Migrations\MigrationException if could not find migration version
      * @throws \TypeError if it returns not instance of \Doctrine\DBAL\Migrations\AbstractMigration
+     * @throws \ReflectionException
      */
     private function getMigrationInstance(
         string $migration,
@@ -129,7 +135,7 @@ final class CheckMigrationCommand extends AbstractCommand
                 $instance = $configuration->getVersion($migration)->getMigration();
             } catch (ConnectionException $e) {
                 $class = $configuration->getMigrationsNamespace() . '\\Version' . $migration;
-                assert('class_exists($class)');
+                \assert('class_exists($class)');
                 $instance = (new \ReflectionClass($class))->newInstanceWithoutConstructor();
             }
         }
@@ -142,7 +148,7 @@ final class CheckMigrationCommand extends AbstractCommand
      */
     private function printQueries(array $queries, OutputInterface $output)
     {
-        $counter = strlen((string)count($queries));
+        $counter = \strlen((string)\count($queries));
         foreach ($queries as $i => $query) {
             $output->writeln(
                 sprintf('<info>%s. %s</info>', str_pad((string)($i + 1), $counter, ' ', STR_PAD_LEFT), $query)

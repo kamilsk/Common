@@ -1,6 +1,6 @@
 {
   "imports": [
-    { "resource": "base.json" }
+    "base.json"
   ],
   "component": {
     "parameter": "base component's parameter will be overwritten by component config"

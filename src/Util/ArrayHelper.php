@@ -48,14 +48,14 @@ final class ArrayHelper
      */
     public static function merge(array ...$args): array
     {
-        assert('count($args) > 0');
+        \assert('count($args) > 0');
         $res = array_shift($args);
         foreach ($args as $next) {
             foreach ($next as $k => $v) {
-                if (is_int($k)) {
+                if (\is_int($k)) {
                     $res[] = $v;
                 } else {
-                    $res[$k] = is_array($v) && isset($res[$k]) && is_array($res[$k]) ? static::merge($res[$k], $v) : $v;
+                    $res[$k] = \is_array($v) && isset($res[$k]) && \is_array($res[$k]) ? static::merge($res[$k], $v) : $v;
                 }
             }
         }
@@ -74,10 +74,9 @@ final class ArrayHelper
             $value = sprintf('/%s/', $value);
         };
         array_walk_recursive($target, function (&$param) use ($wrap, $placeholders) {
-            if (!is_string($param)) {
-                return;
-            } elseif (preg_match('/^const\((.*)\)$/', $param, $matches)) {
-                $param = constant($matches[1]);
+            if (!\is_string($param)) { return; }
+            if (preg_match('/^const\((.*)\)$/', $param, $matches)) {
+                $param = \constant($matches[1]);
             } elseif (preg_match_all('/%(.+?)%/', $param, $matches)) {
                 array_walk($matches[0], $wrap);
                 $pattern = $matches[0];

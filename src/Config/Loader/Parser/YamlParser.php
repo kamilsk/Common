@@ -56,6 +56,6 @@ final class YamlParser implements ParserInterface
      */
     public function supports(string $extension): bool
     {
-        return in_array(strtolower($extension), ['yml', 'yaml'], true);
+        return \in_array(strtolower($extension), ['yml', 'yaml'], true);
     }
 }

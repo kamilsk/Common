@@ -33,7 +33,7 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      */
     public function __construct(array $config, ComponentFactory $factory, string $defaultName = 'app')
     {
-        if (empty($config['channels']) || !is_array($config['channels'])) {
+        if (empty($config['channels']) || !\is_array($config['channels'])) {
             throw new \InvalidArgumentException('Channels not found.');
         }
         $this->defaultChannel = (string)($config['default_channel'] ?? key($config['channels']));
@@ -50,7 +50,7 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      */
     public function count(): int
     {
-        return count($this->keys);
+        return \count($this->keys);
     }
 
     /**
@@ -58,6 +58,7 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @return Logger
      *
+     * @throws \ReflectionException
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
      *
@@ -78,6 +79,7 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      *
      * @api
      */
@@ -91,6 +93,7 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      *
      * @api
      */
@@ -134,6 +137,7 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @return Logger
      *
+     * @throws \ReflectionException
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
      *
@@ -193,8 +197,6 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      * @param string $defaultName
      *
      * @return Locator
-     *
-     * @deprecated since 4.x version arguments for channel is required
      */
     private function enrich(array &$channelConfigs, string $defaultName): Locator
     {
@@ -214,13 +216,14 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     private function getComponent(string $id)
     {
         if (!isset($this->storage[$id])) {
             throw new \OutOfRangeException(sprintf('Component with ID "%s" not found.', $id));
         }
-        if (is_array($this->storage[$id])) {
+        if (\is_array($this->storage[$id])) {
             $component = $this->factory->build($this->getComponentConfig($id));
             $this->resolveComponentDependencies($id, $component);
             $this->storage[$id] = $component;
@@ -235,6 +238,7 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     private function getComponentConfig(string $id): array
     {
@@ -249,10 +253,11 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     private function resolveComponent(&$value)
     {
-        if (is_string($value) && strpos($value, '@') === 0) {
+        if (\is_string($value) && strpos($value, '@') === 0) {
             $value = $this->getComponent(substr($value, 1));
         }
     }
@@ -263,10 +268,11 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \OutOfRangeException
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     private function resolveComponentDependencies(string $id, $component)
     {
-        assert('$component instanceof \Monolog\Logger
+        \assert('$component instanceof \Monolog\Logger
             || $component instanceof \Monolog\Handler\HandlerInterface
             || $component instanceof \Monolog\Formatter\FormatterInterface
             || is_callable($component)');
@@ -311,8 +317,6 @@ final class Locator implements \ArrayAccess, \Countable, \Iterator
      * @param string $id
      *
      * @throws \InvalidArgumentException
-     *
-     * @deprecated since 4.x version calls are required for component
      */
     private function storeComponentDependencies(string $key, array $componentConfig, string $id)
     {

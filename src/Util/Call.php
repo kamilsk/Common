@@ -132,8 +132,8 @@ final class Call
      */
     public function retry(int $times = 1, int $timeout = 0): Call
     {
-        assert('$times >= 1 && $timeout >= 0');
-        assert('$this->current !== null');
+        \assert('$times >= 1 && $timeout >= 0');
+        \assert('$this->current !== null');
         if ($this->current !== null) {
             $this->catchers[$this->current][] = function (...$args) use ($times, $timeout) {
                 static $lTimes;

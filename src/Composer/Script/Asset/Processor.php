@@ -42,16 +42,16 @@ final class Processor
      */
     public function publish(string $packagePath, array $map, bool $isSymlink, bool $isRelative)
     {
-        $packagePath = realpath($packagePath);
-        assert('is_dir($packagePath) && is_readable($packagePath)');
+        $packagePath = (string)realpath($packagePath);
+        \assert('is_dir($packagePath) && is_readable($packagePath)');
         foreach ($map as $from => $to) {
             $origin = realpath(rtrim($packagePath, '/') . '/' . ltrim($from, '/'));
-            assert('is_dir($origin) && is_readable($origin)');
+            \assert('is_dir($origin) && is_readable($origin)');
             $this->filesystem->remove($to);
-            $this->filesystem->mkdir(dirname($to));
+            $this->filesystem->mkdir(\dirname($to));
             if ($isSymlink) {
                 $from = $isRelative
-                    ? $this->filesystem->makePathRelative($origin, dirname($to))
+                    ? $this->filesystem->makePathRelative($origin, \dirname($to))
                     : $origin;
                 $this->publishSymlink($origin, $from, $to);
             } else {

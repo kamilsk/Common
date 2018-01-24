@@ -23,7 +23,7 @@ final class ConfigResolver
         $types = (array)($config['types'] ?? []);
         foreach ($types as $name => $class) {
             if (!Type::hasType($name)) {
-                Type::addType($name, Type::hasType($class) ? get_class(Type::getType($class)) : $class);
+                Type::addType($name, Type::hasType($class) ? \get_class(Type::getType($class)) : $class);
             }
         }
     }

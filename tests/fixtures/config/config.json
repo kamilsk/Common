@@ -1,6 +1,6 @@
 {
   "imports": [
-    { "resource": "parameters.json" },
+    "parameters.json",
     "component/config.json"
   ],
   "app": {

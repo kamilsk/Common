@@ -47,7 +47,7 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
      */
     public function count(): int
     {
-        return count($this->config);
+        return \count($this->config);
     }
 
     /**
@@ -159,11 +159,11 @@ class SimpleConfig implements \ArrayAccess, \Countable, \Iterator, \JsonSerializ
     /**
      * @param array $placeholders
      *
-     * @return SimpleConfig
+     * @return $this
      *
      * @api
      */
-    protected function transform(array $placeholders): SimpleConfig
+    protected function transform(array $placeholders)
     {
         if (isset($this->config['parameters'])) {
             ArrayHelper::transform($this->config['parameters'], $placeholders);

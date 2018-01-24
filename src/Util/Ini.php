@@ -22,7 +22,7 @@ final class Ini
      */
     public function __construct(bool $processSection, int $scannerMode)
     {
-        assert('$scannerMode >= 0');
+        \assert('$scannerMode >= 0');
         $this->processSections = $processSection;
         $this->scannerMode = $scannerMode;
     }
@@ -71,7 +71,7 @@ final class Ini
      */
     public function softParse(string $ini, bool $processSections = null, int $scannerMode = null): array
     {
-        assert('$scannerMode === null || $scannerMode >= 0');
+        \assert('$scannerMode === null || $scannerMode >= 0');
         error_reporting(($before = error_reporting()) & ~E_WARNING);
         $content = parse_ini_string(
             $ini,

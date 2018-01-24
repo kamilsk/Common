@@ -31,7 +31,7 @@ abstract class IntegerMapType extends Type
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): int
     {
-        assert('is_int($value)');
+        \assert('is_int($value)');
         if (!isset($this->getValues()[$value])) {
             throw new \InvalidArgumentException('Invalid type.');
         }

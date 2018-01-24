@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace OctoLab\Common\Monolog\Service;
 
+use Monolog\Logger;
+
 /**
  * @author Kamil Samigullin <kamil@samigullin.info>
  */
@@ -43,7 +45,7 @@ final class ComponentFactory
     {
         return new self(
             (new ComponentBuilder())
-                ->setClass('Monolog\Logger')
+                ->setClass(Logger::class)
                 ->addDependency('handlers', 'pushHandler')
                 ->addDependency('processors', 'pushProcessor'),
             (new ComponentBuilder())
@@ -63,13 +65,14 @@ final class ComponentFactory
     /**
      * @param array $config
      *
-     * @return object
+     * @return mixed
      * \Monolog\Logger
      * \Monolog\Handler\HandlerInterface
      * \Monolog\Formatter\FormatterInterface
      * callable
      *
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      *
      * @api
      */

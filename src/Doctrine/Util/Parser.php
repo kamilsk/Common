@@ -20,12 +20,12 @@ final class Parser
     {
         // remove comments
         // inline
-        $text = preg_replace('/\s*(?:--|#).*$/um', '', $text);
+        $text = (string)preg_replace('/\s*(?:--|#).*$/um', '', $text);
         // multi-line
-        $text = preg_replace('/\/\*[^*]*(\*)?[^*]*\*\//um', '', $text);
+        $text = (string)preg_replace('/\/\*[^*]*(\*)?[^*]*\*\//um', '', $text);
         // flatten and filter
-        $text = preg_replace('/\n/', ' ', $text);
-        $text = preg_replace('/\s{2,}/', ' ', $text);
+        $text = (string)preg_replace('/\n/', ' ', $text);
+        $text = (string)preg_replace('/\s{2,}/', ' ', $text);
         $text = trim($text, '; ');
         return $text === '' ? [] : preg_split('/\s*;\s*/', $text);
     }

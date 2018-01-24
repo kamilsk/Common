@@ -63,22 +63,23 @@ final class ComponentBuilder
      * @param string|null $type
      * @param array $args
      *
-     * @return object
+     * @return mixed
      * \Monolog\Logger
      * \Monolog\Handler\HandlerInterface
      * \Monolog\Formatter\FormatterInterface
      * callable
      *
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      *
      * @api
      */
     public function make(string $class = null, string $type = null, array $args = [])
     {
         $class = $class ?? $this->class ?? $this->resolveClassName($type);
-        assert('class_exists($class)');
+        \assert('class_exists($class)');
         $reflection = new \ReflectionClass($class);
-        if ($args !== [] && !is_int(key($args))) {
+        if ($args !== [] && !\is_int(key($args))) {
             $args = $this->resolveConstructorArguments($args, $reflection);
         }
         return $reflection->newInstanceArgs($args);

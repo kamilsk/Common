@@ -39,8 +39,10 @@ abstract class Command extends \Symfony\Component\Console\Command\Command
     final public function setName($name): Command
     {
         if (!$this->namespace) {
-            return parent::setName($name);
+            parent::setName($name);
+            return $this;
         }
-        return parent::setName(sprintf('%s:%s', $this->namespace, $name));
+        parent::setName(sprintf('%s:%s', $this->namespace, $name));
+        return $this;
     }
 }

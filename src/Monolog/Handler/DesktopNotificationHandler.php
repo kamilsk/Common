@@ -29,7 +29,7 @@ final class DesktopNotificationHandler extends AbstractProcessingHandler
      */
     public function __construct(string $name, $level = Logger::DEBUG, bool $bubble = true)
     {
-        assert('is_int($level) || is_string($level)');
+        \assert('is_int($level) || is_string($level)');
         parent::__construct($level, $bubble);
         $this->name = $name;
         $this->notifier = JoliNotif\NotifierFactory::create();
@@ -45,7 +45,7 @@ final class DesktopNotificationHandler extends AbstractProcessingHandler
      */
     protected function write(array $record)
     {
-        assert('array_key_exists(\'formatted\', $record)');
+        \assert('array_key_exists(\'formatted\', $record)');
         $this->notification
             ->setTitle(sprintf('[%s] %s', Logger::getLevelName($this->level), $this->name))
             ->setBody($record['formatted']);

@@ -98,10 +98,10 @@ final class AdminLtePackage extends PathPackage
      */
     public function getUrl($path): string
     {
-        assert('is_string($path)');
+        \assert('is_string($path)');
         if (strpos($path, ':') === 0) {
-            $key = substr($path, 0, strpos($path, '/') ?: strlen($path));
-            $path = $key === $path ? '' : substr($path, strlen($key));
+            $key = substr($path, 0, strpos($path, '/') ?: \strlen($path));
+            $path = $key === $path ? '' : (string)substr($path, \strlen($key));
         } else {
             $key = ':dist';
         }

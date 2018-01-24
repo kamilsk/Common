@@ -14,7 +14,7 @@ final class AssetExtension extends \Symfony\Bridge\Twig\Extension\AssetExtension
      */
     public function getAssetUrl($path, $packageName = null): string
     {
-        assert('is_string($path) && ($packageName === null || is_string($packageName))');
+        \assert('is_string($path) && ($packageName === null || is_string($packageName))');
         if ($packageName === null && preg_match('/^@([^:\/]*)(.*)$/', $path, $matches) === 1) {
             list(, $packageName, $path) = $matches;
         }

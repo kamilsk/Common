@@ -34,6 +34,7 @@ final class FileLoader extends AbstractFileLoader
      *
      * @return array
      *
+     * @throws \Symfony\Component\Config\Exception\FileLocatorFileNotFoundException
      * @throws \InvalidArgumentException
      * @throws \Exception
      * @throws \Symfony\Component\Config\Exception\FileLoaderLoadException
@@ -43,14 +44,14 @@ final class FileLoader extends AbstractFileLoader
      */
     public function load($resource, $type = null): array
     {
-        assert('is_string($resource) && ($type === null || is_string($type))');
+        \assert('is_string($resource) && ($type === null || is_string($type))');
         $path = (string)$this->locator->locate($resource);
         if (!$this->supports($resource)) {
             throw new \InvalidArgumentException(sprintf('The file "%s" is not supported.', $resource));
         }
-        assert('is_readable($path)');
+        \assert('is_readable($path)');
         $fileContent = $this->parser->parse(file_get_contents($path));
-        if (!is_array($fileContent)) {
+        if (!\is_array($fileContent)) {
             return [];
         }
         $imports = (array)($fileContent['imports'] ?? []);
@@ -71,7 +72,7 @@ final class FileLoader extends AbstractFileLoader
      */
     public function supports($resource, $type = null): bool
     {
-        assert('is_string($resource) && ($type === null || is_string($type))');
+        \assert('is_string($resource) && ($type === null || is_string($type))');
         return $this->parser->supports(pathinfo($resource, PATHINFO_EXTENSION));
     }
 
@@ -81,26 +82,20 @@ final class FileLoader extends AbstractFileLoader
      *
      * @return array
      *
+     * @throws \Symfony\Component\Config\Exception\FileLocatorFileNotFoundException
      * @throws \Symfony\Component\Config\Exception\FileLoaderImportCircularReferenceException
      * @throws \Symfony\Component\Config\Exception\FileLoaderLoadException
      */
     private function loadImports(string $path, array $imports): array
     {
         $content = [];
-        $currentDir = dirname($path);
+        $currentDir = \dirname($path);
         foreach ($imports as $import) {
             // [issue #47](https://github.com/kamilsk/Common/issues/47)
             // restore current directory if we go out from import
             $this->setCurrentDir($currentDir);
-            if (is_string($import)) {
-                $resource = $import;
-                $ignoreErrors = false;
-            } else {
-                // deprecated since 4.x version only string supported
-                assert('isset($import[\'resource\']) && is_string($import[\'resource\'])');
-                $resource = $import['resource'];
-                $ignoreErrors = $import['ignore_errors'] ?? false;
-            }
+            $resource = $import;
+            $ignoreErrors = false;
             $content[] = $this->import($resource, null, $ignoreErrors, $path);
         }
         return array_reverse($content);
